@@ -45,6 +45,18 @@ git push origin master
 
 Nếu bạn đang làm việc trên nhánh khác, thay master bằng tên nhánh của bạn.
 
+//Các bước để cập nhật dữ liệu từ github về máy:
+1. Kiểm tra nhánh hiện tại: Đảm bảo bạn đang làm việc trên đúng nhánh bằng lệnh:
+git branch
+Nếu cần chuyển sang nhánh khác, sử dụng:
+git checkout <tên_nhánh>
+
+2. Kéo dữ liệu mới nhất về từ GitHub: Sử dụng lệnh:
+git pull origin master
+**Nếu đang làm việc trên nhánh khác, thay master bằng tên nhanh của bạn
+
+3. Giải quyết xung đột (nếu có): Nếu có xung đột giữa các thay đổi trên máy tính của bạn và những thay đổi từ GitHub, Git sẽ thông báo về xung đột. Bạn cần giải quyết xung đột thủ công bằng cách chỉnh sửa các tệp bị xung đột, sau đó thêm và commit lại các thay đổi.
+
 			#### Tổng kết ####
 
 //Push một folder code có sẵn lên GitHub
@@ -64,3 +76,8 @@ git status — kiểm tra thay đổi.
 git add . — thêm tất cả các thay đổi vào vùng staging.
 git commit -m "Thông điệp commit" — tạo commit mới.
 git push origin master — đẩy thay đổi lên GitHub.
+
+//Cập nhật dữ liệu từ github về máy: 
+git branch - kiểm tra nhánh
+git pull origin <tên_nhánh> - kéo dữ liệu 
+Giải quyết xung đột (nếu có).
