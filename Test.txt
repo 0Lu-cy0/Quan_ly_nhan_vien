@@ -1,1 +1,66 @@
-abc123
+nc120@Duivel MINGW64 /f/Java_Cuoi_Ky
+$ git init
+Initialized empty Git repository in F:/Java_Cuoi_Ky/.git/
+
+nc120@Duivel MINGW64 /f/Java_Cuoi_Ky (master)
+$ git add .
+
+nc120@Duivel MINGW64 /f/Java_Cuoi_Ky (master)
+$ git commit -m 'Test'
+[master (root-commit) ded4bc2] Test
+ 1 file changed, 1 insertion(+)
+ create mode 100644 Test.txt
+
+nc120@Duivel MINGW64 /f/Java_Cuoi_Ky (master)
+$ git remote add origin https://github.com/0Lu-cy0/Quan_ly_nhan_vien_Java.git
+
+nc120@Duivel MINGW64 /f/Java_Cuoi_Ky (master)
+$ git push -u origin master
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 214 bytes | 214.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+To https://github.com/0Lu-cy0/Quan_ly_nhan_vien_Java.git
+ * [new branch]      master -> master
+branch 'master' set up to track 'origin/master'.
+
+//Cập nhật dữ liệu lên github
+1. Trước hết, bạn có thể kiểm tra xem những tệp nào đã thay đổi bằng lệnh:
+git status
+
+2. Thêm các thay đổi vào vùng staging:
+Nếu có thay đổi, bạn cần thêm chúng vào vùng staging để chuẩn bị commit. Có thể thêm tất cả tệp đã thay đổi bằng lệnh:
+git add .
+Hoặc thêm từng tệp cụ thể:
+git add <tên_tệp>
+
+3. Commit các thay đổi:
+Khi các tệp đã ở vùng staging, bạn tạo một commit mới:
+git commit -m "Thông điệp commit"
+Thay Thông điệp commit bằng nội dung bạn muốn ghi lại cho các thay đổi này.
+
+4. Đẩy các thay đổi lên GitHub:
+Cuối cùng, bạn đẩy (push) các thay đổi lên GitHub bằng lệnh:
+git push origin master
+
+Nếu bạn đang làm việc trên nhánh khác, thay master bằng tên nhánh của bạn.
+
+			#### Tổng kết ####
+
+//Push một folder code có sẵn lên GitHub
+(để lưu trữ code, các phiên bản code...)
+Tải, cài đặt phần mềm git
+Tạo tài khoản trên github.com
+Tạo một repo mới trên github.com
+Vào folder muốn upcode lên repo, gõ lệnh sau
+git init
+git add I
+git commit -m "<mô-tả-commit)'
+git remote add origin <URL-kho-luu-tru-GitHub>
+git push -u origin master
+
+//Sau khi có thay đổi và cách update sự thay đổi
+git status — kiểm tra thay đổi.
+git add . — thêm tất cả các thay đổi vào vùng staging.
+git commit -m "Thông điệp commit" — tạo commit mới.
+git push origin master — đẩy thay đổi lên GitHub.
