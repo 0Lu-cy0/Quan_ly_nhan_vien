@@ -15,6 +15,7 @@ public class Quan_Ly_Nhan_Vien {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        a
     }
     
 }
