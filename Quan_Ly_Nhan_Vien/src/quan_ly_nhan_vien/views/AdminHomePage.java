@@ -58,7 +58,6 @@ public class AdminHomePage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnDangXuatActionPerformed
-        // TODO add your handling code here:
         // Xác nhận người dùng có muốn đăng xuất không
         int confirmed = JOptionPane.showConfirmDialog(this,
                 "Bạn có chắc chắn muốn đăng xuất không?", "Đăng xuất",
