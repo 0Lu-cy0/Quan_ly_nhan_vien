@@ -110,7 +110,7 @@ public class Login extends javax.swing.JFrame {
         btnDNhap.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         btnDNhap.setForeground(new java.awt.Color(0, 102, 102));
         btnDNhap.setText("Đăng nhập");
-        btnDNhap.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
+        btnDNhap.setBorder(null);
         btnDNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDNhapActionPerformed(evt);
@@ -120,7 +120,7 @@ public class Login extends javax.swing.JFrame {
         jbtDangKy.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jbtDangKy.setForeground(new java.awt.Color(0, 102, 102));
         jbtDangKy.setText("Đăng ký");
-        jbtDangKy.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
+        jbtDangKy.setBorder(null);
         jbtDangKy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtDangKyActionPerformed(evt);
