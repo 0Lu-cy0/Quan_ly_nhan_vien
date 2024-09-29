@@ -67,6 +67,11 @@ public class Register extends javax.swing.JFrame {
 
         jtfFullName.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jtfFullName.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Họ và tên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfFullName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfFullNameActionPerformed(evt);
+            }
+        });
         jPanel5.add(jtfFullName, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 29, 452, 50));
 
         jtfQueQuan.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
@@ -223,6 +228,10 @@ public class Register extends javax.swing.JFrame {
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         openLoginPage(); // Gọi phương thức mở trang đăng nhập
     }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    private void jtfFullNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfFullNameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfFullNameActionPerformed
 
     private void openLoginPage() {
         // Tạo và hiển thị giao diện đăng nhập
