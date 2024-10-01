@@ -18,7 +18,7 @@ public class Register extends javax.swing.JFrame {
 
     public Register() {
         initComponents();
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
+//        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
         this.setVisible(false);
         this.setLocationRelativeTo(null);
     }
@@ -174,7 +174,7 @@ public class Register extends javax.swing.JFrame {
         }
         DatabaseConnection dbConnection = new DatabaseConnection();
         Connection conn = dbConnection.conn;
-        String query = "INSERT INTO account (username, password, fullname, address) VALUES (?, ?, ?, ?)";
+        String query = "INSERT INTO employee (employee_id, password, fullname, address) VALUES (?, ?, ?, ?)";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);

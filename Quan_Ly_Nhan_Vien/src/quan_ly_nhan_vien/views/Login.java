@@ -17,7 +17,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         //Thêm icon cho chương trình
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
+//        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
         this.setVisible(false);
         this.setLocationRelativeTo(null);
     }
@@ -39,7 +39,6 @@ public class Login extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -80,9 +79,6 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setText("QUẢN LÝ NHÂN VIÊN");
         jPanel3.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 260, 40));
         jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, 250, 10));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo(96_76).png"))); // NOI18N
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 16, 96, 76));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 130));
 
@@ -248,7 +244,7 @@ public class Login extends javax.swing.JFrame {
             // Kết nối cơ sở dữ liệu
             Connection conn = new DatabaseConnection().getJDBCConnection(); // Sử dụng đúng tên phương thức
             // Truy vấn để kiểm tra tài khoản và mật khẩu
-            String query = "SELECT * FROM account WHERE username = ? AND password = ?";
+            String query = "SELECT * FROM employee WHERE employee_id = ? AND password = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, username);
             pstmt.setString(2, password);
@@ -298,7 +294,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
