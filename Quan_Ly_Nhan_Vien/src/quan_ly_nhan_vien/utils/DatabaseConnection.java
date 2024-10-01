@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class DatabaseConnection {
-    private final String connectionString = "jdbc:mysql://localhost:3306/test"; // Thay đổi connection string cho MySQL
+    private final String connectionString = "jdbc:mysql://localhost:3306/quan_ly_nhan_vien"; // Thay đổi connection string cho MySQL
     private final String user = "root"; // Tên người dùng MySQL của bạn
     private final String password = "123456789"; // Mật khẩu MySQL của bạn
 
