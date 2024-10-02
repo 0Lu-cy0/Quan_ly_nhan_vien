@@ -150,6 +150,11 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         jButton10.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jButton10.setText("Sửa");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
         jPanel5.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
@@ -637,6 +642,93 @@ public class AdminHomePage extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+                                       
+    // Lấy chỉ số của dòng đã chọn trên JTable
+            int selectedRow = jTable2.getSelectedRow();
+
+            // Kiểm tra nếu không có dòng nào được chọn
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để sửa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Lấy giá trị employee_id từ dòng đã chọn
+            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+            int employeeId = (int) model.getValueAt(selectedRow, 0);  // Cột 0 là employee_id
+
+            String ten = (String) model.getValueAt(selectedRow, 1);
+            String ngaySinh = (String) model.getValueAt(selectedRow, 2);
+            String chucVu = (String) model.getValueAt(selectedRow, 3);
+            String diaChi = (String) model.getValueAt(selectedRow, 4);
+            String matKhau = (String) model.getValueAt(selectedRow, 5);
+
+            // Tạo hộp thoại để người dùng nhập lại thông tin
+            JTextField txtEmployeeId = new JTextField(String.valueOf(employeeId));
+            JTextField txtTen = new JTextField(ten);
+            JTextField txtNgaySinh = new JTextField(ngaySinh);
+            JTextField txtChucVu = new JTextField(chucVu);
+            JTextField txtDiaChi = new JTextField(diaChi);
+            JTextField txtMatKhau = new JTextField(matKhau);
+
+            JPanel panel = new JPanel(new GridLayout(0, 2));
+            panel.add(new JLabel("ID Nhân viên:"));
+            panel.add(txtEmployeeId);
+            panel.add(new JLabel("Họ và tên:"));
+            panel.add(txtTen);
+            panel.add(new JLabel("Ngày sinh (dd/MM/yyyy):"));
+            panel.add(txtNgaySinh);
+            panel.add(new JLabel("Chức vụ:"));
+            panel.add(txtChucVu);
+            panel.add(new JLabel("Địa chỉ:"));
+            panel.add(txtDiaChi);
+            panel.add(new JLabel("Mật khẩu:"));
+            panel.add(txtMatKhau);
+
+            int result = JOptionPane.showConfirmDialog(this, panel, "Sửa thông tin", JOptionPane.OK_CANCEL_OPTION);
+
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    // Cập nhật thông tin trong cơ sở dữ liệu
+                    String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
+                    Connection conn = new DatabaseConnection().getJDBCConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql);
+
+                    ps.setString(1, txtTen.getText());
+                    ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse(txtNgaySinh.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+                    ps.setString(3, txtChucVu.getText());
+                    ps.setString(4, txtDiaChi.getText());
+                    ps.setString(5, txtMatKhau.getText());
+                    ps.setInt(6, employeeId);  // Sử dụng employeeId đã lấy từ JTable
+
+                    int updateResult = ps.executeUpdate();
+
+                    if (updateResult > 0) {
+                        // Cập nhật lại dòng trong JTable
+                        model.setValueAt(txtTen.getText(), selectedRow, 1);
+                        model.setValueAt(txtNgaySinh.getText(), selectedRow, 2);
+                        model.setValueAt(txtChucVu.getText(), selectedRow, 3);
+                        model.setValueAt(txtDiaChi.getText(), selectedRow, 4);
+                        model.setValueAt(txtMatKhau.getText(), selectedRow, 5);
+
+                        JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Cập nhật không thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                    ps.close();
+                    conn.close();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+    
+}
+
+    }//GEN-LAST:event_jButton10ActionPerformed
     public void hienthi() {
 
         try {
