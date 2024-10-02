@@ -1,0 +1,2 @@
+Các bug cần xem lại và fix:
+1. Cần xem thanh tài khoản và mật khẩu ở phần đăng nhập để trống thì sao? 
