@@ -5,6 +5,7 @@
 package quan_ly_nhan_vien.views;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
