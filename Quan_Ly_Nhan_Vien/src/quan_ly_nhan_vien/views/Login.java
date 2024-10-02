@@ -5,6 +5,8 @@
 package quan_ly_nhan_vien.views;
 
 import java.awt.Toolkit;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
@@ -23,6 +25,7 @@ public class Login extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Login");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -138,13 +141,16 @@ public class Login extends javax.swing.JFrame {
         });
         jPanel4.add(jbtDangKy, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 199, 90, 40));
 
+        jcbAnHienMatKhau.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
+        jcbAnHienMatKhau.setForeground(new java.awt.Color(0, 102, 102));
+        jcbAnHienMatKhau.setText("Hiển thị");
         jcbAnHienMatKhau.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 102)));
         jcbAnHienMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcbAnHienMatKhauActionPerformed(evt);
             }
         });
-        jPanel4.add(jcbAnHienMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(384, 140, -1, -1));
+        jPanel4.add(jcbAnHienMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 140, -1, -1));
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 450, 250));
 
@@ -153,6 +159,20 @@ public class Login extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashedPassword = md.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashedPassword) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void jbtDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDangKyActionPerformed
         // TODO add your handling code here:
@@ -166,7 +186,6 @@ public class Login extends javax.swing.JFrame {
     }
 
     private void jcbAnHienMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAnHienMatKhauActionPerformed
-        // TODO add your handling code here:
         if (jcbAnHienMatKhau.isSelected()) {
             jtfMatKhau.setEchoChar((char) 0);  // Hiển thị mật khẩu
         } else {
@@ -215,14 +234,19 @@ public class Login extends javax.swing.JFrame {
     public boolean Login(String username, String password) {
         try {
             // Kết nối cơ sở dữ liệu
-            Connection conn = new DatabaseConnection().getJDBCConnection(); // Sử dụng đúng tên phương thức
-            // Truy vấn để kiểm tra tài khoản và mật khẩu
+            Connection conn = new DatabaseConnection().getJDBCConnection();
+            // Truy vấn để kiểm tra tài khoản và mật khẩu (băm)
             String query = "SELECT * FROM employee WHERE employee_id = ? AND password = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, username);
-            pstmt.setString(2, password);
+
+            // Băm mật khẩu người dùng nhập vào
+            String hashedPassword = hashPassword(password);
+            pstmt.setString(2, hashedPassword);
+
             // Thực hiện truy vấn
             ResultSet rs = pstmt.executeQuery();
+
             // Kiểm tra nếu có kết quả trả về
             if (rs.next()) {
                 return true; // Đăng nhập thành công
