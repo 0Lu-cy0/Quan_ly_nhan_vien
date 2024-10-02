@@ -646,10 +646,8 @@ public class AdminHomePage extends javax.swing.JFrame {
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
                                        
-    // Lấy chỉ số của dòng đã chọn trên JTable
             int selectedRow = jTable2.getSelectedRow();
 
-            // Kiểm tra nếu không có dòng nào được chọn
             if (selectedRow == -1) {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để sửa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -691,7 +689,6 @@ public class AdminHomePage extends javax.swing.JFrame {
 
             if (result == JOptionPane.OK_OPTION) {
                 try {
-                    // Cập nhật thông tin trong cơ sở dữ liệu
                     String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
                     Connection conn = new DatabaseConnection().getJDBCConnection();
                     PreparedStatement ps = conn.prepareStatement(sql);
@@ -701,12 +698,11 @@ public class AdminHomePage extends javax.swing.JFrame {
                     ps.setString(3, txtChucVu.getText());
                     ps.setString(4, txtDiaChi.getText());
                     ps.setString(5, txtMatKhau.getText());
-                    ps.setInt(6, employeeId);  // Sử dụng employeeId đã lấy từ JTable
+                    ps.setInt(6, employeeId);
 
                     int updateResult = ps.executeUpdate();
 
                     if (updateResult > 0) {
-                        // Cập nhật lại dòng trong JTable
                         model.setValueAt(txtTen.getText(), selectedRow, 1);
                         model.setValueAt(txtNgaySinh.getText(), selectedRow, 2);
                         model.setValueAt(txtChucVu.getText(), selectedRow, 3);
