@@ -25,6 +25,7 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     public AdminHomePage() {
         initComponents();
+        hienthi();
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Home_icon.png")));
         this.setVisible(false);
         this.setLocationRelativeTo(null);
@@ -627,7 +628,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 Connection conn = new DatabaseConnection().getJDBCConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setInt(1, employeeId);  // Đặt giá trị employee_id vào câu lệnh SQL
-
+                
                 int result = ps.executeUpdate();
                 if (result > 0) {
                     JOptionPane.showMessageDialog(this, "Xóa thành công!");
@@ -693,6 +694,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             if (result == JOptionPane.OK_OPTION) {
                 try {
                     String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
+//                    String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
                     Connection conn = new DatabaseConnection().getJDBCConnection();
                     PreparedStatement ps = conn.prepareStatement(sql);
 
