@@ -32,7 +32,7 @@ public class Register extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
-        doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
+//        doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
 
         // Thêm DocumentListener để kiểm tra dữ liệu nhập vào
         addDocumentListener(jtfTaiKhoan, this::validateFields);
@@ -202,27 +202,27 @@ public class Register extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public class NumberFilter extends DocumentFilter {
-
-        @Override
-        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-            if (string != null && string.matches("[0-9]+")) {
-                super.insertString(fb, offset, string, attr);
-            }
-        }
-
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-            if (text != null && text.matches("[0-9]+")) {
-                super.replace(fb, offset, length, text, attrs);
-            }
-        }
-
-        @Override
-        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-            super.remove(fb, offset, length);
-        }
-    }
+//    public class NumberFilter extends DocumentFilter {
+//
+//        @Override
+//        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+//            if (string != null && string.matches("[0-9]+")) {
+//                super.insertString(fb, offset, string, attr);
+//            }
+//        }
+//
+//        @Override
+//        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+//            if (text != null && text.matches("[0-9]+")) {
+//                super.replace(fb, offset, length, text, attrs);
+//            }
+//        }
+//
+//        @Override
+//        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+//            super.remove(fb, offset, length);
+//        }
+//    }
 
     private String hashPassword(String password) {
         try {
@@ -330,10 +330,10 @@ public class Register extends javax.swing.JFrame {
         validateFields();
 
         // Nếu có lỗi, không thực hiện tiếp
-        if (!lblNameError.getText().isEmpty() || !lblUsernameError.getText().isEmpty()
-                || !lblPasswordError.getText().isEmpty() || !lblConfirmPasswordError.getText().isEmpty()) {
-            return;
-        }
+//        if (!lblNameError.getText().isEmpty() || !lblUsernameError.getText().isEmpty()
+//                || !lblPasswordError.getText().isEmpty() || !lblConfirmPasswordError.getText().isEmpty()) {
+//            return;
+//        }
 
         // Kiểm tra tài khoản đã tồn tại
         if (isUsernameTaken(username)) {
