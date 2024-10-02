@@ -701,7 +701,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 String sql = "DELETE FROM employee WHERE employee_id = ?";
                 Connection conn = new DatabaseConnection().getJDBCConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setString(1, employeeId);  // Sử dụng setString vì employeeId là chuỗi
+                ps.setInt(1, employeeId);  // Đặt giá trị employee_id vào câu lệnh SQL
 
                 int result = ps.executeUpdate();
                 if (result > 0) {
@@ -762,38 +762,18 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         int result = JOptionPane.showConfirmDialog(this, panel, "Sửa thông tin", JOptionPane.OK_CANCEL_OPTION);
 
-        if (result == JOptionPane.OK_OPTION) {
-            try {
-                String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
-                Connection conn = new DatabaseConnection().getJDBCConnection();
-                PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setString(1, txtTen.getText());
+            if (result == JOptionPane.OK_OPTION) {
+                try {
+                    String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
+                    Connection conn = new DatabaseConnection().getJDBCConnection();
+                    PreparedStatement ps = conn.prepareStatement(sql);
 
-                // Kiểm tra và chuyển đổi định dạng ngày tháng
-                String ngaySinhInput = txtNgaySinh.getText();
-                LocalDate ngaySinhParsed;
-                DateTimeFormatter formatter;
-
-                // Kiểm tra định dạng và chuyển đổi thành LocalDate
-                if (ngaySinhInput.contains("/")) {
-                    formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-                } else if (ngaySinhInput.contains("-")) {
-                    formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                } else {
-                    throw new DateTimeParseException("Định dạng ngày không hợp lệ!", ngaySinhInput, 0);
-                }
-
-                ngaySinhParsed = LocalDate.parse(ngaySinhInput, formatter);
-
-                ps.setDate(2, java.sql.Date.valueOf(ngaySinhParsed));
-                ps.setString(3, txtChucVu.getText());
-                ps.setString(4, txtDiaChi.getText());
-
-                // Mã hoá mật khẩu trước khi cập nhật
-                String hashedPassword = hashPassword(txtMatKhau.getText());
-                ps.setString(5, hashedPassword);
-
-                ps.setString(6, txtEmployeeId.getText());
+                    ps.setString(1, txtTen.getText());
+                    ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse(txtNgaySinh.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+                    ps.setString(3, txtChucVu.getText());
+                    ps.setString(4, txtDiaChi.getText());
+                    ps.setString(5, txtMatKhau.getText());
+                    ps.setInt(6, employeeId);
 
                 int updateResult = ps.executeUpdate();
 
