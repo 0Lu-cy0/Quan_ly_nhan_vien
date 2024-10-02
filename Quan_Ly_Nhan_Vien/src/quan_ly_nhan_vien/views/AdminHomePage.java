@@ -24,7 +24,9 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     public AdminHomePage() {
         initComponents();
-        hienthi();
+        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Home_icon.png")));
+        this.setVisible(false);
+        this.setLocationRelativeTo(null);
     }
 
     @SuppressWarnings("unchecked")

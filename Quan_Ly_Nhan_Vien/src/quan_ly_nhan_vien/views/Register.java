@@ -4,7 +4,6 @@
  */
 package quan_ly_nhan_vien.views;
 
-import java.awt.Toolkit;
 import javax.swing.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +12,10 @@ import java.sql.SQLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
+import javax.swing.text.PlainDocument;
 
 public class Register extends javax.swing.JFrame {
 
@@ -20,7 +23,10 @@ public class Register extends javax.swing.JFrame {
         initComponents();
 //        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
         this.setVisible(false);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
+        PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
+        doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
     }
 
     @SuppressWarnings("unchecked")
@@ -149,7 +155,25 @@ public class Register extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    public class NumberFilter extends DocumentFilter {
 
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (string != null && string.matches("[0-9]+")) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text != null && text.matches("[0-9]+")) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+        @Override
+        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+            super.remove(fb, offset, length);
+        }
+    }
     private void jtfMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfMatKhauActionPerformed
 
     }//GEN-LAST:event_jtfMatKhauActionPerformed
@@ -200,7 +224,7 @@ public class Register extends javax.swing.JFrame {
         DatabaseConnection dbConnection = new DatabaseConnection();
         Connection conn = dbConnection.conn;
 
-        String query = "SELECT COUNT(*) FROM account WHERE username = ?";
+        String query = "SELECT COUNT(*) FROM employee WHERE employee_id = ?";
         try {
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
