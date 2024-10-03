@@ -30,10 +30,16 @@ public class AdminHomePage extends javax.swing.JFrame {
         initComponents();
         hienthi();
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Home_icon.png")));
-        this.setVisible(false);
+        j1.setVisible(true);
+        j2.setVisible(false);
+        j3.setVisible(false);
+        j4.setVisible(false);
+        j5.setVisible(false);
+        tab1.setBackground(Color.WHITE);
         this.setLocationRelativeTo(null);
         PlainDocument doc = (PlainDocument) jtfEmployeeID.getDocument();
         doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
+
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +83,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         tab5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -179,17 +185,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
         j2.setBackground(new java.awt.Color(153, 255, 153));
-
-        javax.swing.GroupLayout j2Layout = new javax.swing.GroupLayout(j2);
-        j2.setLayout(j2Layout);
-        j2Layout.setHorizontalGroup(
-            j2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-        j2Layout.setVerticalGroup(
-            j2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
-        );
+        j2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         j3.setBackground(new java.awt.Color(204, 204, 0));
 
@@ -330,7 +326,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         tab2Layout.setHorizontalGroup(
             tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(63, Short.MAX_VALUE)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -431,15 +427,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Admin");
-        jLabel12.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel12MouseClicked(evt);
-            }
-        });
+        jLabel13.setText("Admin");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -447,20 +435,20 @@ public class AdminHomePage extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(tab1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
             .addComponent(tab2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
-                .addContainerGap())
             .addComponent(tab3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(tab4, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
             .addComponent(tab5, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(29, 29, 29)
+                .addComponent(jLabel13)
+                .addGap(37, 37, 37)
                 .addComponent(tab1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(tab2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -587,16 +575,6 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_tab5MouseClicked
 
-    private void jLabel12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel12MouseClicked
-        // TODO add your handling code here:
-        j1.setVisible(false);
-        j2.setVisible(false);
-        j3.setVisible(false);
-        j4.setVisible(false);
-        j5.setVisible(false);
-
-    }//GEN-LAST:event_jLabel12MouseClicked
-
     private void jbtThemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemNhanVienActionPerformed
         try {
             String id = jtfEmployeeID.getText().trim();  // Lấy ID và loại bỏ khoảng trắng
@@ -701,7 +679,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 String sql = "DELETE FROM employee WHERE employee_id = ?";
                 Connection conn = new DatabaseConnection().getJDBCConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setInt(1, employeeId);  // Đặt giá trị employee_id vào câu lệnh SQL
+                ps.setString(1, employeeId);  // Đặt giá trị employee_id vào câu lệnh SQL
 
                 int result = ps.executeUpdate();
                 if (result > 0) {
@@ -762,18 +740,17 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         int result = JOptionPane.showConfirmDialog(this, panel, "Sửa thông tin", JOptionPane.OK_CANCEL_OPTION);
 
-            if (result == JOptionPane.OK_OPTION) {
-                try {
-                    String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
-                    Connection conn = new DatabaseConnection().getJDBCConnection();
-                    PreparedStatement ps = conn.prepareStatement(sql);
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
+                Connection conn = new DatabaseConnection().getJDBCConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
 
-                    ps.setString(1, txtTen.getText());
-                    ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse(txtNgaySinh.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-                    ps.setString(3, txtChucVu.getText());
-                    ps.setString(4, txtDiaChi.getText());
-                    ps.setString(5, txtMatKhau.getText());
-                    ps.setInt(6, employeeId);
+                ps.setString(1, txtTen.getText());
+                ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse(txtNgaySinh.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+                ps.setString(3, txtChucVu.getText());
+                ps.setString(4, txtDiaChi.getText());
+                ps.setString(5, txtMatKhau.getText());
 
                 int updateResult = ps.executeUpdate();
 
@@ -865,7 +842,7 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
