@@ -4,6 +4,7 @@
  */
 package quan_ly_nhan_vien.views;
 
+import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
 public class EmployeeHomePage extends javax.swing.JFrame {
@@ -65,11 +66,15 @@ public class EmployeeHomePage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 130));
 
+        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 102, 102));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Thông tin nhân viên");
-        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(143, 18, 162, 30));
+        jPanel4.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 10, 162, 30));
 
         jLabel2.setText("emolyee_id");
         jPanel4.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(74, 69, 86, -1));
@@ -111,18 +116,25 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel4.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 310, -1, -1));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 470, 360));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 470, 420));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 490));
 
         jPanel5.setBackground(new java.awt.Color(0, 102, 102));
-        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 490, 470, 120));
+        getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 550, 470, 140));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this,"Bạn có chắc chắn muốn đăng xuất?", "Xác nhận đăng xuất",JOptionPane.YES_NO_OPTION);   
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Người dùng xác nhận muốn đăng xuất
+            // Mở lại màn hình đăng nhập
+            Login login = new Login();
+            login.setVisible(true);
+            dispose();  // Đóng AdminHomePage
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

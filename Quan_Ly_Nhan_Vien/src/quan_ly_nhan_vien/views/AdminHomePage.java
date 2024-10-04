@@ -32,9 +32,8 @@ public class AdminHomePage extends javax.swing.JFrame {
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Home_icon.png")));
         j1.setVisible(true);
         j2.setVisible(false);
-        j3.setVisible(false);
+        jPanel2.setVisible(false);
         j4.setVisible(false);
-        j5.setVisible(false);
         tab1.setBackground(Color.WHITE);
         this.setLocationRelativeTo(null);
         PlainDocument doc = (PlainDocument) jtfEmployeeID.getDocument();
@@ -46,6 +45,7 @@ public class AdminHomePage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         menu = new javax.swing.JPanel();
         j1 = new javax.swing.JPanel();
@@ -69,9 +69,8 @@ public class AdminHomePage extends javax.swing.JFrame {
         jbtSuaNhanVien = new javax.swing.JButton();
         jbtLamMoi = new javax.swing.JButton();
         j2 = new javax.swing.JPanel();
-        j3 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
         j4 = new javax.swing.JPanel();
-        j5 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         tab1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -80,10 +79,11 @@ public class AdminHomePage extends javax.swing.JFrame {
         tab3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         tab4 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        tab5 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
+        jButton2 = new javax.swing.JButton();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -100,7 +100,7 @@ public class AdminHomePage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "employee_id", "fullname", "date_of_birth", "job_title", "address", "passowrd"
+                "employee_id", "fullname", "date_of_birth", "job_title", "address", "password"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -187,18 +187,8 @@ public class AdminHomePage extends javax.swing.JFrame {
         j2.setBackground(new java.awt.Color(153, 255, 153));
         j2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        j3.setBackground(new java.awt.Color(204, 204, 0));
-
-        javax.swing.GroupLayout j3Layout = new javax.swing.GroupLayout(j3);
-        j3.setLayout(j3Layout);
-        j3Layout.setHorizontalGroup(
-            j3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
-        );
-        j3Layout.setVerticalGroup(
-            j3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 465, Short.MAX_VALUE)
-        );
+        jPanel2.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         j4.setBackground(new java.awt.Color(255, 204, 204));
 
@@ -213,24 +203,11 @@ public class AdminHomePage extends javax.swing.JFrame {
             .addGap(0, 458, Short.MAX_VALUE)
         );
 
-        j5.setBackground(new java.awt.Color(0, 153, 51));
-
-        javax.swing.GroupLayout j5Layout = new javax.swing.GroupLayout(j5);
-        j5.setLayout(j5Layout);
-        j5Layout.setHorizontalGroup(
-            j5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-        );
-        j5Layout.setVerticalGroup(
-            j5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
-        );
-
         javax.swing.GroupLayout menuLayout = new javax.swing.GroupLayout(menu);
         menu.setLayout(menuLayout);
         menuLayout.setHorizontalGroup(
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(j3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 552, Short.MAX_VALUE)
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
@@ -249,12 +226,12 @@ public class AdminHomePage extends javax.swing.JFrame {
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(j5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         menuLayout.setVerticalGroup(
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(j3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 470, Short.MAX_VALUE)
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
@@ -273,13 +250,14 @@ public class AdminHomePage extends javax.swing.JFrame {
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(j5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
         jPanel1.add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 550, 470));
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tab1.setBackground(new java.awt.Color(153, 153, 255));
         tab1.setPreferredSize(new java.awt.Dimension(114, 63));
@@ -288,26 +266,13 @@ public class AdminHomePage extends javax.swing.JFrame {
                 tab1MouseClicked(evt);
             }
         });
+        tab1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel1.setText("Nhân viên");
+        tab1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 16, 80, 31));
 
-        javax.swing.GroupLayout tab1Layout = new javax.swing.GroupLayout(tab1);
-        tab1.setLayout(tab1Layout);
-        tab1Layout.setHorizontalGroup(
-            tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-        );
-        tab1Layout.setVerticalGroup(
-            tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tab1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
+        jPanel3.add(tab1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 82, 170, 62));
 
         tab2.setBackground(new java.awt.Color(153, 153, 255));
         tab2.setPreferredSize(new java.awt.Dimension(114, 63));
@@ -316,27 +281,14 @@ public class AdminHomePage extends javax.swing.JFrame {
                 tab2MouseClicked(evt);
             }
         });
+        tab2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel2.setText("Chấm công");
         jLabel2.setPreferredSize(new java.awt.Dimension(77, 21));
+        tab2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(63, 16, 85, 31));
 
-        javax.swing.GroupLayout tab2Layout = new javax.swing.GroupLayout(tab2);
-        tab2.setLayout(tab2Layout);
-        tab2Layout.setHorizontalGroup(
-            tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab2Layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(22, 22, 22))
-        );
-        tab2Layout.setVerticalGroup(
-            tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tab2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
-        );
+        jPanel3.add(tab2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 156, 170, -1));
 
         tab3.setBackground(new java.awt.Color(153, 153, 255));
         tab3.setRequestFocusEnabled(false);
@@ -345,27 +297,14 @@ public class AdminHomePage extends javax.swing.JFrame {
                 tab3MouseClicked(evt);
             }
         });
+        tab3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel3.setText("Tính lương");
         jLabel3.setPreferredSize(new java.awt.Dimension(77, 21));
+        tab3.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(65, 16, 87, 31));
 
-        javax.swing.GroupLayout tab3Layout = new javax.swing.GroupLayout(tab3);
-        tab3.setLayout(tab3Layout);
-        tab3Layout.setHorizontalGroup(
-            tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
-        );
-        tab3Layout.setVerticalGroup(
-            tab3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab3Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        jPanel3.add(tab3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 231, 170, -1));
 
         tab4.setBackground(new java.awt.Color(153, 153, 255));
         tab4.setPreferredSize(new java.awt.Dimension(114, 63));
@@ -377,89 +316,22 @@ public class AdminHomePage extends javax.swing.JFrame {
                 tab4MouseEntered(evt);
             }
         });
-
-        jLabel10.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jLabel10.setText("Đăng xuất");
-
-        javax.swing.GroupLayout tab4Layout = new javax.swing.GroupLayout(tab4);
-        tab4.setLayout(tab4Layout);
-        tab4Layout.setHorizontalGroup(
-            tab4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
-        );
-        tab4Layout.setVerticalGroup(
-            tab4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        tab5.setBackground(new java.awt.Color(153, 153, 255));
-        tab5.setForeground(new java.awt.Color(102, 102, 255));
-        tab5.setPreferredSize(new java.awt.Dimension(114, 63));
-        tab5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tab5MouseClicked(evt);
-            }
-        });
+        tab4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel11.setText("About me");
+        tab4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(68, 6, 80, 51));
 
-        javax.swing.GroupLayout tab5Layout = new javax.swing.GroupLayout(tab5);
-        tab5.setLayout(tab5Layout);
-        tab5Layout.setHorizontalGroup(
-            tab5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, tab5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26))
-        );
-        tab5Layout.setVerticalGroup(
-            tab5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tab5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        jPanel3.add(tab4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 296, 170, -1));
 
+        jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Admin");
+        jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, 50));
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tab1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-            .addComponent(tab2, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-            .addComponent(tab3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(tab4, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-            .addComponent(tab5, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(52, 52, 52))
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel13)
-                .addGap(37, 37, 37)
-                .addComponent(tab1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tab2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(tab3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tab4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(tab5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
+        jButton2.setText("jButton2");
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 373, 170, 60));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 470));
 
@@ -497,14 +369,12 @@ public class AdminHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         j1.setVisible(true);
         j2.setVisible(false);
-        j3.setVisible(false);
+        jPanel2.setVisible(false);
         j4.setVisible(false);
-        j5.setVisible(false);
         tab1.setBackground(Color.WHITE);
         tab2.setBackground(new Color(204, 204, 255));
         tab3.setBackground(new Color(204, 204, 255));
         tab4.setBackground(new Color(204, 204, 255));
-        tab5.setBackground(new Color(204, 204, 255));
 
 
     }//GEN-LAST:event_tab1MouseClicked
@@ -513,14 +383,12 @@ public class AdminHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         j1.setVisible(false);
         j2.setVisible(true);
-        j3.setVisible(false);
+        jPanel2.setVisible(false);
         j4.setVisible(false);
-        j5.setVisible(false);
         tab2.setBackground(Color.WHITE);
         tab1.setBackground(new Color(204, 204, 255));
         tab3.setBackground(new Color(204, 204, 255));
         tab4.setBackground(new Color(204, 204, 255));
-        tab5.setBackground(new Color(204, 204, 255));
 
 
     }//GEN-LAST:event_tab2MouseClicked
@@ -529,14 +397,12 @@ public class AdminHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         j1.setVisible(false);
         j2.setVisible(false);
-        j3.setVisible(true);
+        jPanel2.setVisible(true);
         j4.setVisible(false);
-        j5.setVisible(false);
         tab3.setBackground(Color.WHITE);
         tab2.setBackground(new Color(204, 204, 255));
         tab1.setBackground(new Color(204, 204, 255));
         tab4.setBackground(new Color(204, 204, 255));
-        tab5.setBackground(new Color(204, 204, 255));
 
 
     }//GEN-LAST:event_tab3MouseClicked
@@ -549,31 +415,14 @@ public class AdminHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
         j1.setVisible(false);
         j2.setVisible(false);
-        j3.setVisible(false);
+        jPanel2.setVisible(false);
         j4.setVisible(true);
-        j5.setVisible(false);
         tab4.setBackground(Color.WHITE);
         tab2.setBackground(new Color(204, 204, 255));
         tab3.setBackground(new Color(204, 204, 255));
         tab1.setBackground(new Color(204, 204, 255));
-        tab5.setBackground(new Color(204, 204, 255));
 
     }//GEN-LAST:event_tab4MouseClicked
-
-    private void tab5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab5MouseClicked
-        // TODO add your handling code here:
-        j1.setVisible(false);
-        j2.setVisible(false);
-        j3.setVisible(false);
-        j4.setVisible(false);
-        j5.setVisible(true);
-        tab5.setBackground(Color.WHITE);
-        tab2.setBackground(new Color(204, 204, 255));
-        tab3.setBackground(new Color(204, 204, 255));
-        tab4.setBackground(new Color(204, 204, 255));
-        tab1.setBackground(new Color(204, 204, 255));
-
-    }//GEN-LAST:event_tab5MouseClicked
 
     private void jbtThemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemNhanVienActionPerformed
         try {
@@ -836,11 +685,10 @@ public class AdminHomePage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel j1;
     private javax.swing.JPanel j2;
-    private javax.swing.JPanel j3;
     private javax.swing.JPanel j4;
-    private javax.swing.JPanel j5;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
@@ -852,6 +700,7 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
@@ -871,6 +720,5 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel tab2;
     private javax.swing.JPanel tab3;
     private javax.swing.JPanel tab4;
-    private javax.swing.JPanel tab5;
     // End of variables declaration//GEN-END:variables
 }
