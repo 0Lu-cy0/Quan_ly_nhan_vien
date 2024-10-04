@@ -20,10 +20,9 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         //Thêm icon cho chương trình
 //        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
-        this.setVisible(false);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        this.setTitle("Login");
+        this.setTitle("Đăng nhập");
     }
 
     @SuppressWarnings("unchecked")

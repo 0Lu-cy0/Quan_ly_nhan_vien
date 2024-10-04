@@ -35,10 +35,10 @@ public class AdminHomePage extends javax.swing.JFrame {
         jPanel2.setVisible(false);
         j4.setVisible(false);
         tab1.setBackground(Color.WHITE);
+        this.setResizable(false);
         this.setLocationRelativeTo(null);
         PlainDocument doc = (PlainDocument) jtfEmployeeID.getDocument();
         doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
-
     }
 
     @SuppressWarnings("unchecked")

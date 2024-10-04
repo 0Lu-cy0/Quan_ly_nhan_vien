@@ -27,10 +27,10 @@ public class Register extends javax.swing.JFrame {
 
     public Register() {
         initComponents();
-//      setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));   
-        this.setVisible(false);
+//      setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        this.setTitle("Đăng ký");
         PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
         doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
 

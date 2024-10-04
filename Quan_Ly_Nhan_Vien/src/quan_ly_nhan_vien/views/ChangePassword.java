@@ -15,6 +15,9 @@ public class ChangePassword extends javax.swing.JFrame {
      */
     public ChangePassword() {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setTitle("Đổi mật khẩu");
     }
 
     /**
