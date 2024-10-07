@@ -330,7 +330,13 @@ public class AdminHomePage extends javax.swing.JFrame {
         jLabel13.setText("Admin");
         jPanel3.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 100, 50));
 
-        jButton2.setText("jButton2");
+        jButton2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jButton2.setText("Đăng xuất");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
         jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 373, 170, 60));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 470));
@@ -520,15 +526,44 @@ public class AdminHomePage extends javax.swing.JFrame {
         }
 
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        String employeeId = (String) model.getValueAt(selectedRow, 0);  // Đổi kiểu thành String
+        String employeeId = (String) model.getValueAt(selectedRow, 0);
+
+        // Kiểm tra xem employeeId có phải là "Admin" không
+        if ("Admin".equals(employeeId)) {
+            JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa bản ghi này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
+            Connection conn = new DatabaseConnection().getJDBCConnection();
             try {
+
+                // Bắt đầu transaction
+                conn.setAutoCommit(false); // Tắt tự động cam kết
+
+                // Xóa các bản ghi trong bảng attendance liên quan đến employee
+                String deleteAttendanceSql = "DELETE FROM attendance WHERE employee_id = ?";
+                PreparedStatement psDeleteAttendance = conn.prepareStatement(deleteAttendanceSql);
+                psDeleteAttendance.setString(1, employeeId);
+                psDeleteAttendance.executeUpdate();
+
+                // Xóa các bản ghi trong bảng benefits liên quan đến employee
+                String deleteBenefitsSql = "DELETE FROM benefits WHERE employee_id = ?";
+                PreparedStatement psDeleteBenefits = conn.prepareStatement(deleteBenefitsSql);
+                psDeleteBenefits.setString(1, employeeId);
+                psDeleteBenefits.executeUpdate();
+
+                // Xóa các bản ghi trong bảng salary liên quan đến employee
+                String deleteSalarySql = "DELETE FROM salary WHERE employee_id = ?";
+                PreparedStatement psDeleteSalary = conn.prepareStatement(deleteSalarySql);
+                psDeleteSalary.setString(1, employeeId);
+                psDeleteSalary.executeUpdate();
+
+                // Cuối cùng, xóa bản ghi nhân viên
                 String sql = "DELETE FROM employee WHERE employee_id = ?";
-                Connection conn = new DatabaseConnection().getJDBCConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
-                ps.setString(1, employeeId);  // Đặt giá trị employee_id vào câu lệnh SQL
+                ps.setString(1, employeeId);
 
                 int result = ps.executeUpdate();
                 if (result > 0) {
@@ -538,12 +573,25 @@ public class AdminHomePage extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(this, "Xóa không thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
 
+                // Cam kết transaction
+                conn.commit();
+
+                // Đóng tất cả PreparedStatement
                 ps.close();
+                psDeleteAttendance.close();
+                psDeleteBenefits.close();
+                psDeleteSalary.close();
                 conn.close();
 
             } catch (SQLException e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                // Nếu có lỗi xảy ra, rollback transaction
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
             }
         }
     }//GEN-LAST:event_jbtXoaNhanVienActionPerformed
@@ -636,6 +684,17 @@ public class AdminHomePage extends javax.swing.JFrame {
         jtfAddress.setText("");
         jtfPassword.setText("");
     }//GEN-LAST:event_jbtLamMoiActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Người dùng xác nhận muốn đăng xuất
+            // Mở lại màn hình đăng nhập
+            Login login = new Login();
+            login.setVisible(true);
+            dispose();  // Đóng AdminHomePage
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public void hienthi() {
         try {

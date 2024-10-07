@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package quan_ly_nhan_vien.views;
 
 import java.awt.Toolkit;
@@ -189,22 +185,29 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbAnHienMatKhauActionPerformed
 
     private void btnDNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDNhapActionPerformed
-
-        // Lấy giá trị từ các trường tài khoản và mật khẩu
         String username = jtfTaiKhoan.getText();
         String password = new String(jtfMatKhau.getPassword());
+
         if (username.isEmpty() || password.isEmpty()) {
-            // Hiển thị cảnh báo nếu tài khoản hoặc mật khẩu trống
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu.", "Thông tin không hợp lệ", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         // Xác thực tài khoản từ cơ sở dữ liệu
         if (Login(username, password)) {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-            // Điều hướng đến trang admin hoặc nhân viên dựa trên tài khoản
-            navigateToHomePage(username);
+
+            // Điều hướng đến trang EmployeeHomePage và truyền username, password
+            if (!"Admin".equalsIgnoreCase(username)) {
+                EmployeeHomePage employeeHomePage = new EmployeeHomePage(username, password);
+                employeeHomePage.setVisible(true);
+                this.dispose();  // Đóng cửa sổ hiện tại sau khi điều hướng
+            } else {
+                AdminHomePage adminHomePage = new AdminHomePage();
+                adminHomePage.setVisible(true);
+                this.dispose();
+            }
         } else {
-            // Hiển thị thông báo lỗi nếu đăng nhập thất bại
             JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác.", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnDNhapActionPerformed
@@ -212,19 +215,6 @@ public class Login extends javax.swing.JFrame {
     private void jtfTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTaiKhoanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfTaiKhoanActionPerformed
-
-    private void navigateToHomePage(String username) {
-        if ("Admin".equalsIgnoreCase(username)) {
-            // Điều hướng đến trang Admin
-            AdminHomePage adminHomePage = new AdminHomePage();
-            adminHomePage.setVisible(true);
-        } else {
-            // Điều hướng đến trang Employee
-            EmployeeHomePage employeeHomePage = new EmployeeHomePage();
-            employeeHomePage.setVisible(true);
-        }
-        this.dispose(); // Đóng cửa sổ hiện tại sau khi điều hướng
-    }
 
     public boolean Login(String username, String password) {
         try {
