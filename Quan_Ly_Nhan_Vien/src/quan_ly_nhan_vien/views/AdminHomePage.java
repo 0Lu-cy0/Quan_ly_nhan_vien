@@ -69,6 +69,15 @@ public class AdminHomePage extends javax.swing.JFrame {
         jbtSuaNhanVien = new javax.swing.JButton();
         jbtLamMoi = new javax.swing.JButton();
         j2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         j4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -184,8 +193,44 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
-        j2.setBackground(new java.awt.Color(153, 255, 153));
+        j2.setBackground(new java.awt.Color(255, 255, 255));
         j2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "attendance_id", "employee_id", "so ngay nghi"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        j2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, -3, 540, 280));
+
+        jLabel10.setText("attendance_id");
+        j2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 80, -1));
+
+        jLabel12.setText("employee_id");
+        j2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 360, 80, -1));
+
+        jLabel14.setText("so ngay nghi");
+        j2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 80, -1));
+        j2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 140, -1));
+
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        j2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 360, 140, -1));
+        j2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 410, 140, -1));
+
+        jButton3.setText("thêm");
+        j2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, -1, -1));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 0));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -696,6 +741,10 @@ public class AdminHomePage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
     public void hienthi() {
         try {
             PreparedStatement ps = null;
@@ -747,9 +796,13 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel j4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -762,8 +815,13 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JButton jbtLamMoi;
     private javax.swing.JButton jbtSuaNhanVien;
     private javax.swing.JButton jbtThemNhanVien;
