@@ -1,12 +1,15 @@
 Các lưu ý:
-1. Cần xem thanh tài khoản và mật khẩu ở phần đăng nhập để trống thì sao? 2. Vẽ trang chấm công, tính lương, set sự kiện cho 2 trang này
-3. Viết sự kiện cho trang nhân viên + đổi mật khẩu
+✅ 1. Cần xem thanh tài khoản và mật khẩu ở phần đăng nhập để trống thì sao?
+2. Vẽ trang chấm công, tính lương, set sự kiện cho 2 trang này
+3. Viết sự kiện cho trang nhân viên(✅) + đổi mật khẩu
 4. Thêm database cho Admin, bảng này chứa tất cả các thuộc tính của nhân                     viên bao gồm bảng employee, chấm công và tính lương gộp lại
 5. Thêm thông tin vào trang about
 6. Thiết lập sự kiện cho nút đăng xuất ở trang Admin
 7. Icon cho tất cả các trang
+8. Chỉnh sửa lại màu, fix lại giao diện màu của các trang
+9. Check lại logic phần sửa thông tin nhân viên của trang AdminHomePage
 
 ######   Bonus   ######
-1. Chức năng quên mật khẩu ở giao diện login	
+1. Chức năng quên mật khẩu ở giao diện login
 2. Thống kê, báo cáo
 3. Import, export file ra dạng text, exel, doc ....
