@@ -194,8 +194,9 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtDangXuatActionPerformed
 
     private void jbtDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDoiMatKhauActionPerformed
-        ChangePassword changePassword = new ChangePassword();
-        changePassword.setVisible(true);
+        String username = jtfTaiKhoan.getText();  // Lấy tên tài khoản hiện tại từ ô jtfTaiKhoan
+        ChangePassword changePasswordPage = new ChangePassword(username);  // Truyền username qua trang đổi mật khẩu 
+        changePasswordPage.setVisible(true);
         dispose();
     }//GEN-LAST:event_jbtDoiMatKhauActionPerformed
 
