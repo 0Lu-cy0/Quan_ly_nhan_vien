@@ -1,13 +1,21 @@
 Các lưu ý:
 ✅ 1. Cần xem thanh tài khoản và mật khẩu ở phần đăng nhập để trống thì sao?
 2. Vẽ trang chấm công, tính lương, set sự kiện cho 2 trang này
-3. Viết sự kiện cho trang nhân viên(✅) + đổi mật khẩu
+3. Viết sự kiện cho trang nhân viên(✅) + đổi mật khẩu(✅) + Điều kiện của mật khẩu mới, thông báo lỗi điều kiện
+
+//Bỏ//
 4. Thêm database cho Admin, bảng này chứa tất cả các thuộc tính của nhân                     viên bao gồm bảng employee, chấm công và tính lương gộp lại
+//Bỏ//
+
 5. Thêm thông tin vào trang about
 6. Thiết lập sự kiện cho nút đăng xuất ở trang Admin
 7. Icon cho tất cả các trang
 8. Chỉnh sửa lại màu, fix lại giao diện màu của các trang
 9. Check lại logic phần sửa thông tin nhân viên của trang AdminHomePage
+10. Khi thêm tài khoản trùng ID ở trang adminHomePage :
++ Sửa lại cách hiển thị thông báo lỗi: ID đã tồn tại trong hệ thống
++ Mặc dù hiển thị ra trùng ID, nhưng thông tin nhân viên vừa thêm vẫn hiện ra ở màn bảng liệt kê thông tin nhân viên, phải ấn làm mới thì thông tin nhân viên lỗi vừa được thêm mới biến mất
+11. Thêm sự kiện ở trang đăng nhập khi nhấp vào nút enter trên bàn phím sẽ bằng với việc nhấp vào nút đăng nhập trên giao diện. Với điều kiện khi 1 trong 2 ô tài khoản mật khẩu phải có dữ liệu, nhấp vào nút enter mới kích hoạt sự kiện, nếu không nhấp vào nút enter sẽ không có sự kiện gì xảy ra
 
 ######   Bonus   ######
 1. Chức năng quên mật khẩu ở giao diện login
