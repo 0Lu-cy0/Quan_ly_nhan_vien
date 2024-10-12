@@ -16,6 +16,10 @@ import javax.swing.table.DefaultTableModel;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.time.ZoneId;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -39,6 +43,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         PlainDocument doc = (PlainDocument) jtfEmployeeID.getDocument();
         doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
+        jdcDateOfBirth.setDateFormatString("dd/MM/yyyy");
     }
 
     @SuppressWarnings("unchecked")
@@ -57,7 +62,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jtfFullName = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jtDateOfBirth = new javax.swing.JTextField();
         jtfPassword = new javax.swing.JTextField();
         jtfAddress = new javax.swing.JTextField();
         jtfJobTitle = new javax.swing.JTextField();
@@ -68,6 +72,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         jbtXoaNhanVien = new javax.swing.JButton();
         jbtSuaNhanVien = new javax.swing.JButton();
         jbtLamMoi = new javax.swing.JButton();
+        jdcDateOfBirth = new com.toedter.calendar.JDateChooser();
         j2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -142,7 +147,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("date_of_birth");
         jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 93, 86, -1));
-        jPanel5.add(jtDateOfBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 89, 120, 25));
         jPanel5.add(jtfPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 89, 120, 25));
         jPanel5.add(jtfAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 52, 120, 25));
         jPanel5.add(jtfJobTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 15, 120, 25));
@@ -197,6 +201,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             }
         });
         jPanel5.add(jbtLamMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, -1, -1));
+        jPanel5.add(jdcDateOfBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 90, 130, -1));
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
@@ -484,8 +489,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         tab1.setBackground(new Color(204, 204, 255));
         tab3.setBackground(new Color(204, 204, 255));
         tab4.setBackground(new Color(204, 204, 255));
-
-
     }//GEN-LAST:event_tab2MouseClicked
 
     private void tab3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab3MouseClicked
@@ -498,16 +501,13 @@ public class AdminHomePage extends javax.swing.JFrame {
         tab2.setBackground(new Color(204, 204, 255));
         tab1.setBackground(new Color(204, 204, 255));
         tab4.setBackground(new Color(204, 204, 255));
-
-
     }//GEN-LAST:event_tab3MouseClicked
 
     private void tab4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab4MouseEntered
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_tab4MouseEntered
 
     private void tab4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab4MouseClicked
-        // TODO add your handling code here:
         j1.setVisible(false);
         j2.setVisible(false);
         jPanel2.setVisible(false);
@@ -516,14 +516,12 @@ public class AdminHomePage extends javax.swing.JFrame {
         tab2.setBackground(new Color(204, 204, 255));
         tab3.setBackground(new Color(204, 204, 255));
         tab1.setBackground(new Color(204, 204, 255));
-
     }//GEN-LAST:event_tab4MouseClicked
 
     private void jbtThemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemNhanVienActionPerformed
         try {
             String id = jtfEmployeeID.getText().trim();  // Lấy ID và loại bỏ khoảng trắng
             String ten = jtfFullName.getText().trim();  // Lấy tên và loại bỏ khoảng trắng
-            String ngaySinhText = jtDateOfBirth.getText().trim();  // Lấy ngày sinh và loại bỏ khoảng trắng
             String cv = jtfJobTitle.getText().trim();  // Lấy chức vụ
             String dc = jtfAddress.getText().trim();  // Lấy địa chỉ
             String pass = jtfPassword.getText().trim();  // Lấy mật khẩu
@@ -531,7 +529,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             // Kiểm tra xem các trường thông tin có bị rỗng hay không
             if (id.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tài khoản không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return; // Thoát khỏi phương thức nếu có lỗi
+                return;
             }
             if (ten.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -542,15 +540,15 @@ public class AdminHomePage extends javax.swing.JFrame {
                 return;
             }
 
-            // Kiểm tra định dạng ngày sinh
-            LocalDate ngaySinh = null;
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            try {
-                ngaySinh = LocalDate.parse(ngaySinhText, formatter);
-            } catch (DateTimeParseException e) {
-                JOptionPane.showMessageDialog(this, "Sai định dạng ngày tháng năm sinh", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            // Lấy ngày sinh từ JDateChooser
+            Date ngaySinhDate = (Date) jdcDateOfBirth.getDate(); // Lấy ngày sinh từ JDateChooser
+            if (ngaySinhDate == null) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            LocalDate ngaySinh = ngaySinhDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
             // Kiểm tra năm sinh
             int namSinh = ngaySinh.getYear();
@@ -568,7 +566,6 @@ public class AdminHomePage extends javax.swing.JFrame {
 
             // Câu lệnh SQL thêm nhân viên vào database
             String sql = "INSERT INTO employee (employee_id, fullname, date_of_birth, job_title, address, password) VALUES (?, ?, ?, ?, ?, ?)";
-
             Connection conn = new DatabaseConnection().getJDBCConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, id);
@@ -576,7 +573,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             ps.setDate(3, java.sql.Date.valueOf(ngaySinh));
             ps.setString(4, cv);
             ps.setString(5, dc);
-            ps.setString(6, hashedPassword);  // Sử dụng mật khẩu đã mã hoá
+            ps.setString(6, hashedPassword);
 
             int result = ps.executeUpdate();
             if (result > 0) {
@@ -737,6 +734,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 ps.setString(3, txtChucVu.getText());
                 ps.setString(4, txtDiaChi.getText());
                 ps.setString(5, txtMatKhau.getText());
+                ps.setString(6, employeeId);
 
                 int updateResult = ps.executeUpdate();
 
@@ -768,7 +766,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         hienthi();
         jtfEmployeeID.setText("");
         jtfFullName.setText("");
-        jtDateOfBirth.setText("");
+        jdcDateOfBirth.setDate(null);  // Đặt lại giá trị của JDateChooser
         jtfJobTitle.setText("");
         jtfAddress.setText("");
         jtfPassword.setText("");
@@ -786,15 +784,15 @@ public class AdminHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public void hienthi() {
@@ -808,21 +806,45 @@ public class AdminHomePage extends javax.swing.JFrame {
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
-            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-            model.setRowCount(0); // Xóa các dòng hiện tại trước khi hiển thị dữ liệu mới
+            // Tạo một mô hình bảng không thể chỉnh sửa
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Employee ID", "Full Name", "Date of Birth", "Job Title", "Address", "Password"}, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
+                    return false;
+                }
+            };
+
+            // Định dạng để hiển thị ngày tháng theo kiểu dd/MM/yyyy
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
             while (rs.next()) {
-                String id = rs.getString("employee_id");
-                String ten = rs.getString("fullname");
-                String ngaySinh = rs.getString("date_of_birth");
-                String chucVu = rs.getString("job_title");
-                String diaChi = rs.getString("address");
-                // Thay thế mật khẩu bằng chuỗi "********"
-                String matKhau = "********"; // Hiển thị chuỗi thay vì mật khẩu thực tế
+                String id = rs.getString("employee_id") != null ? rs.getString("employee_id") : "N/A";
+                String ten = rs.getString("fullname") != null ? rs.getString("fullname") : "N/A";
+
+                String ngaySinhGoc = rs.getString("date_of_birth");
+                String ngaySinh = "N/A"; // Giá trị mặc định
+                if (ngaySinhGoc != null && !ngaySinhGoc.isEmpty()) {
+                    try {
+                        // Chuyển đổi từ chuỗi sang java.util.Date bằng SimpleDateFormat
+                        Date ngaySinhDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngaySinhGoc);
+                        ngaySinh = dateFormat.format(ngaySinhDate); // Định dạng ngày tháng
+                    } catch (ParseException e) {
+                        // Trường hợp định dạng không hợp lệ, vẫn giữ nguyên "N/A"
+                        e.printStackTrace();
+                    }
+                }
+
+                String chucVu = rs.getString("job_title") != null ? rs.getString("job_title") : "N/A";
+                String diaChi = rs.getString("address") != null ? rs.getString("address") : "N/A";
+                String matKhau = "********"; // Thay thế mật khẩu bằng chuỗi "********"
 
                 // Thêm dữ liệu vào bảng
                 model.addRow(new Object[]{id, ten, ngaySinh, chucVu, diaChi, matKhau});
             }
+
+            // Cập nhật mô hình cho jTable2
+            jTable2.setModel(model);
 
             // Đóng kết nối
             rs.close();
@@ -833,6 +855,14 @@ public class AdminHomePage extends javax.swing.JFrame {
             e.printStackTrace();
         }
     }
+
+    DefaultTableModel model = new DefaultTableModel() {
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
+            return false;
+        }
+    };
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
@@ -885,7 +915,7 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JButton jbtSuaNhanVien;
     private javax.swing.JButton jbtThemNhanVien;
     private javax.swing.JButton jbtXoaNhanVien;
-    private javax.swing.JTextField jtDateOfBirth;
+    private com.toedter.calendar.JDateChooser jdcDateOfBirth;
     private javax.swing.JTextField jtfAddress;
     private javax.swing.JTextField jtfEmployeeID;
     private javax.swing.JTextField jtfFullName;

@@ -16,7 +16,7 @@ Các lưu ý:
 + Sửa lại cách hiển thị thông báo lỗi: ID đã tồn tại trong hệ thống
 + Mặc dù hiển thị ra trùng ID, nhưng thông tin nhân viên vừa thêm vẫn hiện ra ở màn bảng liệt kê thông tin nhân viên, phải ấn làm mới thì thông tin nhân viên lỗi vừa được thêm mới biến mất
 11. Thêm sự kiện ở trang đăng nhập khi nhấp vào nút enter trên bàn phím sẽ bằng với việc nhấp vào nút đăng nhập trên giao diện. Với điều kiện khi 1 trong 2 ô tài khoản mật khẩu phải có dữ liệu, nhấp vào nút enter mới kích hoạt sự kiện, nếu không nhấp vào nút enter sẽ không có sự kiện gì xảy ra
-
+12. Ô nhập ngày tháng năm sinh sửa thành một bảng lịch chọn ngày(✅)
 ######   Bonus   ######
 1. Chức năng quên mật khẩu ở giao diện login
 2. Thống kê, báo cáo
