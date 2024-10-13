@@ -27,6 +27,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
+import com.toedter.calendar.JDateChooser;
 
 public class AdminHomePage extends javax.swing.JFrame {
 
@@ -504,7 +505,7 @@ public class AdminHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_tab3MouseClicked
 
     private void tab4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab4MouseEntered
-       
+
     }//GEN-LAST:event_tab4MouseEntered
 
     private void tab4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tab4MouseClicked
@@ -560,10 +561,6 @@ public class AdminHomePage extends javax.swing.JFrame {
             // Mã hoá mật khẩu
             String hashedPassword = hashPassword(pass);
 
-            // Thêm dữ liệu vào bảng hiển thị
-            DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-            model.addRow(new Object[]{id, ten, ngaySinh.format(formatter), cv, dc, hashedPassword});
-
             // Câu lệnh SQL thêm nhân viên vào database
             String sql = "INSERT INTO employee (employee_id, fullname, date_of_birth, job_title, address, password) VALUES (?, ?, ?, ?, ?, ?)";
             Connection conn = new DatabaseConnection().getJDBCConnection();
@@ -577,13 +574,28 @@ public class AdminHomePage extends javax.swing.JFrame {
 
             int result = ps.executeUpdate();
             if (result > 0) {
+                // Chỉ thêm dữ liệu vào bảng sau khi thêm vào database thành công
+                DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+                model.addRow(new Object[]{id, ten, ngaySinh.format(formatter), cv, dc, hashedPassword});
+
                 JOptionPane.showMessageDialog(this, "Thêm thành công!");
+
+                // Cập nhật lại bảng
+                hienthi();
             } else {
                 JOptionPane.showMessageDialog(this, "Thêm thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
 
             ps.close();
             conn.close();
+        } catch (SQLException ex) {
+            if (ex.getErrorCode() == 1062) { // Mã lỗi cho trường hợp trùng lặp trong MySQL
+                JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại, vui lòng chọn mã nhân viên khác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            } else if (ex.getErrorCode() == 1406) { // Mã lỗi cho trường hợp dữ liệu quá dài
+                JOptionPane.showMessageDialog(this, "Dữ liệu quá dài, vui lòng rút ngắn thông tin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Lỗi SQL: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
@@ -690,19 +702,32 @@ public class AdminHomePage extends javax.swing.JFrame {
             return;
         }
 
-        // Lấy giá trị employee_id từ dòng đã chọn
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        String employeeId = (String) model.getValueAt(selectedRow, 0);  // Cột 0 là employee_id
+        String employeeId = (String) model.getValueAt(selectedRow, 0);
         String ten = (String) model.getValueAt(selectedRow, 1);
         String ngaySinh = (String) model.getValueAt(selectedRow, 2);
         String chucVu = (String) model.getValueAt(selectedRow, 3);
         String diaChi = (String) model.getValueAt(selectedRow, 4);
         String matKhau = (String) model.getValueAt(selectedRow, 5);
 
-        // Tạo hộp thoại để người dùng nhập lại thông tin
         JTextField txtEmployeeId = new JTextField(employeeId);
+        txtEmployeeId.setEditable(false);  // Đặt chỉ đọc cho ô mã nhân viên
         JTextField txtTen = new JTextField(ten);
-        JTextField txtNgaySinh = new JTextField(ngaySinh);
+
+        // Sử dụng JDateChooser thay thế JTextField để chọn ngày
+        JDateChooser dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("dd/MM/yyyy");  // Đặt định dạng ngày tháng
+
+        // Nếu ngày sinh không rỗng, đặt giá trị ban đầu cho JDateChooser
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            if (ngaySinh != null && !ngaySinh.isEmpty()) {
+                dateChooser.setDate(sdf.parse(ngaySinh));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         JTextField txtChucVu = new JTextField(chucVu);
         JTextField txtDiaChi = new JTextField(diaChi);
         JTextField txtMatKhau = new JTextField(matKhau);
@@ -713,7 +738,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         panel.add(new JLabel("Họ và tên:"));
         panel.add(txtTen);
         panel.add(new JLabel("Ngày sinh (dd/MM/yyyy):"));
-        panel.add(txtNgaySinh);
+        panel.add(dateChooser);  // Thêm JDateChooser vào panel thay cho JTextField
         panel.add(new JLabel("Chức vụ:"));
         panel.add(txtChucVu);
         panel.add(new JLabel("Địa chỉ:"));
@@ -725,25 +750,50 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
             try {
+                // Thiết lập các trường rỗng thành "N/A"
+                String newTen = txtTen.getText().trim().isEmpty() ? "N/A" : txtTen.getText();
+                String newNgaySinh = ngaySinh;  // Sử dụng giá trị ngày sinh cũ mặc định
+                String newChucVu = txtChucVu.getText().trim().isEmpty() ? "N/A" : txtChucVu.getText();
+                String newDiaChi = txtDiaChi.getText().trim().isEmpty() ? "N/A" : txtDiaChi.getText();
+                String newMatKhau = txtMatKhau.getText().trim().isEmpty() ? "N/A" : txtMatKhau.getText();
+
+                // Nếu người dùng đã chọn ngày mới trong JDateChooser, lấy giá trị đó
+                if (dateChooser.getDate() != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    newNgaySinh = sdf.format(dateChooser.getDate());
+                }
+
                 String sql = "UPDATE employee SET fullname = ?, date_of_birth = ?, job_title = ?, address = ?, password = ? WHERE employee_id = ?";
                 Connection conn = new DatabaseConnection().getJDBCConnection();
                 PreparedStatement ps = conn.prepareStatement(sql);
 
-                ps.setString(1, txtTen.getText());
-                ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse(txtNgaySinh.getText(), DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
-                ps.setString(3, txtChucVu.getText());
-                ps.setString(4, txtDiaChi.getText());
-                ps.setString(5, txtMatKhau.getText());
+                ps.setString(1, newTen);
+
+                // Nếu newNgaySinh không phải là "N/A", thì mới thực hiện chuyển đổi và định dạng ngày tháng
+                if (!newNgaySinh.equals("N/A")) {
+                    try {
+                        ps.setDate(2, java.sql.Date.valueOf(LocalDate.parse(newNgaySinh, DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+                    } catch (DateTimeParseException e) {
+                        JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ! Vui lòng nhập theo định dạng dd/MM/yyyy.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } else {
+                    ps.setString(2, null);  // Nếu để trống hoặc là "N/A", thì giữ giá trị ngày sinh như cũ
+                }
+
+                ps.setString(3, newChucVu);
+                ps.setString(4, newDiaChi);
+                ps.setString(5, newMatKhau);
                 ps.setString(6, employeeId);
 
                 int updateResult = ps.executeUpdate();
 
                 if (updateResult > 0) {
-                    model.setValueAt(txtTen.getText(), selectedRow, 1);
-                    model.setValueAt(txtNgaySinh.getText(), selectedRow, 2);
-                    model.setValueAt(txtChucVu.getText(), selectedRow, 3);
-                    model.setValueAt(txtDiaChi.getText(), selectedRow, 4);
-                    model.setValueAt(txtMatKhau.getText(), selectedRow, 5);
+                    model.setValueAt(newTen, selectedRow, 1);
+                    model.setValueAt(newNgaySinh, selectedRow, 2);
+                    model.setValueAt(newChucVu, selectedRow, 3);
+                    model.setValueAt(newDiaChi, selectedRow, 4);
+                    model.setValueAt(newMatKhau, selectedRow, 5);
 
                     JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
                 } else {
@@ -753,8 +803,6 @@ public class AdminHomePage extends javax.swing.JFrame {
                 ps.close();
                 conn.close();
 
-            } catch (DateTimeParseException e) {
-                JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ! Vui lòng nhập theo định dạng dd/MM/yyyy hoặc yyyy-MM-dd.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             } catch (Exception e) {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -788,11 +836,11 @@ public class AdminHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-       
+
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     public void hienthi() {
