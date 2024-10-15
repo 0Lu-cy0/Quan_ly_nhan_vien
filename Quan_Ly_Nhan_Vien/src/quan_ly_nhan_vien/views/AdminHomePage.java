@@ -28,12 +28,17 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import com.toedter.calendar.JDateChooser;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminHomePage extends javax.swing.JFrame {
 
     public AdminHomePage() {
         initComponents();
         hienthi();
+        hienthiBangChamCong();
+        hienthiBangLuong();
         setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Home_icon.png")));
         j1.setVisible(true);
         j2.setVisible(false);
@@ -75,22 +80,28 @@ public class AdminHomePage extends javax.swing.JFrame {
         jbtLamMoi = new javax.swing.JButton();
         jdcDateOfBirth = new com.toedter.calendar.JDateChooser();
         j2 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTableAttendance = new javax.swing.JTable();
+        jPanel4 = new javax.swing.JPanel();
+        jbtThemChamCong = new javax.swing.JButton();
+        jbtLamMoiChamCong = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
         jTextField5 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableSalary = new javax.swing.JTable();
+        jPanel8 = new javax.swing.JPanel();
+        jbtLamMoiTinhLuong = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         j4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -209,21 +220,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         j2.setBackground(new java.awt.Color(255, 255, 255));
         j2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "attendance_id", "employee_id", "so ngay nghi"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        j2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(2, -3, 540, 280));
-
         jLabel10.setText("attendance_id");
         j2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 80, -1));
 
@@ -238,26 +234,47 @@ public class AdminHomePage extends javax.swing.JFrame {
         });
         j2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 410, 140, -1));
 
-        jButton3.setText("thêm");
-        j2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 360, -1, -1));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTableAttendance.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "attendance_id", "employee_id", "so ngay nghi"
+            }
+        ));
+        jTableAttendance.setMaximumSize(new java.awt.Dimension(2147483647, 0));
+        jTableAttendance.setMinimumSize(new java.awt.Dimension(90, 0));
+        jTableAttendance.setPreferredSize(new java.awt.Dimension(450, 0));
+        jScrollPane1.setViewportView(jTableAttendance);
+
+        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 290));
+
+        jPanel4.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jbtThemChamCong.setText("thêm");
+        jbtThemChamCong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtThemChamCongActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jbtThemChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, -1, -1));
+
+        jbtLamMoiChamCong.setText("Làm mới");
+        jPanel4.add(jbtLamMoiChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, -1, -1));
+
+        jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
+        jPanel4.getAccessibleContext().setAccessibleName("");
+
+        j2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "salary_id", "employee_id", "base_salary", "bonus", "thực lĩnh"
-            }
-        ));
-        jScrollPane3.setViewportView(jTable3);
-
-        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 270));
 
         jLabel12.setText("salary_id");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 60, -1));
@@ -277,13 +294,48 @@ public class AdminHomePage extends javax.swing.JFrame {
         jLabel16.setText("bonus");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, -1, -1));
 
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTableSalary.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "salary_id", "employee_id", "base_salary", "bonus", "thực lĩnh"
+            }
+        ));
+        jTableSalary.setPreferredSize(new java.awt.Dimension(450, 0));
+        jScrollPane3.setViewportView(jTableSalary);
+
+        jPanel7.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 290));
+
+        jPanel8.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jbtLamMoiTinhLuong.setText("Làm mới");
+        jbtLamMoiTinhLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtLamMoiTinhLuongActionPerformed(evt);
+            }
+        });
+        jPanel8.add(jbtLamMoiTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 90, -1));
+
         jButton4.setText("tính lương");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 350, -1, -1));
+        jPanel8.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, -1, -1));
+
+        jPanel7.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
+        jPanel8.getAccessibleContext().setAccessibleName("");
+        jPanel8.getAccessibleContext().setAccessibleDescription("");
+
+        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
 
         j4.setBackground(new java.awt.Color(255, 204, 204));
 
@@ -291,18 +343,18 @@ public class AdminHomePage extends javax.swing.JFrame {
         j4.setLayout(j4Layout);
         j4Layout.setHorizontalGroup(
             j4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGap(0, 540, Short.MAX_VALUE)
         );
         j4Layout.setVerticalGroup(
             j4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 458, Short.MAX_VALUE)
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout menuLayout = new javax.swing.GroupLayout(menu);
         menu.setLayout(menuLayout);
         menuLayout.setHorizontalGroup(
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 554, Short.MAX_VALUE)
+            .addGap(0, 552, Short.MAX_VALUE)
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
@@ -321,12 +373,12 @@ public class AdminHomePage extends javax.swing.JFrame {
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         menuLayout.setVerticalGroup(
             menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 472, Short.MAX_VALUE)
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
@@ -843,6 +895,14 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jbtThemChamCongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemChamCongActionPerformed
+
+    }//GEN-LAST:event_jbtThemChamCongActionPerformed
+
+    private void jbtLamMoiTinhLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLamMoiTinhLuongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtLamMoiTinhLuongActionPerformed
+
     public void hienthi() {
         try {
             PreparedStatement ps = null;
@@ -904,6 +964,101 @@ public class AdminHomePage extends javax.swing.JFrame {
         }
     }
 
+    public void hienthiBangChamCong() {
+        try {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Connection conn = new DatabaseConnection().getJDBCConnection();
+
+            // Câu lệnh SQL để lấy employee_id, attendance_id và số ngày nghỉ
+            String sql = "SELECT attendance_id, employee_id, attendance_date FROM attendance";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            // Tạo một mô hình bảng không thể chỉnh sửa
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Attendance ID", "Employee ID", "Days Off"}, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
+                }
+            };
+
+            while (rs.next()) {
+                String employeeId = rs.getString("employee_id") != null ? rs.getString("employee_id") : "N/A";
+                String attendanceId = rs.getString("attendance_id") != null ? rs.getString("attendance_id") : "N/A";
+
+                // Kiểm tra giá trị attendance_date để xác định số ngày nghỉ
+                Integer attendanceDate = null;
+                if (rs.getObject("attendance_date") != null) {
+                    attendanceDate = rs.getInt("attendance_date");
+                }
+                String daysOff = (attendanceDate != null && attendanceDate > 0) ? String.valueOf(attendanceDate) : "N/A"; // Nếu không có ngày nghỉ, hiển thị "N/A"
+
+                // Thêm dữ liệu vào bảng
+                model.addRow(new Object[]{attendanceId, employeeId, daysOff});
+            }
+
+            // Cập nhật mô hình cho jTableAttendance
+            jTableAttendance.setModel(model);
+
+            // Đóng kết nối
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void hienthiBangLuong() {
+        try {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Connection conn = new DatabaseConnection().getJDBCConnection();
+
+            // Câu lệnh SQL để lấy employee_id và các trường lương
+            String sql = "SELECT e.employee_id, s.base_salary, s.bonus, s.net_salary "
+                    + "FROM employee e LEFT JOIN salary s ON e.employee_id = s.employee_id";
+            ps = conn.prepareStatement(sql);
+            rs = ps.executeQuery();
+
+            // Tạo một mô hình bảng không thể chỉnh sửa
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Employee ID", "Base Salary", "Bonus", "Net Salary"}, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false; // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
+                }
+            };
+
+            while (rs.next()) {
+                String employeeId = rs.getString("employee_id") != null ? rs.getString("employee_id") : "N/A";
+                Float baseSalary = rs.getFloat("base_salary");
+                Float bonus = rs.getFloat("bonus");
+                Float netSalary = rs.getFloat("net_salary");
+
+                // Kiểm tra và định dạng các giá trị lương
+                String baseSalaryStr = (baseSalary != null && baseSalary != 0) ? String.valueOf(baseSalary) : "N/A";
+                String bonusStr = (bonus != null && bonus != 0) ? String.valueOf(bonus) : "N/A";
+                String netSalaryStr = (netSalary != null && netSalary != 0) ? String.valueOf(netSalary) : "N/A";
+
+                // Thêm dữ liệu vào bảng
+                model.addRow(new Object[]{employeeId, baseSalaryStr, bonusStr, netSalaryStr});
+            }
+
+            // Cập nhật mô hình cho jTableSalary
+            jTableSalary.setModel(model);
+
+            // Đóng kết nối
+            rs.close();
+            ps.close();
+            conn.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     DefaultTableModel model = new DefaultTableModel() {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -919,14 +1074,12 @@ public class AdminHomePage extends javax.swing.JFrame {
         });
     }
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel j1;
     private javax.swing.JPanel j2;
     private javax.swing.JPanel j4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -947,20 +1100,27 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTableAttendance;
+    private javax.swing.JTable jTableSalary;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JButton jbtLamMoi;
+    private javax.swing.JButton jbtLamMoiChamCong;
+    private javax.swing.JButton jbtLamMoiTinhLuong;
     private javax.swing.JButton jbtSuaNhanVien;
+    private javax.swing.JButton jbtThemChamCong;
     private javax.swing.JButton jbtThemNhanVien;
     private javax.swing.JButton jbtXoaNhanVien;
     private com.toedter.calendar.JDateChooser jdcDateOfBirth;

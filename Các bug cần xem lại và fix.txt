@@ -18,6 +18,7 @@ Các lưu ý:
 11. Thêm sự kiện ở trang đăng nhập khi nhấp vào nút enter trên bàn phím sẽ bằng với việc nhấp vào nút đăng nhập trên giao diện. Với điều kiện khi 1 trong 2 ô tài khoản mật khẩu phải có dữ liệu, nhấp vào nút enter mới kích hoạt sự kiện, nếu không nhấp vào nút enter sẽ không có sự kiện gì xảy ra
 12. Ô nhập ngày tháng năm sinh sửa thành một bảng lịch chọn ngày(✅)
 13. Ở phần sửa, ô sửa ngày tháng năm sinh, nếu như ban đầu giá trị là "N/A" sẽ hiểnt hị ra thông báo lỗi: "Vui lòng nhập vào ngày tháng năm sinh đúng định dạng" (✅)
+14. Xử lý sự kiện khi thêm dữ liệu vào bảng nhân viên như mã nhân viên, mã nhân viên cũng sẽ được thêm tương tự vào 2 bảng chấm công và tính lương
 ######   Bonus   ######
 1. Chức năng quên mật khẩu ở giao diện login
 2. Thống kê, báo cáo
