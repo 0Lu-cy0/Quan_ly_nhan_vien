@@ -1006,7 +1006,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             // Tạo một mô hình bảng không thể chỉnh sửa
-            DefaultTableModel model = new DefaultTableModel(new String[]{"salary_id", "employee_id", "base_salary", "bonus", "thuclinh"}, 0) {
+            DefaultTableModel model = new DefaultTableModel(new String[]{"salary_id", "em", "base_salary", "bonus", "thuclinh"}, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false; 
