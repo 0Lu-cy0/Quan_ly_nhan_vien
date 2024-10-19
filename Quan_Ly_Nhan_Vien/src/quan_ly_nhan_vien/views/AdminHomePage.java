@@ -48,7 +48,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         PlainDocument doc = (PlainDocument) jtfEmployeeID.getDocument();
-        doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
+        doc.setDocumentFilter(new NumberFilter());  
         jdcDateOfBirth.setDateFormatString("dd/MM/yyyy");
     }
 
@@ -85,11 +85,11 @@ public class AdminHomePage extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTableAttendance = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jbtThemChamCong = new javax.swing.JButton();
         jbtLamMoiChamCong = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -98,11 +98,11 @@ public class AdminHomePage extends javax.swing.JFrame {
         jTextField5 = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTableSalary = new javax.swing.JTable();
         jPanel8 = new javax.swing.JPanel();
         jbtLamMoiTinhLuong = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
         j4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         tab1 = new javax.swing.JPanel();
@@ -236,24 +236,6 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTableAttendance.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "attendance_id", "employee_id", "so ngay nghi"
-            }
-        ));
-        jTableAttendance.setMaximumSize(new java.awt.Dimension(2147483647, 0));
-        jTableAttendance.setMinimumSize(new java.awt.Dimension(90, 0));
-        jTableAttendance.setPreferredSize(new java.awt.Dimension(450, 0));
-        jScrollPane1.setViewportView(jTableAttendance);
-
-        jPanel6.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 290));
-
         jPanel4.setBackground(new java.awt.Color(0, 102, 102));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -270,6 +252,21 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
         jPanel4.getAccessibleContext().setAccessibleName("");
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "attendance_id", "employee_id", "so ngay nghi"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable1);
+
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 280));
 
         j2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
 
@@ -296,22 +293,6 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTableSalary.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "salary_id", "employee_id", "base_salary", "bonus", "thực lĩnh"
-            }
-        ));
-        jTableSalary.setPreferredSize(new java.awt.Dimension(450, 0));
-        jScrollPane3.setViewportView(jTableSalary);
-
-        jPanel7.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 290));
-
         jPanel8.setBackground(new java.awt.Color(0, 102, 102));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -334,6 +315,21 @@ public class AdminHomePage extends javax.swing.JFrame {
         jPanel7.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
         jPanel8.getAccessibleContext().setAccessibleName("");
         jPanel8.getAccessibleContext().setAccessibleDescription("");
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "salary_id", "employee_id", "base_salary", "bonus", "thuclinh"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable3);
+
+        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 280));
 
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
 
@@ -573,13 +569,12 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     private void jbtThemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemNhanVienActionPerformed
         try {
-            String id = jtfEmployeeID.getText().trim();  // Lấy ID và loại bỏ khoảng trắng
-            String ten = jtfFullName.getText().trim();  // Lấy tên và loại bỏ khoảng trắng
-            String cv = jtfJobTitle.getText().trim();  // Lấy chức vụ
-            String dc = jtfAddress.getText().trim();  // Lấy địa chỉ
-            String pass = jtfPassword.getText().trim();  // Lấy mật khẩu
+            String id = jtfEmployeeID.getText().trim();  
+            String ten = jtfFullName.getText().trim();  
+            String cv = jtfJobTitle.getText().trim();  
+            String dc = jtfAddress.getText().trim();  
+            String pass = jtfPassword.getText().trim();  
 
-            // Kiểm tra xem các trường thông tin có bị rỗng hay không
             if (id.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tài khoản không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -593,8 +588,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 return;
             }
 
-            // Lấy ngày sinh từ JDateChooser
-            Date ngaySinhDate = (Date) jdcDateOfBirth.getDate(); // Lấy ngày sinh từ JDateChooser
+            Date ngaySinhDate = (Date) jdcDateOfBirth.getDate(); 
             if (ngaySinhDate == null) {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -603,7 +597,6 @@ public class AdminHomePage extends javax.swing.JFrame {
             LocalDate ngaySinh = ngaySinhDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-            // Kiểm tra năm sinh
             int namSinh = ngaySinh.getYear();
             if (namSinh < 1950 || namSinh > 2008) {
                 JOptionPane.showMessageDialog(this, "Năm sinh chỉ được nằm trong khoảng 1950-2008", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -710,7 +703,6 @@ public class AdminHomePage extends javax.swing.JFrame {
                 psDeleteSalary.setString(1, employeeId);
                 psDeleteSalary.executeUpdate();
 
-                // Cuối cùng, xóa bản ghi nhân viên
                 String sql = "DELETE FROM employee WHERE employee_id = ?";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, employeeId);
@@ -726,7 +718,6 @@ public class AdminHomePage extends javax.swing.JFrame {
                 // Cam kết transaction
                 conn.commit();
 
-                // Đóng tất cả PreparedStatement
                 ps.close();
                 psDeleteAttendance.close();
                 psDeleteBenefits.close();
@@ -804,7 +795,7 @@ public class AdminHomePage extends javax.swing.JFrame {
             try {
                 // Thiết lập các trường rỗng thành "N/A"
                 String newTen = txtTen.getText().trim().isEmpty() ? "N/A" : txtTen.getText();
-                String newNgaySinh = ngaySinh;  // Sử dụng giá trị ngày sinh cũ mặc định
+                String newNgaySinh = ngaySinh;  
                 String newChucVu = txtChucVu.getText().trim().isEmpty() ? "N/A" : txtChucVu.getText();
                 String newDiaChi = txtDiaChi.getText().trim().isEmpty() ? "N/A" : txtDiaChi.getText();
                 String newMatKhau = txtMatKhau.getText().trim().isEmpty() ? "N/A" : txtMatKhau.getText();
@@ -866,7 +857,7 @@ public class AdminHomePage extends javax.swing.JFrame {
         hienthi();
         jtfEmployeeID.setText("");
         jtfFullName.setText("");
-        jdcDateOfBirth.setDate(null);  // Đặt lại giá trị của JDateChooser
+        jdcDateOfBirth.setDate(null); 
         jtfJobTitle.setText("");
         jtfAddress.setText("");
         jtfPassword.setText("");
@@ -909,7 +900,6 @@ public class AdminHomePage extends javax.swing.JFrame {
             ResultSet rs = null;
             Connection conn = new DatabaseConnection().getJDBCConnection();
 
-            // Câu lệnh SQL để lấy dữ liệu
             String sql = "SELECT employee_id, fullname, date_of_birth, job_title, address, password FROM employee";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
@@ -918,12 +908,10 @@ public class AdminHomePage extends javax.swing.JFrame {
             DefaultTableModel model = new DefaultTableModel(new String[]{"Employee ID", "Full Name", "Date of Birth", "Job Title", "Address", "Password"}, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
                     return false;
                 }
             };
 
-            // Định dạng để hiển thị ngày tháng theo kiểu dd/MM/yyyy
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
             while (rs.next()) {
@@ -931,14 +919,13 @@ public class AdminHomePage extends javax.swing.JFrame {
                 String ten = rs.getString("fullname") != null ? rs.getString("fullname") : "N/A";
 
                 String ngaySinhGoc = rs.getString("date_of_birth");
-                String ngaySinh = "N/A"; // Giá trị mặc định
+                String ngaySinh = "N/A"; 
                 if (ngaySinhGoc != null && !ngaySinhGoc.isEmpty()) {
                     try {
                         // Chuyển đổi từ chuỗi sang java.util.Date bằng SimpleDateFormat
                         Date ngaySinhDate = new SimpleDateFormat("yyyy-MM-dd").parse(ngaySinhGoc);
                         ngaySinh = dateFormat.format(ngaySinhDate); // Định dạng ngày tháng
                     } catch (ParseException e) {
-                        // Trường hợp định dạng không hợp lệ, vẫn giữ nguyên "N/A"
                         e.printStackTrace();
                     }
                 }
@@ -951,7 +938,6 @@ public class AdminHomePage extends javax.swing.JFrame {
                 model.addRow(new Object[]{id, ten, ngaySinh, chucVu, diaChi, matKhau});
             }
 
-            // Cập nhật mô hình cho jTable2
             jTable2.setModel(model);
 
             // Đóng kết nối
@@ -970,13 +956,12 @@ public class AdminHomePage extends javax.swing.JFrame {
             ResultSet rs = null;
             Connection conn = new DatabaseConnection().getJDBCConnection();
 
-            // Câu lệnh SQL để lấy employee_id, attendance_id và số ngày nghỉ
-            String sql = "SELECT attendance_id, employee_id, attendance_date FROM attendance";
+            String sql = "SELECT attendance_id, employee_id, songaynghi FROM attendance";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
             // Tạo một mô hình bảng không thể chỉnh sửa
-            DefaultTableModel model = new DefaultTableModel(new String[]{"Attendance ID", "Employee ID", "Days Off"}, 0) {
+            DefaultTableModel model = new DefaultTableModel(new String[]{"attendance_id", "employee_id", "songaynghi"}, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
                     return false; // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
@@ -984,22 +969,21 @@ public class AdminHomePage extends javax.swing.JFrame {
             };
 
             while (rs.next()) {
-                String employeeId = rs.getString("employee_id") != null ? rs.getString("employee_id") : "N/A";
-                String attendanceId = rs.getString("attendance_id") != null ? rs.getString("attendance_id") : "N/A";
-
-                // Kiểm tra giá trị attendance_date để xác định số ngày nghỉ
-                Integer attendanceDate = null;
-                if (rs.getObject("attendance_date") != null) {
-                    attendanceDate = rs.getInt("attendance_date");
+                String macc = rs.getString("attendance_id") != null ? rs.getString("attendance_id") : "N/A";
+                String manv = rs.getString("employee_id") != null ? rs.getString("employee_id") : "N/A";
+                
+                Integer songaynghi = null;
+                if (rs.getObject("songaynghi") != null) {
+                    songaynghi = rs.getInt("songaynghi");
                 }
-                String daysOff = (attendanceDate != null && attendanceDate > 0) ? String.valueOf(attendanceDate) : "N/A"; // Nếu không có ngày nghỉ, hiển thị "N/A"
+                String daysOff = (songaynghi != null && songaynghi > 0) ? String.valueOf(songaynghi) : "N/A"; // Nếu không có ngày nghỉ, hiển thị "N/A"
 
                 // Thêm dữ liệu vào bảng
-                model.addRow(new Object[]{attendanceId, employeeId, daysOff});
+                model.addRow(new Object[]{macc, manv, songaynghi});
             }
 
             // Cập nhật mô hình cho jTableAttendance
-            jTableAttendance.setModel(model);
+            jTable1.setModel(model);
 
             // Đóng kết nối
             rs.close();
@@ -1017,39 +1001,34 @@ public class AdminHomePage extends javax.swing.JFrame {
             ResultSet rs = null;
             Connection conn = new DatabaseConnection().getJDBCConnection();
 
-            // Câu lệnh SQL để lấy employee_id và các trường lương
-            String sql = "SELECT e.employee_id, s.base_salary, s.bonus, s.net_salary "
-                    + "FROM employee e LEFT JOIN salary s ON e.employee_id = s.employee_id";
+            String sql = "SELECT salary_id, employee_id, base_salary, bonus, thuclinh FROM salary";
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
             // Tạo một mô hình bảng không thể chỉnh sửa
-            DefaultTableModel model = new DefaultTableModel(new String[]{"Employee ID", "Base Salary", "Bonus", "Net Salary"}, 0) {
+            DefaultTableModel model = new DefaultTableModel(new String[]{"salary_id", "em", "base_salary", "bonus", "thuclinh"}, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
-                    return false; // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
+                    return false; 
                 }
             };
 
             while (rs.next()) {
+                int maTinhLuong = rs.getInt("salary_id");
                 String employeeId = rs.getString("employee_id") != null ? rs.getString("employee_id") : "N/A";
                 Float baseSalary = rs.getFloat("base_salary");
                 Float bonus = rs.getFloat("bonus");
-                Float netSalary = rs.getFloat("net_salary");
+                Float netSalary = rs.getFloat("thuclinh");
 
-                // Kiểm tra và định dạng các giá trị lương
                 String baseSalaryStr = (baseSalary != null && baseSalary != 0) ? String.valueOf(baseSalary) : "N/A";
                 String bonusStr = (bonus != null && bonus != 0) ? String.valueOf(bonus) : "N/A";
                 String netSalaryStr = (netSalary != null && netSalary != 0) ? String.valueOf(netSalary) : "N/A";
 
-                // Thêm dữ liệu vào bảng
-                model.addRow(new Object[]{employeeId, baseSalaryStr, bonusStr, netSalaryStr});
+                model.addRow(new Object[]{maTinhLuong, employeeId, baseSalaryStr, bonusStr, netSalaryStr});
             }
+            
+            jTable3.setModel(model);
 
-            // Cập nhật mô hình cho jTableSalary
-            jTableSalary.setModel(model);
-
-            // Đóng kết nối
             rs.close();
             ps.close();
             conn.close();
@@ -1059,13 +1038,6 @@ public class AdminHomePage extends javax.swing.JFrame {
         }
     }
 
-    DefaultTableModel model = new DefaultTableModel() {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            // Vô hiệu hóa việc chỉnh sửa cho tất cả các ô
-            return false;
-        }
-    };
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(() -> {
@@ -1107,10 +1079,10 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTableAttendance;
-    private javax.swing.JTable jTableSalary;
+    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
