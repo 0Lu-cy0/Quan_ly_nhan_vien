@@ -1,6 +1,5 @@
 package quan_ly_nhan_vien.views;
 
-import java.awt.Toolkit;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -19,6 +18,11 @@ public class Login extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Đăng nhập");
+        // Thêm sự kiện Enter cho ô tài khoản
+        jtfTaiKhoan.addActionListener(evt -> jtfMatKhau.requestFocus());
+
+        // Thêm sự kiện Enter cho ô mật khẩu
+        jtfMatKhau.addActionListener(evt -> btnDNhapActionPerformed(null)); // Kích hoạt nút đăng nhập khi nhấn Enter
     }
 
     @SuppressWarnings("unchecked")
@@ -194,18 +198,21 @@ public class Login extends javax.swing.JFrame {
         }
 
         // Xác thực tài khoản từ cơ sở dữ liệu
-        if (Login(username, password)) {
+        String role = authenticate(username, password);
+        if (role != null) {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
 
-            // Điều hướng đến trang EmployeeHomePage và truyền username, password
-            if (!"Admin".equalsIgnoreCase(username)) {
-                EmployeeHomePage employeeHomePage = new EmployeeHomePage(username, password);
-                employeeHomePage.setVisible(true);
-                this.dispose();  // Đóng cửa sổ hiện tại sau khi điều hướng
-            } else {
+            // Điều hướng dựa trên vai trò
+            if ("Admin".equalsIgnoreCase(role)) {
                 AdminHomePage adminHomePage = new AdminHomePage();
                 adminHomePage.setVisible(true);
                 this.dispose();
+            } else if ("Employee".equalsIgnoreCase(role)) {
+                EmployeeHomePage employeeHomePage = new EmployeeHomePage(username, password);
+                employeeHomePage.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Vai trò không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác.", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
@@ -216,12 +223,15 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfTaiKhoanActionPerformed
 
-    public boolean Login(String username, String password) {
+    public String authenticate(String username, String password) {
         try {
             // Kết nối cơ sở dữ liệu
             Connection conn = new DatabaseConnection().getJDBCConnection();
-            // Truy vấn để kiểm tra tài khoản và mật khẩu (băm)
-            String query = "SELECT * FROM employee WHERE employee_id = ? AND password = ?";
+
+            // Truy vấn kiểm tra tài khoản và lấy vai trò
+            String query = "SELECT r.name AS role FROM Accounts a "
+                    + "JOIN Roles r ON a.role_id = r.id "
+                    + "WHERE a.username = ? AND a.password = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
             pstmt.setString(1, username);
 
@@ -234,12 +244,13 @@ public class Login extends javax.swing.JFrame {
 
             // Kiểm tra nếu có kết quả trả về
             if (rs.next()) {
-                return true; // Đăng nhập thành công
+                // Lấy vai trò từ kết quả truy vấn
+                return rs.getString("role");
             }
         } catch (SQLException e) {
             e.printStackTrace(); // In ra lỗi nếu có
         }
-        return false; // Đăng nhập thất bại
+        return null; // Đăng nhập thất bại
     }
 
     public static void main(String args[]) {

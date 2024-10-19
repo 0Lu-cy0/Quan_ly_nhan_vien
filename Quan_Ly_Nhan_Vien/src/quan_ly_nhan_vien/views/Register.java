@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package quan_ly_nhan_vien.views;
 
 import java.nio.charset.StandardCharsets;
@@ -27,18 +23,15 @@ public class Register extends javax.swing.JFrame {
 
     public Register() {
         initComponents();
-//      setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
-        this.setResizable(false);
-        this.setLocationRelativeTo(null);
-        this.setTitle("Đăng ký");
-        PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
-        doc.setDocumentFilter(new NumberFilter());  // Áp dụng NumberFilter
-
-        // Thêm DocumentListener để kiểm tra dữ liệu nhập vào
-        addDocumentListener(jtfTaiKhoan, this::validateFields);
-        addDocumentListener(jtfFullName, this::validateFields);
-        addDocumentListener(jtfMatKhau, this::validateFields);
-        addDocumentListener(jtfNhapLaiMatKhau, this::validateFields);
+        setUpFrame();
+        applyFilters();
+        addDocumentListeners();
+        jtfFullName.addActionListener(evt -> jtfQueQuan.requestFocus());
+        jtfQueQuan.addActionListener(evt -> jtfTaiKhoan.requestFocus());
+        jtfTaiKhoan.addActionListener(evt -> jtfMatKhau.requestFocus());
+        jtfMatKhau.addActionListener(evt -> jtfNhapLaiMatKhau.requestFocus());
+        jtfNhapLaiMatKhau.addActionListener(evt -> BtnTaoTKActionPerformed(null));
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -202,39 +195,21 @@ public class Register extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-    public class NumberFilter extends DocumentFilter {
-
-        @Override
-        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-            if (string != null && string.matches("[0-9]+")) {
-                super.insertString(fb, offset, string, attr);
-            }
-        }
-
-        @Override
-        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-            if (text != null && text.matches("[0-9]+")) {
-                super.replace(fb, offset, length, text, attrs);
-            }
-        }
-
-        @Override
-        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-            super.remove(fb, offset, length);
-        }
+    private void setUpFrame() {
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setTitle("Đăng ký");
     }
 
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                hexString.append(String.format("%02x", b));
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+    private void applyFilters() {
+        PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
+        doc.setDocumentFilter(new NumberFilter());
+    }
+
+    private void addDocumentListeners() {
+        JTextComponent[] fields = {jtfTaiKhoan, jtfFullName, jtfMatKhau, jtfNhapLaiMatKhau};
+        for (JTextComponent field : fields) {
+            addDocumentListener(field, this::validateFields);
         }
     }
 
@@ -254,70 +229,69 @@ public class Register extends javax.swing.JFrame {
         });
     }
 
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            return bytesToHex(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            hexString.append(String.format("%02x", b));
+        }
+        return hexString.toString();
+    }
+
     private void validateFields() {
         String username = jtfTaiKhoan.getText().trim();
         String password = new String(jtfMatKhau.getPassword()).trim();
         String confirmPassword = new String(jtfNhapLaiMatKhau.getPassword()).trim();
         String fullname = jtfFullName.getText().trim();
 
-        // Kiểm tra trường tên có trống hay không
         lblNameError.setText(fullname.isEmpty() ? "Tên là bắt buộc." : "");
-
-        // Kiểm tra trường tài khoản có trống hay không
         lblUsernameError.setText(username.isEmpty() ? "Tài khoản là bắt buộc." : "");
-
-        // Kiểm tra mật khẩu có trống hay không
-        if (password.isEmpty()) {
-            lblPasswordError.setText("Mật khẩu là bắt buộc.");
-            return; // Nếu mật khẩu trống thì dừng lại ở đây
-        }
-
-        // Kiểm tra mật khẩu khớp
+        lblPasswordError.setText(password.isEmpty() ? "Mật khẩu là bắt buộc." : "");
         lblConfirmPasswordError.setText(!password.equals(confirmPassword) ? "Mật khẩu không khớp." : "");
 
-        // Kiểm tra độ mạnh của mật khẩu
-        List<String> passwordErrors = validatePassword(password);
+        if (!password.isEmpty()) {
+            validatePasswordStrength(password);
+        }
+    }
 
-        // Hiển thị tất cả các lỗi của mật khẩu
-        if (!passwordErrors.isEmpty()) {
-            StringBuilder errorMessages = new StringBuilder();
-            for (String error : passwordErrors) {
-                errorMessages.append(error).append("\n"); // Ghép các lỗi l ại
-            }
-            lblPasswordError.setText("<html>" + errorMessages.toString().replace("\n", "<br>") + "</html>");
+    private void validatePasswordStrength(String password) {
+        List<String> errors = validatePassword(password);
+        if (!errors.isEmpty()) {
+            lblPasswordError.setText("<html>" + String.join("<br>", errors) + "</html>");
         } else {
-            lblPasswordError.setText(""); // Xóa lỗi nếu không còn lỗi
+            lblPasswordError.setText("");
         }
     }
 
     private List<String> validatePassword(String password) {
         List<String> errors = new ArrayList<>();
-
-//        if(lblUsernameError.setText(username.isEmpty()){
-//            
-//        }
-        // Kiểm tra mật khẩu có chứa chữ số
         if (!password.matches(".*\\d.*")) {
             errors.add("Mật khẩu cần ít nhất một chữ số.");
         }
-        // Kiểm tra mật khẩu có chứa chữ thường
         if (!password.matches(".*[a-z].*")) {
             errors.add("Mật khẩu cần ít nhất một ký tự chữ thường.");
         }
-        // Kiểm tra mật khẩu có chứa chữ hoa
         if (!password.matches(".*[A-Z].*")) {
             errors.add("Mật khẩu cần ít nhất một ký tự chữ hoa.");
         }
-        // Kiểm tra mật khẩu có chứa ký tự đặc biệt
         if (!password.matches(".*[@$!%*?&].*")) {
             errors.add("Mật khẩu cần ít nhất một ký tự đặc biệt.");
         }
-        // Kiểm tra độ dài mật khẩu
         if (password.length() < 12) {
             errors.add("Mật khẩu cần ít nhất 12 ký tự.");
         }
         return errors;
     }
+
 
     private void BtnTaoTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTaoTKActionPerformed
         String username = jtfTaiKhoan.getText().trim();
@@ -349,13 +323,20 @@ public class Register extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BtnTaoTKActionPerformed
 
+    private boolean hasErrors() {
+        return !lblNameError.getText().isEmpty() || !lblUsernameError.getText().isEmpty()
+                || !lblPasswordError.getText().isEmpty() || !lblConfirmPasswordError.getText().isEmpty();
+    }
+
+    private void showMessage(String message, String title) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
+    }
+
     private boolean addUserToDatabase(String username, String password, String fullname, String address) {
         DatabaseConnection dbConnection = new DatabaseConnection();
-        Connection conn = dbConnection.conn;
         String query = "INSERT INTO employee (employee_id, password, fullname, address) VALUES (?, ?, ?, ?)";
 
-        try {
-            PreparedStatement stmt = conn.prepareStatement(query);
+        try (Connection conn = dbConnection.getJDBCConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, username);
             stmt.setString(2, hashPassword(password)); // Mã hóa mật khẩu
             stmt.setString(3, fullname);
@@ -367,20 +348,19 @@ public class Register extends javax.swing.JFrame {
             System.out.println("    Lỗi khi tạo tài khoản: " + ex.getMessage());
             ex.printStackTrace();
             return false;
-        } finally {
-            dbConnection.closeConnection();
         }
     }
 
     private boolean isUsernameTaken(String username) {
         DatabaseConnection dbConnection = new DatabaseConnection();
-        Connection conn = dbConnection.conn;
-
-        String query = "SELECT COUNT(*) FROM employee WHERE employee_id = ?";
+        Connection conn = null;
         try {
+            conn = dbConnection.getJDBCConnection();
+            String query = "SELECT COUNT(*) FROM employee WHERE employee_id = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
                 return rs.getInt(1) > 0;
             }
@@ -388,39 +368,72 @@ public class Register extends javax.swing.JFrame {
             System.out.println("Lỗi khi kiểm tra tài khoản: " + ex.getMessage());
             ex.printStackTrace();
         } finally {
-            dbConnection.closeConnection();
+            if (conn != null) {
+                try {
+                    conn.close(); // Đóng kết nối
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return false;
     }
 
+    private int getRoleId() {
+        return 2; // Mặc định là Employee
+    }
+
+
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
-        openLoginPage(); // Gọi phương thức mở trang đăng nhập
+        openLoginPage();
     }//GEN-LAST:event_btnDangNhapActionPerformed
 
+    private void openLoginPage() {
+        new Login().setVisible(true);
+        this.dispose();
+    }
+
+    public class NumberFilter extends DocumentFilter {
+
+        @Override
+        public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+            if (isValidNumber(string)) {
+                super.insertString(fb, offset, string, attr);
+            }
+        }
+
+        @Override
+        public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (isValidNumber(text)) {
+                super.replace(fb, offset, length, text, attrs);
+            }
+        }
+
+        @Override
+        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+            super.remove(fb, offset, length);
+        }
+
+        private boolean isValidNumber(String string) {
+            return string != null && string.matches("[0-9]+");
+        }
+    }
+
     private void jtfFullNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfFullNameActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jtfFullNameActionPerformed
 
     private void jtfNhapLaiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNhapLaiMatKhauActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jtfNhapLaiMatKhauActionPerformed
 
     private void cbHienThiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbHienThiMatKhauActionPerformed
-        if (cbHienThiMatKhau.isSelected()) {
+if (cbHienThiMatKhau.isSelected()) {
             jtfMatKhau.setEchoChar((char) 0);  // Hiển thị mật khẩu
-            jtfNhapLaiMatKhau.setEchoChar((char) 0); //Hiển thị nhập lại mk
+            jtfNhapLaiMatKhau.setEchoChar((char) 0);
         } else {
             jtfMatKhau.setEchoChar('*');  // Ẩn mật khẩu
-            jtfNhapLaiMatKhau.setEchoChar('*'); //Ẩn nhập lại mk
+            jtfNhapLaiMatKhau.setEchoChar('*');
         }
     }//GEN-LAST:event_cbHienThiMatKhauActionPerformed
-
-    private void openLoginPage() {
-        // Tạo và hiển thị giao diện đăng nhập
-        Login loginPage = new Login();
-        loginPage.setVisible(true);
-        this.dispose(); // Đóng cửa sổ đăng ký
-    }
 
     public static void main(String args[]) {
         try {
