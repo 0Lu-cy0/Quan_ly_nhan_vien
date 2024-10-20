@@ -38,17 +38,11 @@ public class EmployeeHomePage extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jSeparator1 = new javax.swing.JSeparator();
-        jSeparator3 = new javax.swing.JSeparator();
-        jSeparator4 = new javax.swing.JSeparator();
-        jSeparator5 = new javax.swing.JSeparator();
-        jSeparator6 = new javax.swing.JSeparator();
-        jSeparator7 = new javax.swing.JSeparator();
-        jSeparator8 = new javax.swing.JSeparator();
-        jSeparator9 = new javax.swing.JSeparator();
-        jSeparator10 = new javax.swing.JSeparator();
-        jSeparator11 = new javax.swing.JSeparator();
-        jSeparator12 = new javax.swing.JSeparator();
+        jbtDoiMatKhau = new javax.swing.JButton();
+        jbtDangXuat = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jtfTaiKhoan = new javax.swing.JTextField();
         jtfChucVu = new javax.swing.JTextField();
@@ -56,8 +50,6 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jtfHoVaTen = new javax.swing.JTextField();
         jtfNgayThangNamSinh = new javax.swing.JTextField();
         jtfDiaChi = new javax.swing.JTextField();
-        jbtDangXuat = new javax.swing.JButton();
-        jbtDoiMatKhau = new javax.swing.JButton();
         jtfMatKhau = new javax.swing.JPasswordField();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -70,19 +62,33 @@ public class EmployeeHomePage extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 110, 470, 10));
-        jPanel3.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 470, 10));
-        jPanel3.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 20, 470, 10));
-        jPanel3.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 470, 10));
-        jPanel3.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 40, 470, 10));
-        jPanel3.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 470, 10));
-        jPanel3.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 60, 470, 10));
-        jPanel3.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 470, 10));
-        jPanel3.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 470, 10));
-        jPanel3.add(jSeparator11, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 470, 10));
-        jPanel3.add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 470, 10));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 660, 470, 130));
+        jbtDoiMatKhau.setText("Đổi mật khẩu");
+        jbtDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtDoiMatKhauActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jbtDoiMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 120, 50));
+
+        jbtDangXuat.setText("Đăng xuất");
+        jbtDangXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtDangXuatActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jbtDangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 50));
+
+        jButton1.setText("Chấm công ra");
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 120, 50));
+
+        jButton2.setText("Chấm công vào");
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 120, 50));
+
+        jButton3.setText("Lịch sử chấm công");
+        jPanel3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 140, 50));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 610, 470, 180));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Thông tin nhân viên", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 18), new java.awt.Color(0, 102, 102))); // NOI18N
@@ -91,7 +97,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jtfTaiKhoan.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jtfTaiKhoan.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Tài khoản", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfTaiKhoan.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jtfTaiKhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfTaiKhoanActionPerformed(evt);
@@ -100,7 +106,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel4.add(jtfTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 452, 50));
 
         jtfChucVu.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jtfChucVu.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Chức vụ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfChucVu.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Địa chỉ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jtfChucVu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfChucVuActionPerformed(evt);
@@ -136,7 +142,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel4.add(jtfNgayThangNamSinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 452, 50));
 
         jtfDiaChi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jtfDiaChi.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Địa chỉ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfDiaChi.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Ngày vào làm việc", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jtfDiaChi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfDiaChiActionPerformed(evt);
@@ -144,27 +150,11 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel4.add(jtfDiaChi, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 452, 50));
 
-        jbtDangXuat.setText("Đăng xuất");
-        jbtDangXuat.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtDangXuatActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jbtDangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 470, -1, -1));
-
-        jbtDoiMatKhau.setText("Đổi mật khẩu");
-        jbtDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtDoiMatKhauActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jbtDoiMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 470, -1, -1));
-
         jtfMatKhau.setForeground(new java.awt.Color(0, 102, 102));
-        jtfMatKhau.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Mật khẩu", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfMatKhau.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Số điện thoại", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jPanel4.add(jtfMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 452, 50));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 470, 520));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 470, 460));
 
         jPanel6.setBackground(new java.awt.Color(0, 102, 102));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -318,23 +308,15 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JSeparator jSeparator10;
-    private javax.swing.JSeparator jSeparator11;
-    private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JSeparator jSeparator4;
-    private javax.swing.JSeparator jSeparator5;
-    private javax.swing.JSeparator jSeparator6;
-    private javax.swing.JSeparator jSeparator7;
-    private javax.swing.JSeparator jSeparator8;
-    private javax.swing.JSeparator jSeparator9;
     private javax.swing.JButton jbtDangXuat;
     private javax.swing.JButton jbtDoiMatKhau;
     private javax.swing.JTextField jtfChucVu;

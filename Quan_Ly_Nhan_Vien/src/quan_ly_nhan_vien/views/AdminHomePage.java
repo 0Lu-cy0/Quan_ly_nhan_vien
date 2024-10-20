@@ -47,9 +47,9 @@ public class AdminHomePage extends javax.swing.JFrame {
         tab1.setBackground(Color.WHITE);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        PlainDocument doc = (PlainDocument) jtfEmployeeID.getDocument();
+        PlainDocument doc = (PlainDocument) jtfFullName.getDocument();
         doc.setDocumentFilter(new NumberFilter());  
-        jdcDateOfBirth.setDateFormatString("dd/MM/yyyy");
+        jdcDateOfJoining.setDateFormatString("dd/MM/yyyy");
     }
 
     @SuppressWarnings("unchecked")
@@ -64,13 +64,12 @@ public class AdminHomePage extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jtfEmployeeID = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
         jtfFullName = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        a = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jtfPassword = new javax.swing.JTextField();
         jtfAddress = new javax.swing.JTextField();
-        jtfJobTitle = new javax.swing.JTextField();
+        jtfEmail = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
@@ -78,16 +77,23 @@ public class AdminHomePage extends javax.swing.JFrame {
         jbtXoaNhanVien = new javax.swing.JButton();
         jbtSuaNhanVien = new javax.swing.JButton();
         jbtLamMoi = new javax.swing.JButton();
-        jdcDateOfBirth = new com.toedter.calendar.JDateChooser();
+        jdcDateOfJoining = new com.toedter.calendar.JDateChooser();
+        jdcDateOfBirth1 = new com.toedter.calendar.JDateChooser();
+        jbtSearch = new javax.swing.JButton();
         j2 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jbtThemChamCong = new javax.swing.JButton();
         jbtLamMoiChamCong = new javax.swing.JButton();
+        jTextField6 = new javax.swing.JTextField();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -133,7 +139,7 @@ public class AdminHomePage extends javax.swing.JFrame {
 
             },
             new String [] {
-                "employee_id", "fullname", "date_of_birth", "job_title", "address", "password"
+                "full_name", "email", "phone_number", "address", "date_of_birth", "date_of_joining"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -145,27 +151,26 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("employee_id");
+        jLabel6.setText("full_name");
         jPanel5.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 19, 86, -1));
-        jPanel5.add(jtfEmployeeID, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 15, 120, 25));
+        jPanel5.add(jtfFullName, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 15, 120, 25));
 
         jLabel4.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setText("fullname");
+        jLabel4.setText("phone_number");
         jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 52, 86, -1));
-        jPanel5.add(jtfFullName, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 52, 120, 25));
+        jPanel5.add(a, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 52, 120, 25));
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("date_of_birth");
         jPanel5.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 93, 86, -1));
-        jPanel5.add(jtfPassword, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 89, 120, 25));
         jPanel5.add(jtfAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 52, 120, 25));
-        jPanel5.add(jtfJobTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 15, 120, 25));
+        jPanel5.add(jtfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 15, 120, 25));
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("job_title");
+        jLabel7.setText("email");
         jPanel5.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 19, 86, -1));
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -175,7 +180,7 @@ public class AdminHomePage extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("password");
+        jLabel9.setText("date_of_joining");
         jPanel5.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 93, 86, -1));
 
         jbtThemNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -185,7 +190,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 jbtThemNhanVienActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtThemNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
+        jPanel5.add(jbtThemNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, -1, -1));
 
         jbtXoaNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtXoaNhanVien.setText("Xoá");
@@ -194,7 +199,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 jbtXoaNhanVienActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtXoaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, -1));
+        jPanel5.add(jbtXoaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 130, -1, -1));
 
         jbtSuaNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtSuaNhanVien.setText("Sửa");
@@ -203,7 +208,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 jbtSuaNhanVienActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtSuaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, -1, -1));
+        jPanel5.add(jbtSuaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, -1, -1));
 
         jbtLamMoi.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtLamMoi.setText("Làm mới");
@@ -213,55 +218,70 @@ public class AdminHomePage extends javax.swing.JFrame {
             }
         });
         jPanel5.add(jbtLamMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, -1, -1));
-        jPanel5.add(jdcDateOfBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 90, 130, -1));
+        jPanel5.add(jdcDateOfJoining, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 120, -1));
+        jPanel5.add(jdcDateOfBirth1, new org.netbeans.lib.awtextra.AbsoluteConstraints(124, 90, 120, -1));
+
+        jbtSearch.setText("Tìm kiếm");
+        jPanel5.add(jbtSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 130, -1, -1));
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
         j2.setBackground(new java.awt.Color(255, 255, 255));
         j2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel10.setText("attendance_id");
+        jLabel10.setText("timesheet_id");
         j2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 80, -1));
 
-        jLabel14.setText("so ngay nghi");
+        jLabel14.setText("status");
         j2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 410, 80, -1));
-        j2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 310, 140, -1));
-
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-        j2.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 410, 140, -1));
 
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel4.setBackground(new java.awt.Color(0, 102, 102));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jbtThemChamCong.setText("thêm");
+        jbtThemChamCong.setText("Tìm kiếm");
         jbtThemChamCong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtThemChamCongActionPerformed(evt);
             }
         });
-        jPanel4.add(jbtThemChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, -1, -1));
+        jPanel4.add(jbtThemChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 20, 100, -1));
 
-        jbtLamMoiChamCong.setText("Làm mới");
-        jPanel4.add(jbtLamMoiChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 100, -1, -1));
+        jbtLamMoiChamCong.setText("Sửa");
+        jPanel4.add(jbtLamMoiChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 100, -1));
+        jPanel4.add(jTextField6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 50, 140, -1));
+
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+        jPanel4.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 90, 140, -1));
+        jPanel4.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 140, -1));
+        jPanel4.add(jTextField7, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 130, 140, -1));
+
+        jLabel17.setText("employee_id");
+        jPanel4.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, -1, -1));
+
+        jLabel18.setText("work_date");
+        jPanel4.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, -1, -1));
+
+        jButton3.setText("Xuất báo cáo");
+        jPanel4.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 120, -1, -1));
 
         jPanel6.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
         jPanel4.getAccessibleContext().setAccessibleName("");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "attendance_id", "employee_id", "so ngay nghi"
+                "timesheet_id", "employee_id", "work_date", "check_in", "check_out", "status"
             }
         ));
         jScrollPane4.setViewportView(jTable1);
@@ -569,9 +589,9 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     private void jbtThemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemNhanVienActionPerformed
         try {
-            String id = jtfEmployeeID.getText().trim();  
-            String ten = jtfFullName.getText().trim();  
-            String cv = jtfJobTitle.getText().trim();  
+            String id = jtfFullName.getText().trim();  
+            String ten = a.getText().trim();  
+            String cv = jtfEmail.getText().trim();  
             String dc = jtfAddress.getText().trim();  
             String pass = jtfPassword.getText().trim();  
 
@@ -588,7 +608,7 @@ public class AdminHomePage extends javax.swing.JFrame {
                 return;
             }
 
-            Date ngaySinhDate = (Date) jdcDateOfBirth.getDate(); 
+            Date ngaySinhDate = (Date) jdcDateOfJoining.getDate(); 
             if (ngaySinhDate == null) {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -855,10 +875,10 @@ public class AdminHomePage extends javax.swing.JFrame {
 
     private void jbtLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLamMoiActionPerformed
         hienthi();
-        jtfEmployeeID.setText("");
         jtfFullName.setText("");
-        jdcDateOfBirth.setDate(null); 
-        jtfJobTitle.setText("");
+        a.setText("");
+        jdcDateOfJoining.setDate(null); 
+        jtfEmail.setText("");
         jtfAddress.setText("");
         jtfPassword.setText("");
     }//GEN-LAST:event_jbtLamMoiActionPerformed
@@ -1047,11 +1067,13 @@ public class AdminHomePage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField a;
     private javax.swing.JPanel j1;
     private javax.swing.JPanel j2;
     private javax.swing.JPanel j4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -1061,6 +1083,8 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1088,19 +1112,21 @@ public class AdminHomePage extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     private javax.swing.JButton jbtLamMoi;
     private javax.swing.JButton jbtLamMoiChamCong;
     private javax.swing.JButton jbtLamMoiTinhLuong;
+    private javax.swing.JButton jbtSearch;
     private javax.swing.JButton jbtSuaNhanVien;
     private javax.swing.JButton jbtThemChamCong;
     private javax.swing.JButton jbtThemNhanVien;
     private javax.swing.JButton jbtXoaNhanVien;
-    private com.toedter.calendar.JDateChooser jdcDateOfBirth;
+    private com.toedter.calendar.JDateChooser jdcDateOfBirth1;
+    private com.toedter.calendar.JDateChooser jdcDateOfJoining;
     private javax.swing.JTextField jtfAddress;
-    private javax.swing.JTextField jtfEmployeeID;
+    private javax.swing.JTextField jtfEmail;
     private javax.swing.JTextField jtfFullName;
-    private javax.swing.JTextField jtfJobTitle;
-    private javax.swing.JTextField jtfPassword;
     private javax.swing.JPanel menu;
     private javax.swing.JPanel tab1;
     private javax.swing.JPanel tab2;
