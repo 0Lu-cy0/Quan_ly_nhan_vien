@@ -295,7 +295,7 @@ public class Register extends javax.swing.JFrame {
     // Phương thức kiểm tra email hợp lệ
     private List<String> validateEmail(String email) {
         List<String> errors = new ArrayList<>();
-        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{3,6}$";
         if (!email.matches(emailRegex)) {
             errors.add("Email không đúng định dạng.");
         }

@@ -28,9 +28,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import com.toedter.calendar.JDateChooser;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 public class AdminHomePage extends javax.swing.JFrame {
 
