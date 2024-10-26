@@ -216,7 +216,7 @@ public class Login extends javax.swing.JFrame {
             }
         } else {
             JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác.", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
-            jtfMatKhau.setText("");+
+            jtfMatKhau.setText("");
         }
     }//GEN-LAST:event_btnDNhapActionPerformed
 
