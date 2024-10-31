@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
 import javax.swing.JOptionPane;
+import quan_ly_nhan_vien.utils.HashPassword;
 
 public class EmployeeHomePage extends javax.swing.JFrame {
 
@@ -177,7 +178,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         if (confirm == JOptionPane.YES_OPTION) {
             // Người dùng xác nhận muốn đăng xuất
             // Mở lại màn hình đăng nhập
-            Login login = new Login();
+            LoginViews login = new LoginViews();
             login.setVisible(true);
             dispose();  // Đóng AdminHomePage
         }
@@ -285,7 +286,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         String query = "SELECT * FROM Employee WHERE employee_id = ? AND password = ?";
         try {
             // Băm mật khẩu người dùng nhập vào
-            String hashedPassword = Login.hashPassword(password); // Sử dụng lại phương thức băm mật khẩu trong Login
+            String hashedPassword = HashPassword.hashPassword(password); // Sử dụng lại phương thức băm mật khẩu trong LoginViews
 
             // Chuẩn bị truy vấn và kiểm tra
             PreparedStatement ps = dbConnection.getJDBCConnection().prepareStatement(query);

@@ -95,6 +95,59 @@ public class AdminHomePageViews extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jbtTimKiem = new javax.swing.JButton();
         jlbTimKiem = new javax.swing.JTextField();
+        j2 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable4 = new javax.swing.JTable();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        jTable5 = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable6 = new javax.swing.JTable();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable7 = new javax.swing.JTable();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        jTable8 = new javax.swing.JTable();
+        jButton3 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jLabel14 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jbtLamMoiTinhLuong = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jPanel9 = new javax.swing.JPanel();
+        jScrollPane9 = new javax.swing.JScrollPane();
+        jTable9 = new javax.swing.JTable();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        jTable10 = new javax.swing.JTable();
+        jLabel17 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jScrollPane11 = new javax.swing.JScrollPane();
+        jTable11 = new javax.swing.JTable();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        jTable12 = new javax.swing.JTable();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        jTable13 = new javax.swing.JTable();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        jTable14 = new javax.swing.JTable();
+        jButton5 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
         j4 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         tab1 = new javax.swing.JPanel();
@@ -324,6 +377,307 @@ public class AdminHomePageViews extends javax.swing.JFrame {
 
         j1.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
 
+        j2.setBackground(new java.awt.Color(255, 255, 255));
+        j2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "employee_id", "day", "dayOff", "dayWork"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable1);
+
+        jPanel6.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 220));
+
+        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane3.setViewportView(jTable4);
+
+        jPanel6.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 100, 140));
+
+        jLabel10.setText("Tìm kiếm");
+        jPanel6.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, -4, 70, 30));
+        jPanel6.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 410, -1));
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel6.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 40, -1));
+
+        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane5.setViewportView(jTable5);
+
+        jPanel6.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 280, 100, 140));
+
+        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable6);
+
+        jPanel6.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 100, 140));
+
+        jTable7.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane7.setViewportView(jTable7);
+
+        jPanel6.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 100, 140));
+
+        jTable8.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane8.setViewportView(jTable8);
+
+        jPanel6.add(jScrollPane8, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280, 100, 140));
+
+        jButton3.setText("Chấm công");
+        jPanel6.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 430, -1, -1));
+
+        jButton6.setText("Cập nhật dữ liệu");
+        jPanel6.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 430, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel14.setText("Chi tiết chấm công");
+        jPanel6.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 260, 140, -1));
+
+        j2.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel12.setText("salary_id");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, 60, -1));
+
+        jLabel15.setText("base_salary");
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 350, -1, -1));
+
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 300, 140, -1));
+        jPanel2.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 140, -1));
+
+        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField5ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jTextField5, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 400, 140, -1));
+
+        jLabel16.setText("bonus");
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, -1, -1));
+
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel8.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jbtLamMoiTinhLuong.setText("Làm mới");
+        jbtLamMoiTinhLuong.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtLamMoiTinhLuongActionPerformed(evt);
+            }
+        });
+        jPanel8.add(jbtLamMoiTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 90, -1));
+
+        jButton4.setText("tính lương");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel8.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, 90, -1));
+
+        jButton8.setText("Xuất pdf");
+        jPanel8.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 90, -1));
+
+        jPanel7.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
+        jPanel8.getAccessibleContext().setAccessibleName("");
+        jPanel8.getAccessibleContext().setAccessibleDescription("");
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "employee_id", "month", "base_salary", "bonus", "Thực lĩnh"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable3);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(0).setResizable(false);
+            jTable3.getColumnModel().getColumn(0).setPreferredWidth(5);
+            jTable3.getColumnModel().getColumn(2).setPreferredWidth(20);
+        }
+
+        jPanel7.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 250));
+
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel9.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jTable9.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "STT", "employee_id", "day", "dayOff", "dayWork"
+            }
+        ));
+        jScrollPane9.setViewportView(jTable9);
+
+        jPanel9.add(jScrollPane9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 220));
+
+        jTable10.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane10.setViewportView(jTable10);
+
+        jPanel9.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 280, 100, 140));
+
+        jLabel17.setText("Tìm kiếm");
+        jPanel9.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, -4, 70, 30));
+        jPanel9.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 410, -1));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jPanel9.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 0, 40, -1));
+
+        jTable11.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane11.setViewportView(jTable11);
+
+        jPanel9.add(jScrollPane11, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 280, 100, 140));
+
+        jTable12.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane12.setViewportView(jTable12);
+
+        jPanel9.add(jScrollPane12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 280, 100, 140));
+
+        jTable13.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane13.setViewportView(jTable13);
+
+        jPanel9.add(jScrollPane13, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 280, 100, 140));
+
+        jTable14.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "day", "status"
+            }
+        ));
+        jScrollPane14.setViewportView(jTable14);
+
+        jPanel9.add(jScrollPane14, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 280, 100, 140));
+
+        jButton5.setText("Chấm công");
+        jPanel9.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 430, -1, -1));
+
+        jButton7.setText("Cập nhật dữ liệu");
+        jPanel9.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 430, -1, -1));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel18.setText("Chi tiết chấm công");
+        jPanel9.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 260, 140, -1));
+
+        jPanel7.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
+
+        jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
+
         j4.setBackground(new java.awt.Color(255, 204, 204));
 
         javax.swing.GroupLayout j4Layout = new javax.swing.GroupLayout(j4);
@@ -350,7 +704,17 @@ public class AdminHomePageViews extends javax.swing.JFrame {
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
+                    .addComponent(j2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(menuLayout.createSequentialGroup()
+                    .addContainerGap()
                     .addComponent(j1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(menuLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
         menuLayout.setVerticalGroup(
@@ -364,7 +728,17 @@ public class AdminHomePageViews extends javax.swing.JFrame {
             .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(menuLayout.createSequentialGroup()
                     .addContainerGap()
+                    .addComponent(j2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(menuLayout.createSequentialGroup()
+                    .addContainerGap()
                     .addComponent(j1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(menuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(menuLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
         );
 
@@ -822,6 +1196,22 @@ public class AdminHomePageViews extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jbtLamMoiTinhLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLamMoiTinhLuongActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jbtLamMoiTinhLuongActionPerformed
+
+    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField5ActionPerformed
+
     public void hienthi() {
         try {
             PreparedStatement ps = null;
@@ -974,14 +1364,30 @@ public class AdminHomePageViews extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel j1;
+    private javax.swing.JPanel j2;
     private javax.swing.JPanel j4;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
@@ -993,8 +1399,19 @@ public class AdminHomePageViews extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane10;
+    private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane16;
     private javax.swing.JScrollPane jScrollPane17;
@@ -1002,13 +1419,39 @@ public class AdminHomePageViews extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane19;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane20;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable10;
+    private javax.swing.JTable jTable11;
+    private javax.swing.JTable jTable12;
+    private javax.swing.JTable jTable13;
+    private javax.swing.JTable jTable14;
     private javax.swing.JTable jTable15;
     private javax.swing.JTable jTable16;
     private javax.swing.JTable jTable17;
     private javax.swing.JTable jTable18;
     private javax.swing.JTable jTable19;
     private javax.swing.JTable jTable20;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable4;
+    private javax.swing.JTable jTable5;
+    private javax.swing.JTable jTable6;
+    private javax.swing.JTable jTable7;
+    private javax.swing.JTable jTable8;
+    private javax.swing.JTable jTable9;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
     private javax.swing.JButton jbtLamMoi;
+    private javax.swing.JButton jbtLamMoiTinhLuong;
     private javax.swing.JTextField jbtPhoneNumber;
     private javax.swing.JTextField jbtRule;
     private javax.swing.JButton jbtSuaNhanVien;

@@ -1,28 +1,23 @@
 package quan_ly_nhan_vien.views;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
 import javax.swing.JOptionPane;
-import quan_ly_nhan_vien.utils.DatabaseConnection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import quan_ly_nhan_vien.controllers.LoginControllers;
 
-public class Login extends javax.swing.JFrame {
+public class LoginViews extends javax.swing.JFrame {
 
-    public Login() {
+    private final LoginControllers loginController;
+    private LoginViews loginViews;
+
+    public LoginViews() {
         initComponents();
-        //Thêm icon cho chương trình
-//        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/quan_ly_nhan_vien/utils/Image/Logo.png")));
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Đăng nhập");
-        // Thêm sự kiện Enter cho ô tài khoản
-        jtfTaiKhoan.addActionListener(evt -> jtfMatKhau.requestFocus());
 
-        // Thêm sự kiện Enter cho ô mật khẩu
-        jtfMatKhau.addActionListener(evt -> btnDNhapActionPerformed(null)); // Kích hoạt nút đăng nhập khi nhấn Enter
+        loginController = new LoginControllers(this);
+
+        jtfTaiKhoan.addActionListener(evt -> jtfMatKhau.requestFocus());
+        jtfMatKhau.addActionListener(evt -> btnDNhapActionPerformed(null));
     }
 
     @SuppressWarnings("unchecked")
@@ -155,103 +150,35 @@ public class Login extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    public static String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedPassword = md.digest(password.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : hashedPassword) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private void jbtDangKyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDangKyActionPerformed
-        // TODO add your handling code here:
-        openRegisterPage();
-    }//GEN-LAST:event_jbtDangKyActionPerformed
-
-    private void openRegisterPage() {
-        Register registerPage = new Register();
+        RegisterViews registerPage = new RegisterViews();
         registerPage.setVisible(true);
         this.dispose();
-    }
+    }//GEN-LAST:event_jbtDangKyActionPerformed
 
     private void jcbAnHienMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbAnHienMatKhauActionPerformed
-        if (jcbAnHienMatKhau.isSelected()) {
-            jtfMatKhau.setEchoChar((char) 0);  // Hiển thị mật khẩu
-        } else {
-            jtfMatKhau.setEchoChar('*');  // Ẩn mật khẩu
-        }
+        jtfMatKhau.setEchoChar(jcbAnHienMatKhau.isSelected() ? (char) 0 : '*');
     }//GEN-LAST:event_jcbAnHienMatKhauActionPerformed
 
     private void btnDNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDNhapActionPerformed
-        String username = jtfTaiKhoan.getText();
-        String password = new String(jtfMatKhau.getPassword());
+        String username = jtfTaiKhoan.getText().trim();
+        String password = new String(jtfMatKhau.getPassword()).trim();
 
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu.", "Thông tin không hợp lệ", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // Xác thực tài khoản từ cơ sở dữ liệu
-        String role = authenticate(username, password);
-        if (role != null) {
-            JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-
-            // Điều hướng dựa trên vai trò
-            if ("Admin".equalsIgnoreCase(role)) {
-                AdminHomePage adminHomePage = new AdminHomePage();
-                adminHomePage.setVisible(true);
-                this.dispose();
-            } else if ("Employee".equalsIgnoreCase(role)) {
-                EmployeeHomePage employeeHomePage = new EmployeeHomePage(username, password);
-                employeeHomePage.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Vai trò không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Tài khoản hoặc mật khẩu không chính xác.", "Đăng nhập thất bại", JOptionPane.ERROR_MESSAGE);
-            jtfMatKhau.setText("");
-        }
+        // Gọi phương thức login của controller với username và password
+        loginController.login(username, password);
     }//GEN-LAST:event_btnDNhapActionPerformed
 
     private void jtfTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTaiKhoanActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfTaiKhoanActionPerformed
 
-    public String authenticate(String username, String password) {
-        try {
-            // Kết nối cơ sở dữ liệu
-            Connection conn = new DatabaseConnection().getJDBCConnection();
-
-            // Truy vấn kiểm tra tài khoản và lấy vai trò
-            String query = "SELECT r.name AS role FROM Accounts a "
-                    + "JOIN Roles r ON a.role_id = r.id "
-                    + "WHERE a.username = ? AND a.password = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, username);
-
-            // Băm mật khẩu người dùng nhập vào
-            String hashedPassword = hashPassword(password);
-            pstmt.setString(2, hashedPassword);
-
-            // Thực hiện truy vấn
-            ResultSet rs = pstmt.executeQuery();
-
-            // Kiểm tra nếu có kết quả trả về
-            if (rs.next()) {
-                // Lấy vai trò từ kết quả truy vấn
-                return rs.getString("role");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // In ra lỗi nếu có
-        }
-        return null; // Đăng nhập thất bại
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 
     public static void main(String args[]) {
@@ -267,18 +194,18 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new LoginViews().setVisible(true);
             }
         });
     }

@@ -1,31 +1,27 @@
 package quan_ly_nhan_vien.views;
 
-import java.sql.Statement;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import javax.swing.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import quan_ly_nhan_vien.utils.DatabaseConnection;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.PlainDocument;
-import java.util.List;
-import java.util.ArrayList;
+import quan_ly_nhan_vien.controllers.RegisterControllers;
 
-public class Register extends javax.swing.JFrame {
+public class RegisterViews extends javax.swing.JFrame {
 
-    public Register() {
+private final RegisterControllers registerControllers;
+
+    public RegisterViews() {
         initComponents();
+        registerControllers = new RegisterControllers(this);
         setUpFrame();
         applyFilters();
+        applyUsernameFilter();
         addDocumentListeners();
         jtfFullName.addActionListener(evt -> jtfEmail.requestFocus());
         jtfEmail.addActionListener(evt -> jtfSoDienThoai.requestFocus());
@@ -34,6 +30,12 @@ public class Register extends javax.swing.JFrame {
         jtfMatKhau.addActionListener(evt -> jtfNhapLaiMatKhau.requestFocus());
         jtfNhapLaiMatKhau.addActionListener(evt -> BtnTaoTKActionPerformed(null));
 
+        BtnTaoTK.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                BtnTaoTKActionPerformed(e);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -224,29 +226,19 @@ public class Register extends javax.swing.JFrame {
     }
 
     private void addDocumentListener(JTextComponent textComponent, Runnable checkMethod) {
-        textComponent.getDocument().addDocumentListener(new DocumentListener() {
-            public void insertUpdate(DocumentEvent e) {
+        textComponent.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
                 checkMethod.run();
             }
 
-            public void removeUpdate(DocumentEvent e) {
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
                 checkMethod.run();
             }
 
-            public void changedUpdate(DocumentEvent e) {
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
                 checkMethod.run();
             }
         });
-    }
-
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            return bytesToHex(hash);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private String bytesToHex(byte[] bytes) {
@@ -354,226 +346,85 @@ public class Register extends javax.swing.JFrame {
         String password = new String(jtfMatKhau.getPassword()).trim();
         String confirmPassword = new String(jtfNhapLaiMatKhau.getPassword()).trim();
         String fullname = jtfFullName.getText().trim();
-        String email = jtfEmail.getText().trim(); // Thêm ô nhập email
-        String phoneNumber = jtfSoDienThoai.getText().trim(); // Thêm ô nhập số điện thoại
+        String email = jtfEmail.getText().trim();
+        String phoneNumber = jtfSoDienThoai.getText().trim();
 
-        // Validate các trường
         validateFields();
 
-        // Nếu có lỗi, không thực hiện tiếp
         if (!lblNameError.getText().isEmpty() || !lbEmailError.getText().isEmpty()
                 || !lbPhoneError.getText().isEmpty() || !lblPasswordError.getText().isEmpty()
                 || !lblConfirmPasswordError.getText().isEmpty()) {
             return;
         }
 
-        // Kiểm tra tài khoản, số điện thoại và email đã tồn tại
-        if (isUsernameTaken(username)) {
-            JOptionPane.showMessageDialog(this, "Tài khoản đã tồn tại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        } else if (isPhoneNumberTaken(phoneNumber)) {
-            JOptionPane.showMessageDialog(this, "Số điện thoại đã tồn tại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        } else if (isEmailTaken(email)) {
-            JOptionPane.showMessageDialog(this, "Email đã tồn tại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Kết nối cơ sở dữ liệu và thêm tài khoản
-        if (addUserToDatabase(username, password, fullname, email, phoneNumber)) {
-            JOptionPane.showMessageDialog(this, "Tạo tài khoản thành công!.", "Thành công", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Không thể tạo tài khoản.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
+        registerControllers.registerUser(username, password, fullname, email, phoneNumber);
     }//GEN-LAST:event_BtnTaoTKActionPerformed
 
-    private void showMessage(String message, String title) {
+    public void showMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
-
-    //Thêm thông tin nhân viên vào bảng employees và bảng accounts sau khi tạo tài khoản
-    private boolean addUserToDatabase(String username, String password, String fullname, String email, String phoneNumber) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        String accountQuery = "INSERT INTO Accounts (employee_id, username, password) VALUES (?, ?, ?)";
-        String employeeQuery = "INSERT INTO Employees (full_name, email, phone_number) VALUES (?, ?, ?)";
-
-        Connection conn = null; // Khai báo conn ở đây để có thể sử dụng trong catch
-
-        try {
-            conn = dbConnection.getJDBCConnection();
-            conn.setAutoCommit(false); // Tắt tự động commit
-
-            // Thêm vào bảng Employees
-            int employeeId = -1; // Khai báo để lưu employee_id
-            try (PreparedStatement stmt1 = conn.prepareStatement(employeeQuery, Statement.RETURN_GENERATED_KEYS)) {
-                stmt1.setString(1, fullname);
-                stmt1.setString(2, email);
-                stmt1.setString(3, phoneNumber);
-                stmt1.executeUpdate();
-
-                // Lấy employee_id vừa được sinh ra
-                try (ResultSet generatedKeys = stmt1.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        employeeId = generatedKeys.getInt(1); // Lấy employee_id
-                    } else {
-                        throw new SQLException("Không thể lấy employee_id.");
-                    }
-                }
-            }
-
-            // Thêm vào bảng Accounts
-            try (PreparedStatement stmt2 = conn.prepareStatement(accountQuery)) {
-                stmt2.setInt(1, employeeId); // Sử dụng employee_id
-                stmt2.setString(2, username);
-                stmt2.setString(3, hashPassword(password)); // Mã hóa mật khẩu
-                stmt2.executeUpdate();
-            }
-
-            // Nếu cả hai truy vấn thành công, commit
-            conn.commit();
-            return true;
-        } catch (SQLException ex) {
-            System.out.println("Lỗi khi tạo tài khoản: " + ex.getMessage());
-            ex.printStackTrace();
-            try {
-                // Nếu có lỗi, rollback
-                if (conn != null) {
-                    conn.rollback();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return false;
-        } finally {
-            // Đảm bảo đóng kết nối
-            if (conn != null) {
-                try {
-                    conn.close(); // Đóng kết nối
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    //Kiểm tra tài khoản có tồn tại hay không
-    private boolean isUsernameTaken(String username) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        try (Connection conn = dbConnection.getJDBCConnection()) {
-            String query = "SELECT COUNT(*) FROM accounts WHERE username = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, username);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    return rs.next() && rs.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Lỗi khi kiểm tra tài khoản: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    //Kiểm tra số điện thoại có tồm tại hay không ?
-    private boolean isPhoneNumberTaken(String phoneNumber) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        try (Connection conn = dbConnection.getJDBCConnection()) {
-            String query = "SELECT COUNT(*) FROM employees WHERE phone_number = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, phoneNumber);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    return rs.next() && rs.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Lỗi khi kiểm tra số điện thoại: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    //Kiểm tra email có tồn tại hay không 
-    private boolean isEmailTaken(String email) {
-        DatabaseConnection dbConnection = new DatabaseConnection();
-        try (Connection conn = dbConnection.getJDBCConnection()) {
-            String query = "SELECT COUNT(*) FROM employees WHERE email = ?";
-            try (PreparedStatement stmt = conn.prepareStatement(query)) {
-                stmt.setString(1, email);
-                try (ResultSet rs = stmt.executeQuery()) {
-                    return rs.next() && rs.getInt(1) > 0;
-                }
-            }
-        } catch (SQLException ex) {
-            System.out.println("Lỗi khi kiểm tra email: " + ex.getMessage());
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
+    //Mở trang đăng nhập
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
-        openLoginPage();
-    }//GEN-LAST:event_btnDangNhapActionPerformed
-
-    private void openLoginPage() {
-        new Login().setVisible(true);
+        new LoginViews().setVisible(true);
         this.dispose();
-    }
+    }//GEN-LAST:event_btnDangNhapActionPerformed
 
     //Chỉ cho phép nhập vào số dành cho số điện thoại
     public class NumberFilter extends DocumentFilter {
 
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-            if (isValidNumber(string)) {
-                super.insertString(fb, offset, string, attr);
-            }
+            processInput(fb, offset, 0, string, attr);
         }
 
         @Override
         public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-            if (isValidNumber(text)) {
-                super.replace(fb, offset, length, text, attrs);
+            processInput(fb, offset, length, text, attrs);
+        }
+
+        private void processInput(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            if (text != null && text.matches("[0-9]+")) {
+                if (length > 0) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else {
+                    super.insertString(fb, offset, text, attrs);
+                }
             }
         }
-
-        @Override
-        public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-            super.remove(fb, offset, length);
-        }
-
-        private boolean isValidNumber(String string) {
-            return string != null && string.matches("[0-9]+");
-        }
     }
 
-    private void applyFilters() {
-        PlainDocument doc = (PlainDocument) jtfSoDienThoai.getDocument();
-        doc.setDocumentFilter(new NumberFilter());
-    }
-
-    //Chỉ cho phép nhập các ký tự 0-9, A-Z
+    //Chỉ cho phép nhập chữ và số cho tên tài khoản
     public class UsernameFilter extends DocumentFilter {
 
         @Override
         public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-            if (isValidUsername(string)) {
-                super.insertString(fb, offset, string, attr);
-            }
+            processInput(fb, offset, 0, string, attr);
         }
 
         @Override
         public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-            if (isValidUsername(text)) {
-                super.replace(fb, offset, length, text, attrs);
-            }
+            processInput(fb, offset, length, text, attrs);
         }
 
-        private boolean isValidUsername(String string) {
-            // Chỉ cho phép chữ cái và số
-            return string != null && string.matches("[a-zA-Z0-9]+");
+        private void processInput(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+            // Chỉ cho phép chữ và số, không cho phép ký tự đặc biệt
+            if (text != null && text.matches("[a-zA-Z0-9]+")) {
+                if (length > 0) {
+                    super.replace(fb, offset, length, text, attrs);
+                } else {
+                    super.insertString(fb, offset, text, attrs);
+                }
+            }
         }
     }
 
+    //Bộ lọc số diện thoại
+    private void applyFilters() {
+        PlainDocument doc = (PlainDocument) jtfSoDienThoai.getDocument();
+        doc.setDocumentFilter(new NumberFilter());
+    }
+    
+    //Bộ lọc tên tài khoản
     private void applyUsernameFilter() {
         PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
         doc.setDocumentFilter(new UsernameFilter());
@@ -604,16 +455,16 @@ public class Register extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Register.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RegisterViews.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         java.awt.EventQueue.invokeLater(() -> {
-            new Register().setVisible(true);
+            new RegisterViews().setVisible(true);
         });
     }
 

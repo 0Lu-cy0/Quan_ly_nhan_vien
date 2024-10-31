@@ -31,7 +31,7 @@ public class DatabaseConnection {
     }
 
     // Phương thức này trả về Connection cho các lớp khác sử dụng
-    public Connection getJDBCConnection() {
+    public  Connection getJDBCConnection() {
         return conn;
     }
 

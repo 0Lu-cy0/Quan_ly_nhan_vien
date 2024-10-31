@@ -24,6 +24,13 @@ Các lưu ý:
 17: Phần chấm công ở trang chủ nhân viên có thể tìm kiếm, sửa và xuất ra báo cáo
 18. Nút để xem lịch sử chấm công (View Timesheets) ở trang nhân viên.
 19. Lỗi khi bấm lịch, các nhân viên có id khác nhau không có bảng lịch riêng mà vẫn bị ảnh hưởng lẫn nhau
+20. Hiển thị các trong attendance_date các ngày chủ nhật tự động hiện trạng thái nghỉ
+21. Thực lĩnh = baseSalary/số ngày trên tháng - số ngày nghỉ + số ngày chủ nhật trong tháng + bonus 
+22. Khi nhấp vào ok ở trang đăng ký, employee_id đều được cập nhật ở tất cả các trang attendance, salary
+23. Sửa lỗi month trong bảng attendance không thể null
+24. Xuất PDF của lương 
+25. Chia nhỏ AdminHomePage
+
 ######   Bonus   ######
 1. Chức năng quên mật khẩu ở giao diện login
 2. Thống kê, báo cáo
