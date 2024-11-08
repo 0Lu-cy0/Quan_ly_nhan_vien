@@ -22,13 +22,6 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Nhân viên");
-        jtfChucVu.setEditable(false);
-        jtfDiaChi.setEditable(false);
-        jtfHoVaTen.setEditable(false);
-        jtfLuong.setEditable(false);
-        jtfMatKhau.setEditable(false);
-        jtfNgayThangNamSinh.setEditable(false);
-        jtfTaiKhoan.setEditable(false);
         // Gọi hàm load thông tin nhân viên
         loadEmployeeData(username); // Sử dụng employeeID đã lưu
     }
@@ -41,17 +34,14 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jbtDoiMatKhau = new javax.swing.JButton();
         jbtDangXuat = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jbtLichSuChamCong = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jtfTaiKhoan = new javax.swing.JTextField();
-        jtfChucVu = new javax.swing.JTextField();
+        jtfPhoneNumber = new javax.swing.JTextField();
+        jtfAddress = new javax.swing.JTextField();
         jtfLuong = new javax.swing.JTextField();
         jtfHoVaTen = new javax.swing.JTextField();
         jtfNgayThangNamSinh = new javax.swing.JTextField();
-        jtfDiaChi = new javax.swing.JTextField();
-        jtfMatKhau = new javax.swing.JPasswordField();
+        jtfEmail = new javax.swing.JTextField();
         jPanel6 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
@@ -80,16 +70,10 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel3.add(jbtDangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 50));
 
-        jButton1.setText("Chấm công ra");
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 100, 120, 50));
+        jbtLichSuChamCong.setText("Lịch sử chấm công");
+        jPanel3.add(jbtLichSuChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 140, 50));
 
-        jButton2.setText("Chấm công vào");
-        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 100, 120, 50));
-
-        jButton3.setText("Lịch sử chấm công");
-        jPanel3.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 140, 50));
-
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 610, 470, 180));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 470, 180));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Thông tin nhân viên", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 18), new java.awt.Color(0, 102, 102))); // NOI18N
@@ -97,24 +81,27 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel4.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jtfTaiKhoan.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jtfTaiKhoan.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
-        jtfTaiKhoan.addActionListener(new java.awt.event.ActionListener() {
+        jtfPhoneNumber.setEditable(false);
+        jtfPhoneNumber.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jtfPhoneNumber.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Phone Number", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfPhoneNumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfTaiKhoanActionPerformed(evt);
+                jtfPhoneNumberActionPerformed(evt);
             }
         });
-        jPanel4.add(jtfTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 452, 50));
+        jPanel4.add(jtfPhoneNumber, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 452, 50));
 
-        jtfChucVu.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jtfChucVu.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Địa chỉ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
-        jtfChucVu.addActionListener(new java.awt.event.ActionListener() {
+        jtfAddress.setEditable(false);
+        jtfAddress.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jtfAddress.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Địa chỉ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfAddress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfChucVuActionPerformed(evt);
+                jtfAddressActionPerformed(evt);
             }
         });
-        jPanel4.add(jtfChucVu, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 452, 50));
+        jPanel4.add(jtfAddress, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 452, 50));
 
+        jtfLuong.setEditable(false);
         jtfLuong.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jtfLuong.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Lương", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jtfLuong.addActionListener(new java.awt.event.ActionListener() {
@@ -122,8 +109,9 @@ public class EmployeeHomePage extends javax.swing.JFrame {
                 jtfLuongActionPerformed(evt);
             }
         });
-        jPanel4.add(jtfLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 390, 452, 50));
+        jPanel4.add(jtfLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 452, 50));
 
+        jtfHoVaTen.setEditable(false);
         jtfHoVaTen.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jtfHoVaTen.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Họ và tên", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jtfHoVaTen.addActionListener(new java.awt.event.ActionListener() {
@@ -133,6 +121,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel4.add(jtfHoVaTen, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 29, 452, 50));
 
+        jtfNgayThangNamSinh.setEditable(false);
         jtfNgayThangNamSinh.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         jtfNgayThangNamSinh.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Ngày, tháng, năm sinh", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
         jtfNgayThangNamSinh.addActionListener(new java.awt.event.ActionListener() {
@@ -142,20 +131,17 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel4.add(jtfNgayThangNamSinh, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 452, 50));
 
-        jtfDiaChi.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jtfDiaChi.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Ngày vào làm việc", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
-        jtfDiaChi.addActionListener(new java.awt.event.ActionListener() {
+        jtfEmail.setEditable(false);
+        jtfEmail.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jtfEmail.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Email", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
+        jtfEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfDiaChiActionPerformed(evt);
+                jtfEmailActionPerformed(evt);
             }
         });
-        jPanel4.add(jtfDiaChi, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 320, 452, 50));
+        jPanel4.add(jtfEmail, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 452, 50));
 
-        jtfMatKhau.setForeground(new java.awt.Color(0, 102, 102));
-        jtfMatKhau.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 2, true), "Số điện thoại", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 1, 14), new java.awt.Color(0, 102, 102))); // NOI18N
-        jPanel4.add(jtfMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 452, 50));
-
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 470, 460));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 470, 400));
 
         jPanel6.setBackground(new java.awt.Color(0, 102, 102));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -168,7 +154,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
 
         jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 130));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 780));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 730));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -185,86 +171,75 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtDangXuatActionPerformed
 
     private void jbtDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDoiMatKhauActionPerformed
-        String username = jtfTaiKhoan.getText();  // Lấy tên tài khoản hiện tại từ ô jtfTaiKhoan
+        String username = jtfPhoneNumber.getText();  // Lấy tên tài khoản hiện tại từ ô jtfTaiKhoan
         ChangePassword changePasswordPage = new ChangePassword(username);  // Truyền username qua trang đổi mật khẩu 
         changePasswordPage.setVisible(true);
         dispose();
     }//GEN-LAST:event_jbtDoiMatKhauActionPerformed
 
     private void loadEmployeeData(String username) {
-        String query = "SELECT e.fullname, e.address, e.job_title, s.base_salary, e.password, e.date_of_birth "
-                + "FROM employee e "
-                + "LEFT JOIN salary s ON e.employee_id = s.employee_id "
-                + "WHERE e.employee_id = ?";
+        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, e.salary "
+                + "FROM employees e "
+                + "JOIN accounts a ON e.employee_id = a.employee_id "
+                + "WHERE a.username = ?";
 
-        try {
-            PreparedStatement ps = dbConnection.getJDBCConnection().prepareStatement(query);
+        try (Connection connection = dbConnection.getJDBCConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
+
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Hiển thị thông tin tài khoản
-                jtfTaiKhoan.setText(username);
-                jtfHoVaTen.setText(rs.getString("fullname"));
+                // Hiển thị thông tin nhân viên
+                jtfPhoneNumber.setText(rs.getString("email"));
+                jtfHoVaTen.setText(rs.getString("full_name"));
+                jtfPhoneNumber.setText(rs.getString("phone_number"));
 
                 // Kiểm tra và hiển thị thông tin địa chỉ
                 String address = rs.getString("address");
-                if (address == null) {
-                    jtfDiaChi.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfDiaChi.setForeground(java.awt.Color.RED); // Đổi màu chữ thành đỏ
+                if (address == null || address.trim().isEmpty()) {
+                    jtfAddress.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
+                    jtfAddress.setForeground(java.awt.Color.RED);
                 } else {
-                    jtfDiaChi.setText(address);
-                    jtfDiaChi.setForeground(java.awt.Color.BLACK); // Đặt màu chữ lại thành đen
+                    jtfAddress.setText(address);
+                    jtfAddress.setForeground(java.awt.Color.BLACK);
                 }
 
-                // Kiểm tra và hiển thị thông tin chức vụ
-                String jobTitle = rs.getString("job_title");
-                if (jobTitle == null) {
-                    jtfChucVu.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfChucVu.setForeground(java.awt.Color.RED); // Đổi màu chữ thành đỏ
+                // Kiểm tra và hiển thị thông tin ngày sinh
+                String dob = rs.getString("date_of_birth");
+                if (dob == null || dob.trim().isEmpty()) {
+                    jtfNgayThangNamSinh.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
+                    jtfNgayThangNamSinh.setForeground(java.awt.Color.RED);
                 } else {
-                    jtfChucVu.setText(jobTitle);
-                    jtfChucVu.setForeground(java.awt.Color.BLACK); // Đặt màu chữ lại thành đen
+                    jtfNgayThangNamSinh.setText(dob);
+                    jtfNgayThangNamSinh.setForeground(java.awt.Color.BLACK);
                 }
 
                 // Kiểm tra và hiển thị thông tin lương
-                if (rs.getObject("base_salary") == null) {
+                float salary = rs.getFloat("salary");
+                if (rs.wasNull()) {
                     jtfLuong.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfLuong.setForeground(java.awt.Color.RED); // Đổi màu chữ thành đỏ
+                    jtfLuong.setForeground(java.awt.Color.RED);
                 } else {
-                    jtfLuong.setText(String.valueOf(rs.getFloat("base_salary")));
-                    jtfLuong.setForeground(java.awt.Color.BLACK); // Đặt màu chữ lại thành đen
+                    jtfLuong.setText(String.format("%,.0f", salary)); // Định dạng lương có dấu phẩy
+                    jtfLuong.setForeground(java.awt.Color.BLACK);
                 }
-
-                // Hiển thị thông tin ngày tháng năm sinh
-                String dateOfBirth = rs.getString("date_of_birth");
-                if (dateOfBirth == null) {
-                    jtfNgayThangNamSinh.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfNgayThangNamSinh.setForeground(java.awt.Color.RED); // Đổi màu chữ thành đỏ
-                } else {
-                    jtfNgayThangNamSinh.setText(dateOfBirth);
-                    jtfNgayThangNamSinh.setForeground(java.awt.Color.BLACK); // Đặt màu chữ lại thành đen
-                }
-
-                jtfMatKhau.setText("********");  // Hiển thị mật khẩu cố định
             } else {
-                // Không tìm thấy nhân viên
-                JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên với ID: " + username, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhân viên!", "Thông báo", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu nhân viên: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 
 
-    private void jtfTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTaiKhoanActionPerformed
+    private void jtfPhoneNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPhoneNumberActionPerformed
 
-    }//GEN-LAST:event_jtfTaiKhoanActionPerformed
+    }//GEN-LAST:event_jtfPhoneNumberActionPerformed
 
-    private void jtfChucVuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfChucVuActionPerformed
+    private void jtfAddressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfAddressActionPerformed
         this.setEnabled(false);
-    }//GEN-LAST:event_jtfChucVuActionPerformed
+    }//GEN-LAST:event_jtfAddressActionPerformed
 
     private void jtfLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfLuongActionPerformed
         this.setEnabled(false);
@@ -278,9 +253,9 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         this.setEnabled(false);
     }//GEN-LAST:event_jtfNgayThangNamSinhActionPerformed
 
-    private void jtfDiaChiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfDiaChiActionPerformed
-        this.setEnabled(false);
-    }//GEN-LAST:event_jtfDiaChiActionPerformed
+    private void jtfEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfEmailActionPerformed
 
     private boolean authenticateUser(String username, String password) {
         String query = "SELECT * FROM Employee WHERE employee_id = ? AND password = ?";
@@ -309,9 +284,6 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
@@ -320,12 +292,12 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton jbtDangXuat;
     private javax.swing.JButton jbtDoiMatKhau;
-    private javax.swing.JTextField jtfChucVu;
-    private javax.swing.JTextField jtfDiaChi;
+    private javax.swing.JButton jbtLichSuChamCong;
+    private javax.swing.JTextField jtfAddress;
+    private javax.swing.JTextField jtfEmail;
     private javax.swing.JTextField jtfHoVaTen;
     private javax.swing.JTextField jtfLuong;
-    private javax.swing.JPasswordField jtfMatKhau;
     private javax.swing.JTextField jtfNgayThangNamSinh;
-    private javax.swing.JTextField jtfTaiKhoan;
+    private javax.swing.JTextField jtfPhoneNumber;
     // End of variables declaration//GEN-END:variables
 }

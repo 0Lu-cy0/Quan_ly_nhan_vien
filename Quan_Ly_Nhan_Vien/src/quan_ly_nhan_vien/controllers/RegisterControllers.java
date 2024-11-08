@@ -72,7 +72,7 @@ public class RegisterControllers {
         String hashedPassword = HashPassword.hashPassword(password);
 
         registerModel.setUsername(username);
-        registerModel.setPassword(hashedPassword);
+        registerModel.setPassword(hashedPassword);  
         registerModel.setFullname(fullname);
         registerModel.setEmail(email);
         registerModel.setPhoneNumber(phoneNumber);
