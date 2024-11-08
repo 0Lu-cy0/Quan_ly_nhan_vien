@@ -2,7 +2,7 @@ package quan_ly_nhan_vien.controllers;
 
 import quan_ly_nhan_vien.dao.LoginDAO;
 import quan_ly_nhan_vien.models.LoginModels;
-import quan_ly_nhan_vien.views.AdminHomePageViews;
+import quan_ly_nhan_vien.views.TrangChinh;
 import quan_ly_nhan_vien.views.EmployeeHomePage;
 import quan_ly_nhan_vien.views.LoginViews;
 
@@ -26,7 +26,7 @@ public class LoginControllers {
 
         switch (loginResult) {
             case LoginDAO.LOGIN_SUCCESS_ADMIN:
-                AdminHomePageViews adminPage = new AdminHomePageViews();
+                TrangChinh adminPage = new TrangChinh();
                 adminPage.setVisible(true);
                 loginViews.dispose();
                 break;

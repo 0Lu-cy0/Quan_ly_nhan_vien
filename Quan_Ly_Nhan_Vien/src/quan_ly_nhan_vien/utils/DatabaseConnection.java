@@ -7,8 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.PreparedStatement;
 
 public class DatabaseConnection {
+
     private final String connectionString = "jdbc:mysql://localhost:3306/quan_ly_nhan_vien"; // Thay đổi connection string cho MySQL
     private final String user = "root"; // Tên người dùng MySQL của bạn
     private final String password = "123456789"; // Mật khẩu MySQL của bạn
@@ -31,8 +33,19 @@ public class DatabaseConnection {
     }
 
     // Phương thức này trả về Connection cho các lớp khác sử dụng
-    public  Connection getJDBCConnection() {
-        return conn;
+    public Connection getJDBCConnection() {
+        Connection conn = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection(connectionString, user, password);
+            return conn;
+        } catch (ClassNotFoundException ex) {
+            System.out.println("Không tìm thấy Driver: " + ex.getMessage());
+            return null;
+        } catch (SQLException ex) {
+            System.out.println("Lỗi kết nối MySQL: " + ex.getMessage());
+            return null;
+        }
     }
 
     // Thực thi câu lệnh SELECT và trả về ResultSet

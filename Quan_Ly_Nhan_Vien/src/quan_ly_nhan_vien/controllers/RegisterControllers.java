@@ -57,6 +57,7 @@ public class RegisterControllers {
     }
 
     public boolean registerUser(String username, String password, String fullname, String email, String phoneNumber) {
+
         if (registerDAO.isUsernameTaken(username)) {
             registerViews.showMessage("Tài khoản đã tồn tại.", "Lỗi");
             return false;
@@ -69,6 +70,7 @@ public class RegisterControllers {
         }
 
         String hashedPassword = HashPassword.hashPassword(password);
+
         registerModel.setUsername(username);
         registerModel.setPassword(hashedPassword);
         registerModel.setFullname(fullname);

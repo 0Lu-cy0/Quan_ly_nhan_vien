@@ -14,7 +14,7 @@ import quan_ly_nhan_vien.controllers.RegisterControllers;
 
 public class RegisterViews extends javax.swing.JFrame {
 
-private final RegisterControllers registerControllers;
+    private final RegisterControllers registerControllers;
 
     public RegisterViews() {
         initComponents();
@@ -29,13 +29,6 @@ private final RegisterControllers registerControllers;
         jtfTaiKhoan.addActionListener(evt -> jtfMatKhau.requestFocus());
         jtfMatKhau.addActionListener(evt -> jtfNhapLaiMatKhau.requestFocus());
         jtfNhapLaiMatKhau.addActionListener(evt -> BtnTaoTKActionPerformed(null));
-
-        BtnTaoTK.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                BtnTaoTKActionPerformed(e);
-            }
-        });
     }
 
     @SuppressWarnings("unchecked")
@@ -356,13 +349,13 @@ private final RegisterControllers registerControllers;
                 || !lblConfirmPasswordError.getText().isEmpty()) {
             return;
         }
-
         registerControllers.registerUser(username, password, fullname, email, phoneNumber);
     }//GEN-LAST:event_BtnTaoTKActionPerformed
 
     public void showMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
+
     //Mở trang đăng nhập
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
         new LoginViews().setVisible(true);
@@ -423,7 +416,7 @@ private final RegisterControllers registerControllers;
         PlainDocument doc = (PlainDocument) jtfSoDienThoai.getDocument();
         doc.setDocumentFilter(new NumberFilter());
     }
-    
+
     //Bộ lọc tên tài khoản
     private void applyUsernameFilter() {
         PlainDocument doc = (PlainDocument) jtfTaiKhoan.getDocument();
