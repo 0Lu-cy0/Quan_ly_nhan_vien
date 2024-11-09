@@ -259,8 +259,6 @@ public class EmployeeViews extends javax.swing.JPanel {
             ps.setString(5, address);
             ps.setDate(6, java.sql.Date.valueOf(ngaySinh));
             
-            String sql = "INSERT INTO accounts (employee_id, email, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
-
             int result = ps.executeUpdate();
             if (result > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
