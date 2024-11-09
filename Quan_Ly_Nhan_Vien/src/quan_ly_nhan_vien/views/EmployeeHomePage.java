@@ -178,10 +178,11 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtDoiMatKhauActionPerformed
 
     private void loadEmployeeData(String username) {
-        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, e.salary "
-                + "FROM employees e "
-                + "JOIN accounts a ON e.employee_id = a.employee_id "
-                + "WHERE a.username = ?";
+        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, s.salary "
+               + "FROM employees e "
+               + "JOIN accounts a ON e.employee_id = a.employee_id "
+               + "JOIN salaries s ON e.employee_id = s.employee_id "
+               + "WHERE a.username = ?";
 
         try (Connection connection = dbConnection.getJDBCConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
 

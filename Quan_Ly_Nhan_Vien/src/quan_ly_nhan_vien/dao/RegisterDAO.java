@@ -175,11 +175,12 @@ public class RegisterDAO {
             }
 
             // Thêm account
-            String accountQuery = "INSERT INTO Accounts (employee_id, username, password) VALUES (?, ?, ?)";
+            String accountQuery = "INSERT INTO Accounts (employee_id, username, password, email) VALUES (?, ?, ?, ?)";
             stmt2 = conn.prepareStatement(accountQuery);
             stmt2.setInt(1, employeeId);
             stmt2.setString(2, model.getUsername());
             stmt2.setString(3, model.getPassword());
+            stmt2.setString(4, model.getEmail());
             stmt2.executeUpdate();
 
             // Thêm bản ghi vào bảng attendances với giá trị mặc định

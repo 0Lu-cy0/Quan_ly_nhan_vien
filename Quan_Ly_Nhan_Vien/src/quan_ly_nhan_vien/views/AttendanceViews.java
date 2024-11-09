@@ -393,7 +393,6 @@ public class AttendanceViews extends javax.swing.JPanel {
         // Tách monthYear thành tháng và năm
         String[] parts = monthYear.split("/");
         if (parts.length != 2) {
-            System.out.println("Định dạng monthYear không hợp lệ: " + monthYear);
             return 0; // Thoát nếu định dạng không hợp lệ
         }
 
@@ -403,12 +402,8 @@ public class AttendanceViews extends javax.swing.JPanel {
             month = Integer.parseInt(parts[0]); // Lấy tháng
             year = Integer.parseInt(parts[1]); // Lấy năm
         } catch (NumberFormatException e) {
-            System.out.println("Lỗi khi chuyển đổi tháng hoặc năm: " + e.getMessage());
             return 0; // Thoát nếu có lỗi khi chuyển đổi
         }
-
-        // Debug: In ra thông tin nhân viên và tháng/năm
-        System.out.println("Tìm kiếm số ngày nghỉ cho Employee ID: " + employeeId + ", Month: " + month + ", Year: " + year);
 
         for (int i = 0; i < jtbBangChamCong.getRowCount(); i++) {
             // Lấy giá trị tháng và năm từ cột monthYear
@@ -425,15 +420,11 @@ public class AttendanceViews extends javax.swing.JPanel {
                     int dayOff = Integer.parseInt(jtbBangChamCong.getValueAt(i, 3).toString()); // Cột Day Off
                     return dayOff;
                 }
-            } else {
-                System.out.println("Định dạng tháng/năm không hợp lệ trong bảng chấm công: " + monthYearValue);
             }
-
         }
 
-        // Debug: Nếu không tìm thấy
-        System.out.println("Không tìm thấy số ngày nghỉ cho Employee ID: " + employeeId + ", Month: " + month + ", Year: " + year);
-        return 0; // Trả về 0 nếu không tìm thấy
+        // Trả về 0 nếu không tìm thấy
+        return 0;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

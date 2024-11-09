@@ -397,8 +397,6 @@ public class SalaryViews extends javax.swing.JPanel {
                     + "FROM salaries "
                     + "ORDER BY salary_year DESC, salary_month DESC";
 
-            System.out.println("Chạy truy vấn: " + sql); // Debug: In ra câu lệnh SQL
-
             ps = conn.prepareStatement(sql);
             rs = ps.executeQuery();
 
@@ -415,10 +413,7 @@ public class SalaryViews extends javax.swing.JPanel {
                 int employeeId = rs.getInt("employee_id");
                 int month = rs.getInt("salary_month");
                 int year = rs.getInt("salary_year");
-                String monthYear = String.format("%02d/%d", month, year); // Format tháng/năm
-
-                // Debug: In ra thông tin nhân viên
-                System.out.println("Lấy dữ liệu cho Employee ID: " + employeeId + ", MonthYear: " + monthYear);
+                String monthYear = String.format("%02d/%d", month, year);
 
                 int dayOff = attendanceViews.getDayOffForEmployee(employeeId, monthYear); // Cập nhật để lấy số ngày nghỉ theo monthYear
 
@@ -442,9 +437,6 @@ public class SalaryViews extends javax.swing.JPanel {
                     formattedBonus, // Thưởng đã format
                     formattedNetSalary // Thực lĩnh đã format
                 });
-
-                // Debug: In ra thông tin dòng đã thêm
-                System.out.println("Thêm dòng: " + (stt - 1) + " - Employee ID: " + employeeId + ", Base Salary: " + formattedBaseSalary + ", Bonus: " + formattedBonus + ", Net Salary: " + formattedNetSalary + ", Day Off: " + dayOff);
             }
 
             // Set model cho JTable
@@ -454,10 +446,6 @@ public class SalaryViews extends javax.swing.JPanel {
             if (jtbSalary.getColumnModel().getColumnCount() > 0) {
                 jtbSalary.getColumnModel().getColumn(0).setPreferredWidth(50);
             }
-
-            // Debug: In ra số hàng đã được thêm vào bảng
-            System.out.println("Tổng số bản ghi hiển thị: " + model.getRowCount());
-
         } catch (SQLException e) {
             System.err.println("Lỗi truy vấn database: " + e.getMessage());
             e.printStackTrace();
@@ -505,46 +493,34 @@ public class SalaryViews extends javax.swing.JPanel {
         });
     }
 
-    private void updateDayOff(int employeeId, String monthYear) {
+    public void updateDayOff(int employeeId, String monthYear) {
         // Tách tháng và năm từ monthYear
         String[] parts = monthYear.split("/");
         if (parts.length != 2) {
-            System.out.println("Định dạng monthYear không hợp lệ: " + monthYear);
-            return; // Thoát nếu định dạng không hợp lệ
+            return;
         }
 
         int month;
         int year;
         try {
-            month = Integer.parseInt(parts[0]); // Tháng
-            year = Integer.parseInt(parts[1]); // Năm
+            month = Integer.parseInt(parts[0]);
+            year = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Lỗi khi chuyển đổi month hoặc year: " + e.getMessage());
-            return; // Thoát nếu có lỗi khi chuyển đổi
+            return;
         }
 
         // Lấy số ngày nghỉ cho nhân viên
         int dayOff = attendanceViews.getDayOffForEmployee(employeeId, monthYear);
 
-        // Debug: In ra số ngày nghỉ
-        System.out.println("Employee ID: " + employeeId + ", MonthYear: " + monthYear + ", Day Off: " + dayOff);
-
         // Cập nhật giá trị Day Off trong bảng jtbSalary
-        boolean found = false; // Biến để kiểm tra nếu tìm thấy hàng
+        boolean found = false;
         for (int i = 0; i < jtbSalary.getRowCount(); i++) {
             if (jtbSalary.getValueAt(i, 1).toString().equals(String.valueOf(employeeId))
-                    && jtbSalary.getValueAt(i, 2).toString().equals(monthYear)) { // So sánh với monthYear
-                jtbSalary.setValueAt(dayOff, i, 4); // Giả sử cột Day Off là cột thứ 4
-                found = true; // Đánh dấu là đã tìm thấy
+                    && jtbSalary.getValueAt(i, 2).toString().equals(monthYear)) {
+                jtbSalary.setValueAt(dayOff, i, 4);
+                found = true;
                 break;
             }
-        }
-
-        // Debug: Kiểm tra xem có tìm thấy hàng không
-        if (!found) {
-            System.out.println("Không tìm thấy bản ghi cho Employee ID: " + employeeId + " và MonthYear: " + monthYear);
-        } else {
-            System.out.println("Cập nhật thành công số ngày nghỉ cho Employee ID: " + employeeId);
         }
     }
 

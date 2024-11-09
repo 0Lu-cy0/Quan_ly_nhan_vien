@@ -23,6 +23,7 @@ public class AttendanceDate extends javax.swing.JDialog {
     private List<Integer> offDays = new ArrayList<>(); // Danh sách các ngày nghỉ
     private Map<String, Map<Integer, String>> monthDayStatus = new HashMap<>(); // Lưu trạng thái cho từng tháng
     private int employeeId;
+    private SalaryViews salaryViews; // Khai báo đối tượng SalaryViews
 
     public AttendanceDate(java.awt.Frame parent, int employeeId, int month, int year) {
         super(parent, true);
@@ -50,6 +51,11 @@ public class AttendanceDate extends javax.swing.JDialog {
     public AttendanceDate(java.awt.Frame parent, int employeeId) {
         this(parent, employeeId, Calendar.getInstance().get(Calendar.MONTH) + 1,
                 Calendar.getInstance().get(Calendar.YEAR));
+    }
+
+    public AttendanceDate(int employeeId, SalaryViews salaryViews) {
+        this.employeeId = employeeId;
+        this.salaryViews = salaryViews; // Gán đối tượng SalaryViews
     }
 
     @SuppressWarnings("unchecked")
@@ -116,7 +122,6 @@ public class AttendanceDate extends javax.swing.JDialog {
         Calendar calendar = jcldAttendenceDate.getCalendar();
         int month = calendar.get(Calendar.MONTH) + 1;
         int year = calendar.get(Calendar.YEAR);
-
         String monthYearKey = month + "/" + year;
         Map<Integer, String> dayStatus = monthDayStatus.get(monthYearKey);
 
@@ -125,19 +130,19 @@ public class AttendanceDate extends javax.swing.JDialog {
             dayStatus = monthDayStatus.get(monthYearKey);
         }
 
-        // Chỉ lưu cho employeeId hiện tại
+        // Lưu trạng thái chấm công vào cơ sở dữ liệu
         for (int day = 1; day <= 31; day++) {
-            // Kiểm tra tính hợp lệ của ngày
             if (isDateValid(year, month, day)) {
                 String status = dayStatus.getOrDefault(day, "Đi Làm");
 
+                // Kiểm tra xem ngày đã tồn tại trong bảng attendances chưa
                 String checkQuery = "SELECT COUNT(*) AS count FROM attendances WHERE DAY(day) = ? AND MONTH(day) = ? AND YEAR(day) = ? AND employee_id = ?";
 
                 try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
                     checkStmt.setInt(1, day);
                     checkStmt.setInt(2, month);
                     checkStmt.setInt(3, year);
-                    checkStmt.setInt(4, this.employeeId); // Sử dụng employeeId của nhân viên hiện tại
+                    checkStmt.setInt(4, this.employeeId);
                     ResultSet rs = checkStmt.executeQuery();
                     rs.next();
                     int count = rs.getInt("count");
@@ -151,7 +156,7 @@ public class AttendanceDate extends javax.swing.JDialog {
                             insertStmt.executeUpdate();
                         }
                     } else {
-                        // Cập nhật
+                        // Cập nhật trạng thái nếu đã tồn tại
                         String query = "UPDATE attendances SET status = ? WHERE DAY(day) = ? AND MONTH(day) = ? AND YEAR(day) = ? AND employee_id = ?";
                         try (PreparedStatement updateStmt = conn.prepareStatement(query)) {
                             updateStmt.setString(1, status);
@@ -168,9 +173,40 @@ public class AttendanceDate extends javax.swing.JDialog {
             }
         }
 
+        // Cập nhật bảng salaries sau khi lưu trạng thái chấm công
+        String monthYear = month + "/" + year; // Tạo chuỗi monthYear
+        insertIntoSalary(this.employeeId, monthYear); // Thêm mới nếu chưa có trong bảng salaries
+
+        // Gọi phương thức updateDayOff từ SalaryViews để cập nhật số ngày nghỉ
+        if (salaryViews != null) {
+            salaryViews.updateDayOff(this.employeeId, monthYear);
+        }
+
         dbConnection.closeConnection();
         System.out.println("Đã lưu trạng thái cho nhân viên " + this.employeeId);
     }//GEN-LAST:event_jbtThemActionPerformed
+
+    private void insertIntoSalary(int employeeId, String monthYear) {
+        String[] parts = monthYear.split("/");
+        if (parts.length != 2) {
+            return;
+        }
+
+        int month = Integer.parseInt(parts[0]);
+        int year = Integer.parseInt(parts[1]);
+
+        // Insert vào bảng salaries
+        String sql = "INSERT INTO salaries (employee_id, salary_month, salary_year) VALUES (?, ?, ?)";
+        try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, employeeId);
+            ps.setInt(2, month);
+            ps.setInt(3, year);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void jbtHienThiNgayNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtHienThiNgayNghiActionPerformed
         updateOffDaysColor(jcldAttendenceDate.getDayChooser().getDayPanel().getComponents());
@@ -390,7 +426,7 @@ public class AttendanceDate extends javax.swing.JDialog {
         calendar.set(year, month - 1, day); // Tháng từ 0-11
         return (calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.MONTH) == month - 1 && calendar.get(Calendar.DAY_OF_MONTH) == day);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JButton jbtHienThiNgayNghi;

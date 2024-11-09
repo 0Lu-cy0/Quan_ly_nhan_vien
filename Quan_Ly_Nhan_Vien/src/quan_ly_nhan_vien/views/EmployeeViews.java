@@ -177,16 +177,32 @@ public class EmployeeViews extends javax.swing.JPanel {
 
     private void jbtThemNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtThemNhanVienActionPerformed
         try {
+            // Lấy dữ liệu từ các trường nhập
             String id = jtfid.getText().trim();
-            String ten = jtffullname.getText(); 
-            String email = jtfEmail.getText();   
-            String address = jtfAddress.getText();  
-            String phonenb = jtfphone.getText();
+            String ten = jtffullname.getText().trim();
+            String email = jtfEmail.getText().trim();
+            String address = jtfAddress.getText().trim();
+            String phonenb = jtfphone.getText().trim();
+
+            // Kiểm tra nếu các trường không được để trống
             if (id.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Mã nhân viên không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            if (ten.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Tên nhân viên không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (email.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Email không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (phonenb.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            // Kiểm tra ngày sinh
             Date ngaySinhDate = (Date) jdcDateOfBirth.getDate();
             if (ngaySinhDate == null) {
                 JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày sinh", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -195,103 +211,255 @@ public class EmployeeViews extends javax.swing.JPanel {
 
             LocalDate ngaySinh = ngaySinhDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             int namSinh = ngaySinh.getYear();
+
+            // Kiểm tra năm sinh trong khoảng từ 1950 đến 2008
             if (namSinh < 1950 || namSinh > 2008) {
                 JOptionPane.showMessageDialog(this, "Năm sinh chỉ được nằm trong khoảng 1950-2008", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            String sql = "INSERT INTO employees (employee_id, full_name, email, phone_number, address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
+            // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
+            String checkEmailSQL = "SELECT COUNT(*) FROM employees WHERE email = ?";
             Connection conn = new DatabaseConnection().getJDBCConnection();
+            PreparedStatement psCheckEmail = conn.prepareStatement(checkEmailSQL);
+            psCheckEmail.setString(1, email);
+            ResultSet rsEmail = psCheckEmail.executeQuery();
+            rsEmail.next();
+            if (rsEmail.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(this, "Email này đã tồn tại, vui lòng chọn email khác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                rsEmail.close();
+                psCheckEmail.close();
+                return;
+            }
+            rsEmail.close();
+            psCheckEmail.close();
+
+            // Kiểm tra xem số điện thoại đã tồn tại trong cơ sở dữ liệu chưa
+            String checkPhoneSQL = "SELECT COUNT(*) FROM employees WHERE phone_number = ?";
+            PreparedStatement psCheckPhone = conn.prepareStatement(checkPhoneSQL);
+            psCheckPhone.setString(1, phonenb);
+            ResultSet rsPhone = psCheckPhone.executeQuery();
+            rsPhone.next();
+            if (rsPhone.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại này đã tồn tại, vui lòng chọn số điện thoại khác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                rsPhone.close();
+                psCheckPhone.close();
+                return;
+            }
+            rsPhone.close();
+            psCheckPhone.close();
+
+            // Thực hiện câu lệnh SQL để thêm nhân viên vào bảng
+            String sql = "INSERT INTO employees (employee_id, full_name, email, phone_number, address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, id); 
-            ps.setString(2, ten);  
-            ps.setString(3, email); 
-            ps.setString(4, phonenb);    
-            ps.setString(5, address); 
-            ps.setDate(6, java.sql.Date.valueOf(ngaySinh)); 
+            ps.setString(1, id);
+            ps.setString(2, ten);
+            ps.setString(3, email);
+            ps.setString(4, phonenb);
+            ps.setString(5, address);
+            ps.setDate(6, java.sql.Date.valueOf(ngaySinh));
+            
+            String sql = "INSERT INTO accounts (employee_id, email, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
 
             int result = ps.executeUpdate();
             if (result > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+
+                // Thêm dữ liệu vào bảng attendances
                 String sqlChamCong = "INSERT INTO attendances (employee_id, day, status) VALUES (?, CURRENT_DATE, 'Chưa chấm')";
                 PreparedStatement psChamCong = conn.prepareStatement(sqlChamCong);
                 psChamCong.setString(1, id);
                 psChamCong.executeUpdate();
                 psChamCong.close();
-                
-                String sqlTinhLuong = "INSERT INTO salaries (employee_id) VALUES (?)";
-                PreparedStatement psTinhLuong = conn.prepareStatement(sqlTinhLuong); 
-                psTinhLuong.setString(1, id);
-                psTinhLuong.executeUpdate();
-                psTinhLuong.close();
-                hienthi(); 
             } else {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
 
+            // Đóng kết nối
             ps.close();
             conn.close();
-    } catch (SQLException ex) {
-        if (ex.getErrorCode() == 1062) { // Lỗi trùng mã nhân viên
-            JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại, vui lòng chọn mã nhân viên khác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this, "Lỗi SQL: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+        } catch (SQLException ex) {
+            // Xử lý lỗi SQL (lỗi trùng mã nhân viên)
+            if (ex.getErrorCode() == 1062) {
+                JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại, vui lòng chọn mã nhân viên khác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Lỗi SQL: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            // Xử lý các lỗi khác
+            JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-    } catch (Exception ex) {
-        JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-    }
     }//GEN-LAST:event_jbtThemNhanVienActionPerformed
 
     private void jbtXoaNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXoaNhanVienActionPerformed
         int selectedRow = jtbEmployee.getSelectedRow();
 
-    // Kiểm tra xem có dòng nào được chọn không
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để xóa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Lấy mô hình bảng và ID nhân viên
-    DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
-    Object employeeIdObj = model.getValueAt(selectedRow, 0); // Cột 0 chứa employee_id
-
-    // Kiểm tra nếu employeeId là Integer, chuyển nó thành String
-    String employeeId = (employeeIdObj instanceof Integer) ? String.valueOf(employeeIdObj) : (String) employeeIdObj;
-
-    // Kiểm tra không xóa tài khoản Admin
-    if ("Admin".equalsIgnoreCase(employeeId)) {
-        JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    // Xác nhận việc xóa
-    int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa bản ghi này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-    if (confirm == JOptionPane.YES_OPTION) {
-        // Câu lệnh SQL xóa nhân viên theo employee_id
-        String sql = "DELETE FROM employees WHERE employee_id = ?";
-        
-        // Kết nối và thực hiện câu lệnh xóa
-        try (Connection conn = new DatabaseConnection().getJDBCConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            
-            ps.setString(1, employeeId);  // Gán ID nhân viên cần xóa
-            int result = ps.executeUpdate();
-
-            if (result > 0) {
-                JOptionPane.showMessageDialog(this, "Xóa thành công!");
-                model.removeRow(selectedRow);  // Xóa dòng khỏi bảng
-            } else {
-                JOptionPane.showMessageDialog(this, "Xóa không thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Kiểm tra xem có dòng nào được chọn không
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để xóa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-    }
+
+        // Lấy mô hình bảng và ID nhân viên
+        DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+        Object employeeIdObj = model.getValueAt(selectedRow, 0); // Cột 0 chứa employee_id
+
+        // Kiểm tra nếu employeeId là Integer, chuyển nó thành String
+        String employeeId = (employeeIdObj instanceof Integer) ? String.valueOf(employeeIdObj) : (String) employeeIdObj;
+
+        // Kiểm tra không xóa tài khoản Admin
+        if ("Admin".equalsIgnoreCase(employeeId)) {
+            JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Xác nhận việc xóa
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa bản ghi này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Câu lệnh SQL xóa nhân viên theo employee_id
+            String sql = "DELETE FROM employees WHERE employee_id = ?";
+
+            // Kết nối và thực hiện câu lệnh xóa
+            try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+                ps.setString(1, employeeId);  // Gán ID nhân viên cần xóa
+                int result = ps.executeUpdate();
+
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Xóa thành công!");
+                    model.removeRow(selectedRow);  // Xóa dòng khỏi bảng
+                } else {
+                    JOptionPane.showMessageDialog(this, "Xóa không thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jbtXoaNhanVienActionPerformed
 
     private void jbtSuaNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtSuaNhanVienActionPerformed
-        
+        int selectedRow = jtbEmployee.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để sửa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+        String employeeId = (String) model.getValueAt(selectedRow, 0);
+        String ten = (String) model.getValueAt(selectedRow, 1);
+        String soDienThoai = (String) model.getValueAt(selectedRow, 2);
+        String diaChi = (String) model.getValueAt(selectedRow, 3);
+        String ngaySinh = (String) model.getValueAt(selectedRow, 4);
+        String Email = (String) model.getValueAt(selectedRow, 5);
+
+        JTextField txtEmployeeId = new JTextField(employeeId);
+        txtEmployeeId.setEditable(false);  // Đặt chỉ đọc cho ô mã nhân viên
+        JTextField txtTen = new JTextField(ten);
+        // Sử dụng JDateChooser thay thế JTextField để chọn ngày
+        JDateChooser dateChooser = new JDateChooser();
+        dateChooser.setDateFormatString("dd/MM/yyyy");  // Đặt định dạng ngày tháng
+        // Nếu ngày sinh không rỗng, đặt giá trị ban đầu cho JDateChooser
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            if (ngaySinh != null && !ngaySinh.isEmpty()) {
+                dateChooser.setDate(sdf.parse(ngaySinh));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JTextField txtSoDienThoai = new JTextField(soDienThoai);
+        JTextField txtDiaChi = new JTextField(diaChi);
+        JTextField txtEmail = new JTextField(Email);
+
+        JPanel panel = new JPanel(new GridLayout(0, 2));
+        panel.add(new JLabel("Employee ID:"));
+        panel.add(txtEmployeeId);
+        panel.add(new JLabel("Full Name:"));
+        panel.add(txtTen);
+        panel.add(new JLabel("Phone Number:"));
+        panel.add(txtSoDienThoai);
+        panel.add(new JLabel("Địa chỉ:"));
+        panel.add(txtDiaChi);
+        panel.add(new JLabel("Ngày sinh (dd/MM/yyyy):"));
+        panel.add(dateChooser);  // Thêm JDateChooser vào panel thay cho JTextField
+        panel.add(new JLabel("Email:"));
+        panel.add(txtEmail);
+
+        int result = JOptionPane.showConfirmDialog(this, panel, "Sửa thông tin", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                // Kiểm tra nếu Số điện thoại và Email trống
+                String newSoDienThoai = txtSoDienThoai.getText().trim();
+                String newEmail = txtEmail.getText().trim();
+
+                if (newSoDienThoai.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập số điện thoại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (newEmail.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Vui lòng nhập email!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Thiết lập các trường rỗng thành "N/A"
+                String newTen = txtTen.getText().trim().isEmpty() ? "N/A" : txtTen.getText();
+                String newNgaySinh = ngaySinh;
+
+                // Nếu người dùng đã chọn ngày mới trong JDateChooser, lấy giá trị đó
+                if (dateChooser.getDate() != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    newNgaySinh = sdf.format(dateChooser.getDate());
+                }
+
+                String sql = "UPDATE employees SET full_name = ?, email = ?, phone_number = ?, address = ?, date_of_birth = ? WHERE employee_id = ?";
+                Connection conn = new DatabaseConnection().getJDBCConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+
+                ps.setString(1, newTen);
+                ps.setString(2, newEmail);
+                ps.setString(3, newSoDienThoai);
+                ps.setString(4, txtDiaChi.getText().trim().isEmpty() ? "N/A" : txtDiaChi.getText());
+
+                // Nếu newNgaySinh không phải là "N/A", thì mới thực hiện chuyển đổi và định dạng ngày tháng
+                if (!newNgaySinh.equals("N/A")) {
+                    try {
+                        ps.setDate(5, java.sql.Date.valueOf(LocalDate.parse(newNgaySinh, DateTimeFormatter.ofPattern("dd/MM/yyyy"))));
+                    } catch (DateTimeParseException e) {
+                        JOptionPane.showMessageDialog(this, "Ngày sinh không hợp lệ! Vui lòng nhập theo định dạng dd/MM/yyyy.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } else {
+                    ps.setString(5, null);  // Nếu để trống hoặc là "N/A", thì giữ giá trị ngày sinh như cũ
+                }
+
+                ps.setString(6, employeeId);
+
+                int updateResult = ps.executeUpdate();
+
+                if (updateResult > 0) {
+                    model.setValueAt(newTen, selectedRow, 1);
+                    model.setValueAt(newEmail, selectedRow, 2);
+                    model.setValueAt(newSoDienThoai, selectedRow, 3);
+                    model.setValueAt(txtDiaChi.getText().trim().isEmpty() ? "N/A" : txtDiaChi.getText(), selectedRow, 4);
+                    model.setValueAt(newNgaySinh, selectedRow, 5);
+                    
+
+                    JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Cập nhật không thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+
+                ps.close();
+                conn.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jbtSuaNhanVienActionPerformed
 
     private void jbtLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtLamMoiActionPerformed
@@ -304,63 +472,61 @@ public class EmployeeViews extends javax.swing.JPanel {
         jtfAddress.setText("");
     }//GEN-LAST:event_jbtLamMoiActionPerformed
 
-    
     public void hienthi() {
-    try {
-        DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
-        model.setRowCount(0); // Xóa dữ liệu cũ
+        try {
+            DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+            model.setRowCount(0); // Xóa dữ liệu cũ
 
-        // Kết nối cơ sở dữ liệu
-        Connection conn = new DatabaseConnection().getJDBCConnection();
-        if (conn == null) {
-            System.out.println("Không thể kết nối database");
-            JOptionPane.showMessageDialog(this, "Không thể kết nối đến cơ sở dữ liệu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
+            // Kết nối cơ sở dữ liệu
+            Connection conn = new DatabaseConnection().getJDBCConnection();
+            if (conn == null) {
+                System.out.println("Không thể kết nối database");
+                JOptionPane.showMessageDialog(this, "Không thể kết nối đến cơ sở dữ liệu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            System.out.println("Kết nối database thành công");
+
+            // Câu lệnh SQL đã chỉnh sửa
+            String sql = "SELECT e.employee_id, e.full_name, e.email, e.phone_number, e.address, e.date_of_birth "
+                    + "FROM employees e";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            System.out.println("Câu lệnh SQL: " + ps.toString());
+
+            ResultSet rs = ps.executeQuery();
+
+            int recordCount = 0;
+            while (rs.next()) {
+                recordCount++;
+                Vector<Object> row = new Vector<>();
+                row.add(rs.getInt("employee_id"));  // Thêm cột employee_id
+                row.add(rs.getString("full_name"));  // Thêm cột full_name
+                row.add(rs.getString("email"));     // Cột email
+                row.add(rs.getString("phone_number"));// Cột phone_number
+                row.add(rs.getString("address"));   // Cột address
+
+                // Xử lý ngày sinh
+                Date dob = rs.getDate("date_of_birth");
+                row.add(dob != null ? new SimpleDateFormat("dd/MM/yyyy").format(dob) : "N/A");
+
+                model.addRow(row);
+            }
+
+            System.out.println("Số lượng bản ghi đã thêm vào bảng: " + recordCount);
+
+            if (recordCount == 0) {
+                System.out.println("Không có dữ liệu nào được trả về từ cơ sở dữ liệu.");
+                JOptionPane.showMessageDialog(this, "Không có dữ liệu nào để hiển thị.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-        System.out.println("Kết nối database thành công");
-
-        // Câu lệnh SQL đã chỉnh sửa
-        String sql = "SELECT e.employee_id, e.full_name, e.email, e.phone_number, e.address, e.date_of_birth " +
-                     "FROM employees e";
-        PreparedStatement ps = conn.prepareStatement(sql);
-
-        System.out.println("Câu lệnh SQL: " + ps.toString());
-
-        ResultSet rs = ps.executeQuery();
-
-        int recordCount = 0;
-        while (rs.next()) {
-            recordCount++;
-            Vector<Object> row = new Vector<>();
-            row.add(rs.getInt("employee_id"));  // Thêm cột employee_id
-            row.add(rs.getString("full_name"));  // Thêm cột full_name
-            row.add(rs.getString("email"));     // Cột email
-            row.add(rs.getString("phone_number"));// Cột phone_number
-            row.add(rs.getString("address"));   // Cột address
-
-            // Xử lý ngày sinh
-            Date dob = rs.getDate("date_of_birth");
-            row.add(dob != null ? new SimpleDateFormat("dd/MM/yyyy").format(dob) : "N/A");
-
-            model.addRow(row);
-        }
-
-        System.out.println("Số lượng bản ghi đã thêm vào bảng: " + recordCount);
-
-        if (recordCount == 0) {
-            System.out.println("Không có dữ liệu nào được trả về từ cơ sở dữ liệu.");
-            JOptionPane.showMessageDialog(this, "Không có dữ liệu nào để hiển thị.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        }
-
-        rs.close();
-        ps.close();
-        conn.close();
-    } catch (SQLException e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi khi tải dữ liệu: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
     }
-}
-
 
     // Thêm phương thức setupTable()
     private void setupTable() {
