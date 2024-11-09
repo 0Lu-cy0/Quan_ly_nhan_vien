@@ -2,6 +2,7 @@ package quan_ly_nhan_vien.views;
 
 import com.toedter.calendar.JDateChooser;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,13 +38,13 @@ public class EmployeeViews extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         jtfid = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jbtRule = new javax.swing.JTextField();
+        jtfPhone = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jtfAddress = new javax.swing.JTextField();
         jtfEmail = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jtfphone = new javax.swing.JLabel();
+        jlbPhone = new javax.swing.JLabel();
         jbtThemNhanVien = new javax.swing.JButton();
         jbtXoaNhanVien = new javax.swing.JButton();
         jbtSuaNhanVien = new javax.swing.JButton();
@@ -62,7 +63,7 @@ public class EmployeeViews extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "FullName", "Phone Number", "Address", "Date Of Birth", "Email"
+                "STT", "FullName", "Phone Number", "Address", "Date Of Birth", "Email"
             }
         ));
         jScrollPane2.setViewportView(jtbEmployee);
@@ -82,7 +83,7 @@ public class EmployeeViews extends javax.swing.JPanel {
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Full name");
         jPanel5.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 52, 100, -1));
-        jPanel5.add(jbtRule, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 120, 25));
+        jPanel5.add(jtfPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 90, 120, 25));
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -101,10 +102,10 @@ public class EmployeeViews extends javax.swing.JPanel {
         jLabel8.setText("Address");
         jPanel5.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 52, 86, -1));
 
-        jtfphone.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jtfphone.setForeground(new java.awt.Color(255, 255, 255));
-        jtfphone.setText("Phone number");
-        jPanel5.add(jtfphone, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 93, 86, -1));
+        jlbPhone.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jlbPhone.setForeground(new java.awt.Color(255, 255, 255));
+        jlbPhone.setText("Phone number");
+        jPanel5.add(jlbPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 93, 86, -1));
 
         jbtThemNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtThemNhanVien.setText("Thêm");
@@ -147,10 +148,26 @@ public class EmployeeViews extends javax.swing.JPanel {
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
         jbtTimKiem.setText("Tìm kiếm");
+        jbtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtTimKiemActionPerformed(evt);
+            }
+        });
         j1.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         jcbbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Email", "Phone Number", "Address", "Date Of Birth", "Role" }));
+        jcbbTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbbTimKiemActionPerformed(evt);
+            }
+        });
         j1.add(jcbbTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
+
+        jtfTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfTimKiemKeyPressed(evt);
+            }
+        });
         j1.add(jtfTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 340, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -182,7 +199,15 @@ public class EmployeeViews extends javax.swing.JPanel {
             String ten = jtffullname.getText().trim();
             String email = jtfEmail.getText().trim();
             String address = jtfAddress.getText().trim();
-            String phonenb = jtfphone.getText().trim();
+            String phonenb = jtfPhone.getText().trim();
+
+            // Debug: In ra thông tin đầu vào
+            System.out.println("Thông tin nhập vào:");
+            System.out.println("ID: " + id);
+            System.out.println("Tên: " + ten);
+            System.out.println("Email: " + email);
+            System.out.println("Địa chỉ: " + address);
+            System.out.println("Số điện thoại: " + phonenb);
 
             // Kiểm tra nếu các trường không được để trống
             if (id.isEmpty()) {
@@ -199,6 +224,20 @@ public class EmployeeViews extends javax.swing.JPanel {
             }
             if (phonenb.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validate email
+            String emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+            if (!email.matches(emailPattern)) {
+                JOptionPane.showMessageDialog(this, "Email không đúng định dạng, vui lòng nhập lại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Validate phone number (chỉ cho phép số, độ dài từ 10-11 chữ số)
+            String phonePattern = "^[0-9]{10,11}$";
+            if (!phonenb.matches(phonePattern)) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại không đúng định dạng (chỉ gồm số và có độ dài 10-11 chữ số)!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -238,6 +277,7 @@ public class EmployeeViews extends javax.swing.JPanel {
             String checkPhoneSQL = "SELECT COUNT(*) FROM employees WHERE phone_number = ?";
             PreparedStatement psCheckPhone = conn.prepareStatement(checkPhoneSQL);
             psCheckPhone.setString(1, phonenb);
+
             ResultSet rsPhone = psCheckPhone.executeQuery();
             rsPhone.next();
             if (rsPhone.getInt(1) > 0) {
@@ -249,7 +289,7 @@ public class EmployeeViews extends javax.swing.JPanel {
             rsPhone.close();
             psCheckPhone.close();
 
-            // Thực hiện câu lệnh SQL để thêm nhân viên vào bảng
+            // Thực hiện thêm nhân viên vào cơ sở dữ liệu
             String sql = "INSERT INTO employees (employee_id, full_name, email, phone_number, address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, id);
@@ -258,17 +298,10 @@ public class EmployeeViews extends javax.swing.JPanel {
             ps.setString(4, phonenb);
             ps.setString(5, address);
             ps.setDate(6, java.sql.Date.valueOf(ngaySinh));
-            
+
             int result = ps.executeUpdate();
             if (result > 0) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
-
-                // Thêm dữ liệu vào bảng attendances
-                String sqlChamCong = "INSERT INTO attendances (employee_id, day, status) VALUES (?, CURRENT_DATE, 'Chưa chấm')";
-                PreparedStatement psChamCong = conn.prepareStatement(sqlChamCong);
-                psChamCong.setString(1, id);
-                psChamCong.executeUpdate();
-                psChamCong.close();
             } else {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
@@ -278,14 +311,12 @@ public class EmployeeViews extends javax.swing.JPanel {
             conn.close();
 
         } catch (SQLException ex) {
-            // Xử lý lỗi SQL (lỗi trùng mã nhân viên)
             if (ex.getErrorCode() == 1062) {
                 JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại, vui lòng chọn mã nhân viên khác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Lỗi SQL: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (Exception ex) {
-            // Xử lý các lỗi khác
             JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtThemNhanVienActionPerformed
@@ -345,12 +376,12 @@ public class EmployeeViews extends javax.swing.JPanel {
             return;
         }
         DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
-        String employeeId = (String) model.getValueAt(selectedRow, 0);
+        String employeeId = model.getValueAt(selectedRow, 0).toString();
         String ten = (String) model.getValueAt(selectedRow, 1);
-        String soDienThoai = (String) model.getValueAt(selectedRow, 2);
-        String diaChi = (String) model.getValueAt(selectedRow, 3);
-        String ngaySinh = (String) model.getValueAt(selectedRow, 4);
-        String Email = (String) model.getValueAt(selectedRow, 5);
+        String Email = (String) model.getValueAt(selectedRow, 2);
+        String soDienThoai = (String) model.getValueAt(selectedRow, 3);
+        String diaChi = (String) model.getValueAt(selectedRow, 4);
+        String ngaySinh = (String) model.getValueAt(selectedRow, 5);
 
         JTextField txtEmployeeId = new JTextField(employeeId);
         txtEmployeeId.setEditable(false);  // Đặt chỉ đọc cho ô mã nhân viên
@@ -376,14 +407,14 @@ public class EmployeeViews extends javax.swing.JPanel {
         panel.add(txtEmployeeId);
         panel.add(new JLabel("Full Name:"));
         panel.add(txtTen);
+        panel.add(new JLabel("Email:"));
+        panel.add(txtEmail);
         panel.add(new JLabel("Phone Number:"));
         panel.add(txtSoDienThoai);
         panel.add(new JLabel("Địa chỉ:"));
         panel.add(txtDiaChi);
         panel.add(new JLabel("Ngày sinh (dd/MM/yyyy):"));
         panel.add(dateChooser);  // Thêm JDateChooser vào panel thay cho JTextField
-        panel.add(new JLabel("Email:"));
-        panel.add(txtEmail);
 
         int result = JOptionPane.showConfirmDialog(this, panel, "Sửa thông tin", JOptionPane.OK_CANCEL_OPTION);
 
@@ -443,7 +474,6 @@ public class EmployeeViews extends javax.swing.JPanel {
                     model.setValueAt(newSoDienThoai, selectedRow, 3);
                     model.setValueAt(txtDiaChi.getText().trim().isEmpty() ? "N/A" : txtDiaChi.getText(), selectedRow, 4);
                     model.setValueAt(newNgaySinh, selectedRow, 5);
-                    
 
                     JOptionPane.showMessageDialog(this, "Cập nhật thành công!");
                 } else {
@@ -464,11 +494,137 @@ public class EmployeeViews extends javax.swing.JPanel {
         hienthi();
         jtfid.setText("");
         jtffullname.setText("");
-        jbtRule.setText("");
+        jtfPhone.setText("");
         jdcDateOfBirth.setDate(null);
         jtfEmail.setText("");
         jtfAddress.setText("");
     }//GEN-LAST:event_jbtLamMoiActionPerformed
+
+    private void jbtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtTimKiemActionPerformed
+        String searchText = jtfTimKiem.getText().trim();
+        String searchCriteria = jcbbTimKiem.getSelectedItem().toString();
+
+        if (searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!");
+            return;
+        }
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = new DatabaseConnection().getJDBCConnection();
+            String sql = "";
+
+            // Xây dựng câu truy vấn dựa trên tiêu chí tìm kiếm
+            switch (searchCriteria) {
+                case "EmployeeID":
+                    sql = "SELECT employee_id, full_name, phone_number, email, address, date_of_birth "
+                            + "FROM employees WHERE employee_id = ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setInt(1, Integer.parseInt(searchText));
+                    break;
+
+                case "Full Name":
+                    sql = "SELECT employee_id, full_name, phone_number, email, address, date_of_birth "
+                            + "FROM employees WHERE full_name LIKE ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setString(1, "%" + searchText + "%");
+                    break;
+
+                case "Phone Number":
+                    sql = "SELECT employee_id, full_name, phone_number, email, address, date_of_birth "
+                            + "FROM employees WHERE phone_number LIKE ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setString(1, "%" + searchText + "%");
+                    break;
+
+                case "Email":
+                    sql = "SELECT employee_id, full_name, phone_number, email, address, date_of_birth "
+                            + "FROM employees WHERE email LIKE ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setString(1, "%" + searchText + "%");
+                    break;
+
+                case "Address":
+                    sql = "SELECT employee_id, full_name, phone_number, email, address, date_of_birth "
+                            + "FROM employees WHERE address LIKE ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setString(1, "%" + searchText + "%");
+                    break;
+            }
+
+            rs = ps.executeQuery();
+
+            // Tạo model mới cho bảng
+            DefaultTableModel model = new DefaultTableModel(
+                    new String[]{"STT", "EmployeeID", "Full Name", "Phone Number", "Email", "Address", "Date of Birth"},
+                    0
+            );
+
+            int stt = 1;
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+            while (rs.next()) {
+                int employeeId = rs.getInt("employee_id");
+                String fullName = rs.getString("full_name");
+                String phoneNumber = rs.getString("phone_number");
+                String email = rs.getString("email");
+                String address = rs.getString("address");
+                Date dateOfBirth = rs.getDate("date_of_birth");
+
+                String dob = dateOfBirth != null ? sdf.format(dateOfBirth) : "N/A";
+
+                model.addRow(new Object[]{
+                    stt++,
+                    employeeId,
+                    fullName,
+                    phoneNumber,
+                    email,
+                    address,
+                    dob
+                });
+            }
+
+            jtbEmployee.setModel(model);
+
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào!");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng dữ liệu!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tìm kiếm: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jbtTimKiemActionPerformed
+
+    private void jcbbTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbbTimKiemActionPerformed
+        jtfTimKiem.setText("");
+        jtfTimKiem.requestFocus();
+    }//GEN-LAST:event_jcbbTimKiemActionPerformed
+
+    private void jtfTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTimKiemKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jbtTimKiem.doClick();
+        }
+    }//GEN-LAST:event_jtfTimKiemKeyPressed
 
     public void hienthi() {
         try {
@@ -550,19 +706,19 @@ public class EmployeeViews extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtLamMoi;
-    private javax.swing.JTextField jbtRule;
     private javax.swing.JButton jbtSuaNhanVien;
     private javax.swing.JButton jbtThemNhanVien;
     private javax.swing.JButton jbtTimKiem;
     private javax.swing.JButton jbtXoaNhanVien;
     private javax.swing.JComboBox<String> jcbbTimKiem;
     private com.toedter.calendar.JDateChooser jdcDateOfBirth;
+    private javax.swing.JLabel jlbPhone;
     private javax.swing.JTable jtbEmployee;
     private javax.swing.JTextField jtfAddress;
     private javax.swing.JTextField jtfEmail;
+    private javax.swing.JTextField jtfPhone;
     private javax.swing.JTextField jtfTimKiem;
     private javax.swing.JTextField jtffullname;
     private javax.swing.JTextField jtfid;
-    private javax.swing.JLabel jtfphone;
     // End of variables declaration//GEN-END:variables
 }
