@@ -285,6 +285,8 @@ public class AttendanceViews extends javax.swing.JPanel {
                 if (results.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 }
+            } else if (searchValue.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this, "Dữ liệu tìm kiếm không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }

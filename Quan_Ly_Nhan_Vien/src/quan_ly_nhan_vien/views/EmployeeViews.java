@@ -577,8 +577,15 @@ public class EmployeeViews extends javax.swing.JPanel {
         String searchText = jtfTimKiem.getText().trim();
         String searchCriteria = jcbbTimKiem.getSelectedItem().toString();
 
+        // Kiểm tra nếu người dùng không nhập từ khóa tìm kiếm
         if (searchText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!");
+            return;
+        }
+
+        // Kiểm tra nếu tiêu chí tìm kiếm không hợp lệ
+        if (!validateSearchCriteria(searchCriteria, searchText)) {
+            JOptionPane.showMessageDialog(this, "Dữ liệu tìm kiếm không hợp lệ!");
             return;
         }
 
@@ -704,6 +711,34 @@ public class EmployeeViews extends javax.swing.JPanel {
             jbtTimKiem.doClick();
         }
     }//GEN-LAST:event_jtfTimKiemKeyPressed
+
+    public boolean validateSearchCriteria(String criteria, String searchValue) {
+        if ("ID".equals(criteria)) {
+            try {
+                Integer.parseInt(searchValue); // Kiểm tra xem có phải số nguyên không
+            } catch (NumberFormatException e) {
+                return false; // Không phải số nguyên hợp lệ
+            }
+        } else if ("Phone Number".equals(criteria) || "Email".equals(criteria) || "Address".equals(criteria) || "Full Name".equals(criteria)) {
+            if (searchValue.isEmpty()) {
+                return false; // Không được để trống
+            }
+        } else if ("Month".equals(criteria)) {
+            if (!isValidMonth(searchValue)) {
+                return false; // Tháng không hợp lệ
+            }
+        }
+        return true; // Tìm kiếm hợp lệ
+    }
+
+    public boolean isValidMonth(String month) {
+        try {
+            int m = Integer.parseInt(month);
+            return m >= 1 && m <= 12; // Kiểm tra tháng có hợp lệ không (1-12)
+        } catch (NumberFormatException e) {
+            return false; // Nếu không phải số hợp lệ
+        }
+    }
 
     public void hienthi() {
         try {
