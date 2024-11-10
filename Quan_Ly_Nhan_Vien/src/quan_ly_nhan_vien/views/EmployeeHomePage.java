@@ -177,56 +177,72 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jbtDoiMatKhauActionPerformed
 
-    private void loadEmployeeData(String username) {
-        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, s.salary "
-               + "FROM employees e "
-               + "JOIN accounts a ON e.employee_id = a.employee_id "
-               + "JOIN salaries s ON e.employee_id = s.employee_id "
-               + "WHERE a.username = ?";
+    private void loadEmployeeData(String input) {
+        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, s.net_salary "
+                + "FROM employees e "
+                + "LEFT JOIN accounts a ON e.employee_id = a.employee_id "
+                + "LEFT JOIN salaries s ON e.employee_id = s.employee_id "
+                + "WHERE a.username = ? OR a.email = ?";
 
         try (Connection connection = dbConnection.getJDBCConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setString(1, username);
+            // Debug: In giá trị input
+            System.out.println("Input search: " + input);
+
+            ps.setString(1, input);
+            ps.setString(2, input);
+
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                // Hiển thị thông tin nhân viên
-                jtfPhoneNumber.setText(rs.getString("email"));
-                jtfHoVaTen.setText(rs.getString("full_name"));
-                jtfPhoneNumber.setText(rs.getString("phone_number"));
-
-                // Kiểm tra và hiển thị thông tin địa chỉ
-                String address = rs.getString("address");
-                if (address == null || address.trim().isEmpty()) {
-                    jtfAddress.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfAddress.setForeground(java.awt.Color.RED);
-                } else {
-                    jtfAddress.setText(address);
-                    jtfAddress.setForeground(java.awt.Color.BLACK);
-                }
-
-                // Kiểm tra và hiển thị thông tin ngày sinh
-                String dob = rs.getString("date_of_birth");
-                if (dob == null || dob.trim().isEmpty()) {
-                    jtfNgayThangNamSinh.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfNgayThangNamSinh.setForeground(java.awt.Color.RED);
-                } else {
-                    jtfNgayThangNamSinh.setText(dob);
-                    jtfNgayThangNamSinh.setForeground(java.awt.Color.BLACK);
-                }
-
-                // Kiểm tra và hiển thị thông tin lương
-                float salary = rs.getFloat("salary");
-                if (rs.wasNull()) {
-                    jtfLuong.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
-                    jtfLuong.setForeground(java.awt.Color.RED);
-                } else {
-                    jtfLuong.setText(String.format("%,.0f", salary)); // Định dạng lương có dấu phẩy
-                    jtfLuong.setForeground(java.awt.Color.BLACK);
-                }
-            } else {
+            // Debug: Kiểm tra xem có dữ liệu trả về không
+            if (!rs.next()) {
+                System.out.println("Không tìm thấy thông tin nhân viên.");
                 JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhân viên!", "Thông báo", JOptionPane.ERROR_MESSAGE);
+                return;  // Không tiếp tục nếu không tìm thấy dữ liệu
+            } else {
+                System.out.println("Dữ liệu nhân viên đã được tìm thấy.");
             }
+
+            // Debug: In ra dữ liệu lấy từ ResultSet
+            System.out.println("Full Name: " + rs.getString("full_name"));
+            System.out.println("Email: " + rs.getString("email"));
+            System.out.println("Phone Number: " + rs.getString("phone_number"));
+            System.out.println("Address: " + rs.getString("address"));
+            System.out.println("Date of Birth: " + rs.getString("date_of_birth"));
+            System.out.println("Salary: " + rs.getFloat("net_salary"));
+
+            // Cập nhật thông tin vào các JTextField
+            jtfPhoneNumber.setText(rs.getString("email"));
+            jtfHoVaTen.setText(rs.getString("full_name"));
+            jtfPhoneNumber.setText(rs.getString("phone_number"));
+
+            String address = rs.getString("address");
+            if (address == null || address.trim().isEmpty()) {
+                jtfAddress.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
+                jtfAddress.setForeground(java.awt.Color.RED);
+            } else {
+                jtfAddress.setText(address);
+                jtfAddress.setForeground(java.awt.Color.BLACK);
+            }
+
+            String dob = rs.getString("date_of_birth");
+            if (dob == null || dob.trim().isEmpty()) {
+                jtfNgayThangNamSinh.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
+                jtfNgayThangNamSinh.setForeground(java.awt.Color.RED);
+            } else {
+                jtfNgayThangNamSinh.setText(dob);
+                jtfNgayThangNamSinh.setForeground(java.awt.Color.BLACK);
+            }
+
+            float salary = rs.getFloat("net_salary");
+            if (rs.wasNull()) {
+                jtfLuong.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
+                jtfLuong.setForeground(java.awt.Color.RED);
+            } else {
+                jtfLuong.setText(String.format("%,.0f", salary)); // Định dạng lương có dấu phẩy
+                jtfLuong.setForeground(java.awt.Color.BLACK);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);

@@ -18,53 +18,76 @@ public class LoginControllers {
         this.loginDAO = new LoginDAO();
     }
 
-    // Phương thức xử lý đăng nhập
-    public void login(String username, String password) {
-        // Cập nhật thông tin tài khoản từ View vào Model
+    /**
+     * Phương thức xử lý đăng nhập với username hoặc email.
+     * 
+     * @param input    Username hoặc Email
+     * @param password Mật khẩu
+     */
+    public void login(String input, String password) {
+        // Kiểm tra nếu input có định dạng email bằng regex đơn giản
+        boolean isEmail = input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+
+        // Gọi phương thức tương ứng để đăng nhập dựa trên loại đầu vào
+        if (isEmail) {
+            loginWithEmail(input, password);
+        } else {
+            loginWithUsername(input, password);
+        }
+    }
+
+    /**
+     * Đăng nhập bằng username.
+     */
+    public void loginWithUsername(String username, String password) {
         loginModels.setUsername(username);
-        loginModels.setHashedPassword(password);  // Gọi phương thức setter đã mã hóa mật khẩu
+        loginModels.setHashedPassword(password);
 
-        // Kiểm tra đăng nhập thông qua DAO
-        int loginResult = loginDAO.checkLogin(loginModels);
+        int loginResult = loginDAO.checkLoginByUsername(loginModels);
+        handleLoginResult(loginResult, username, password);
+    }
 
-        // Xử lý kết quả đăng nhập và chuyển hướng
+    /**
+     * Đăng nhập bằng email.
+     */
+    public void loginWithEmail(String email, String password) {
+        loginModels.setUsername(email); // Lưu email vào model
+        loginModels.setHashedPassword(password);
+
+        int loginResult = loginDAO.checkLoginByEmail(loginModels);
+        handleLoginResult(loginResult, email, password);
+    }
+
+    /**
+     * Xử lý kết quả đăng nhập và chuyển hướng.
+     */
+    private void handleLoginResult(int loginResult, String input, String password) {
         switch (loginResult) {
             case LoginDAO.LOGIN_SUCCESS_ADMIN:
-                // Đăng nhập thành công với quyền Admin
                 TrangChinh adminPage = new TrangChinh();
                 adminPage.setVisible(true);
-                loginViews.dispose();  // Đóng cửa sổ đăng nhập
+                loginViews.dispose();
                 break;
 
             case LoginDAO.LOGIN_SUCCESS_EMPLOYEE:
-                // Đăng nhập thành công với quyền Nhân viên
-                EmployeeHomePage employeePage = new EmployeeHomePage(username, password);
+                EmployeeHomePage employeePage = new EmployeeHomePage(input, password);
                 employeePage.setVisible(true);
-                loginViews.dispose();  // Đóng cửa sổ đăng nhập
+                loginViews.dispose();
                 break;
 
             case LoginDAO.ACCOUNT_NOT_FOUND:
-                // Tài khoản không tồn tại
                 loginViews.showMessage("Tài khoản không tồn tại trong hệ thống!");
                 break;
 
             case LoginDAO.WRONG_PASSWORD:
-                // Mật khẩu không chính xác
                 loginViews.showMessage("Mật khẩu không chính xác!");
                 break;
 
             case LoginDAO.DATABASE_ERROR:
-                // Lỗi kết nối cơ sở dữ liệu
                 loginViews.showMessage("Lỗi kết nối đến cơ sở dữ liệu!");
                 break;
 
-            case LoginDAO.INVALID_ROLE:
-                // Tài khoản không có quyền hợp lệ
-                loginViews.showMessage("Tài khoản của bạn chưa được phân quyền hoặc có role_id không hợp lệ!");
-                break;
-
             default:
-                // Lỗi không xác định
                 loginViews.showMessage("Đã xảy ra lỗi không xác định! (Mã lỗi: " + loginResult + ")");
                 break;
         }

@@ -161,16 +161,24 @@ public class LoginViews extends javax.swing.JFrame {
     }//GEN-LAST:event_jcbAnHienMatKhauActionPerformed
 
     private void btnDNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDNhapActionPerformed
-        String username = jtfTaiKhoan.getText().trim();
-        String password = new String(jtfMatKhau.getPassword()).trim();
+        String input = jtfTaiKhoan.getText().trim(); // Dữ liệu nhập vào (có thể là username hoặc email)
+    String password = new String(jtfMatKhau.getPassword()).trim();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu.", "Thông tin không hợp lệ", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+    // Kiểm tra nếu tài khoản hoặc mật khẩu trống
+    if (input.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu.", "Thông tin không hợp lệ", JOptionPane.WARNING_MESSAGE);
+        return;
+    }
 
-        // Gọi phương thức login của controller với username và password
-        loginController.login(username, password);
+    // Kiểm tra nếu đầu vào là email bằng cách sử dụng regex đơn giản
+    boolean isEmail = input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+
+    // Gọi phương thức login của controller với thông tin tài khoản
+    if (isEmail) {
+        loginController.loginWithEmail(input, password); // Dùng email
+    } else {
+        loginController.loginWithUsername(input, password); // Dùng username
+    }
     }//GEN-LAST:event_btnDNhapActionPerformed
 
     private void jtfTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTaiKhoanActionPerformed

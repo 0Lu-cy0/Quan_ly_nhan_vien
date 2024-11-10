@@ -4,8 +4,13 @@ import java.awt.event.KeyEvent;
 import java.sql.*;
 import java.text.DecimalFormat;
 import java.time.YearMonth;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
 
 public class SalaryViews extends javax.swing.JPanel {
@@ -40,7 +45,7 @@ public class SalaryViews extends javax.swing.JPanel {
         jPanel8 = new javax.swing.JPanel();
         jbtLamMoi = new javax.swing.JButton();
         jbtTinhLuong = new javax.swing.JButton();
-        jbtXuatPDF = new javax.swing.JButton();
+        jbtXuatEXEL = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jtfBaseSalary = new javax.swing.JTextField();
@@ -50,8 +55,8 @@ public class SalaryViews extends javax.swing.JPanel {
         jbtXoa = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbSalary = new javax.swing.JTable();
-        jbtTimKiem1 = new javax.swing.JButton();
-        jcbbTimKiem1 = new javax.swing.JComboBox<>();
+        jbtTimKiem = new javax.swing.JButton();
+        jcbbTimKiem = new javax.swing.JComboBox<>();
         jtfTimKiem = new javax.swing.JTextField();
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -92,8 +97,13 @@ public class SalaryViews extends javax.swing.JPanel {
         });
         jPanel8.add(jbtTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 110, -1));
 
-        jbtXuatPDF.setText("Xuất PDF");
-        jPanel8.add(jbtXuatPDF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, 110, -1));
+        jbtXuatEXEL.setText("Xuất EXEL");
+        jbtXuatEXEL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtXuatEXELActionPerformed(evt);
+            }
+        });
+        jPanel8.add(jbtXuatEXEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, 110, -1));
 
         jLabel15.setText("BaseSalary");
         jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
@@ -145,11 +155,27 @@ public class SalaryViews extends javax.swing.JPanel {
 
         jPanel9.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 250));
 
-        jbtTimKiem1.setText("Tìm kiếm");
-        jPanel9.add(jbtTimKiem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jbtTimKiem.setText("Tìm kiếm");
+        jbtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtTimKiemActionPerformed(evt);
+            }
+        });
+        jPanel9.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jcbbTimKiem1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EmployeeID", "Month", "DayOff", "BaseSalary", "Bonus", "NetSalary" }));
-        jPanel9.add(jcbbTimKiem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
+        jcbbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EmployeeID", "Month", "DayOff", "BaseSalary", "Bonus", "NetSalary" }));
+        jcbbTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbbTimKiemActionPerformed(evt);
+            }
+        });
+        jPanel9.add(jcbbTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
+
+        jtfTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfTimKiemKeyPressed(evt);
+            }
+        });
         jPanel9.add(jtfTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 340, -1));
 
         jPanel7.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 460));
@@ -377,6 +403,206 @@ public class SalaryViews extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtXoaActionPerformed
 
+    private void jbtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtTimKiemActionPerformed
+        String searchText = jtfTimKiem.getText().trim();
+        String searchCriteria = jcbbTimKiem.getSelectedItem().toString();
+
+        if (searchText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!");
+            return;
+        }
+
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+            conn = new DatabaseConnection().getJDBCConnection();
+            String sql = "";
+
+            // Xây dựng câu query dựa trên tiêu chí tìm kiếm
+            switch (searchCriteria) {
+                case "EmployeeID":
+                    sql = "SELECT employee_id, salary_month, salary_year, basic_salary, bonuses, net_salary "
+                            + "FROM salary WHERE employee_id = ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setInt(1, Integer.parseInt(searchText));
+                    break;
+
+                case "Month":
+                    sql = "SELECT employee_id, salary_month, salary_year, basic_salary, bonuses, net_salary "
+                            + "FROM salary WHERE CONCAT(salary_month, '/', salary_year) LIKE ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setString(1, "%" + searchText + "%");
+                    break;
+
+                case "BaseSalary":
+                    sql = "SELECT employee_id, salary_month, salary_year, basic_salary, bonuses, net_salary "
+                            + "FROM salary WHERE basic_salary = ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setDouble(1, Double.parseDouble(searchText.replace(",", "")));
+                    break;
+
+                case "Bonus":
+                    sql = "SELECT employee_id, salary_month, salary_year, basic_salary, bonuses, net_salary "
+                            + "FROM salary WHERE bonuses = ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setDouble(1, Double.parseDouble(searchText.replace(",", "")));
+                    break;
+
+                case "NetSalary":
+                    sql = "SELECT employee_id, salary_month, salary_year, basic_salary, bonuses, net_salary "
+                            + "FROM salary WHERE net_salary = ?";
+                    ps = conn.prepareStatement(sql);
+                    ps.setDouble(1, Double.parseDouble(searchText.replace(",", "")));
+                    break;
+            }
+
+            rs = ps.executeQuery();
+
+            // Tạo model mới cho bảng
+            DefaultTableModel model = new DefaultTableModel(
+                    new String[]{"STT", "EmployeeID", "Month", "Base Salary", "Bonus", "Thực lĩnh"},
+                    0
+            );
+
+            int stt = 1;
+            DecimalFormat formatter = new DecimalFormat("#,###.##");
+
+            while (rs.next()) {
+                int employeeId = rs.getInt("employee_id");
+                int month = rs.getInt("salary_month");
+                int year = rs.getInt("salary_year");
+                double baseSalary = rs.getDouble("basic_salary");
+                double bonus = rs.getDouble("bonuses");
+                double netSalary = rs.getDouble("net_salary");
+
+                String monthYear = String.format("%02d/%d", month, year);
+
+                model.addRow(new Object[]{
+                    stt++,
+                    employeeId,
+                    monthYear,
+                    formatter.format(baseSalary),
+                    formatter.format(bonus),
+                    formatter.format(netSalary)
+                });
+            }
+
+            jtbSalary.setModel(model);
+
+            if (model.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào!");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng dữ liệu!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi tìm kiếm: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_jbtTimKiemActionPerformed
+
+    private void jcbbTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbbTimKiemActionPerformed
+        jtfTimKiem.setText("");
+        jtfTimKiem.requestFocus();
+    }//GEN-LAST:event_jcbbTimKiemActionPerformed
+
+    private void jtfTimKiemKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTimKiemKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jbtTimKiem.doClick();
+        }
+    }//GEN-LAST:event_jtfTimKiemKeyPressed
+
+    private void jbtXuatEXELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXuatEXELActionPerformed
+        String filePath = "E:\\Documents\\File Exel\\SalaryTable.xlsx"; // Đường dẫn lưu file Excel
+        System.out.println("Đã nhấn nút xuất Excel");
+
+        try {
+            // Tạo workbook và sheet
+            Workbook workbook = new XSSFWorkbook();
+            Sheet sheet = workbook.createSheet("Salary Table");
+
+            // Lấy dữ liệu từ bảng
+            TableModel model = jtbSalary.getModel(); // Giả sử bạn đã có bảng jtbSalary
+
+            // Tạo tiêu đề cột
+            Row headerRow = sheet.createRow(0);
+            for (int col = 0; col < model.getColumnCount(); col++) {
+                Cell cell = headerRow.createCell(col);
+                cell.setCellValue(model.getColumnName(col));
+            }
+
+            // Lấy kết nối tới cơ sở dữ liệu
+            Connection conn = null;
+            conn = new DatabaseConnection().getJDBCConnection();
+            if (conn == null) {
+                JOptionPane.showMessageDialog(this, "Không thể kết nối đến cơ sở dữ liệu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            // Thêm dữ liệu vào các dòng
+            for (int row = 0; row < model.getRowCount(); row++) {
+                Row excelRow = sheet.createRow(row + 1);
+                for (int col = 0; col < model.getColumnCount(); col++) {
+                    Cell cell = excelRow.createCell(col);
+                    Object cellValue = model.getValueAt(row, col);
+                    
+                    if (col == 0) { // Cột Employee ID, lấy thông tin từ cơ sở dữ liệu
+                        int employeeId = (int) model.getValueAt(row, 0);
+                        String fullName = getFullNameByEmployeeId(employeeId, conn); // Lấy tên đầy đủ từ bảng employees
+                        cell.setCellValue(employeeId + " - " + fullName); // Kết hợp employee_id và full_name
+                    } else {
+                        if (cellValue != null) {
+                            cell.setCellValue(cellValue.toString());
+                        } else {
+                            cell.setCellValue("N/A"); // Hiển thị "N/A" nếu giá trị là null
+                        }
+                    }
+                }
+            }
+            // Ghi vào file
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+            }
+            workbook.close(); // Đóng workbook
+            JOptionPane.showMessageDialog(null, "Xuất bảng lương ra Excel thành công!");
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi khi xuất Excel: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jbtXuatEXELActionPerformed
+
+// Phương thức lấy full name của employee theo employee_id
+    private String getFullNameByEmployeeId(int employeeId, Connection conn) {
+        String fullName = "";
+        String sql = "SELECT full_name FROM employees WHERE employee_id = ?";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, employeeId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                fullName = rs.getString("full_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fullName;
+    }
+
     public void displaySalary() {
         Connection conn = null;
         PreparedStatement ps = null;
@@ -535,11 +761,11 @@ public class SalaryViews extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtLamMoi;
-    private javax.swing.JButton jbtTimKiem1;
+    private javax.swing.JButton jbtTimKiem;
     private javax.swing.JButton jbtTinhLuong;
     private javax.swing.JButton jbtXoa;
-    private javax.swing.JButton jbtXuatPDF;
-    private javax.swing.JComboBox<String> jcbbTimKiem1;
+    private javax.swing.JButton jbtXuatEXEL;
+    private javax.swing.JComboBox<String> jcbbTimKiem;
     private javax.swing.JTable jtbSalary;
     private javax.swing.JTextField jtfBaseSalary;
     private javax.swing.JTextField jtfBonus;

@@ -32,9 +32,9 @@ public class AttendanceViews extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jtbBangChamCong = new javax.swing.JTable();
-        jbtTimKiem1 = new javax.swing.JButton();
-        jcbbTimKiem1 = new javax.swing.JComboBox<>();
-        jtfTimKiem1 = new javax.swing.JTextField();
+        jbtTimKiem = new javax.swing.JButton();
+        jcbbTimKiem = new javax.swing.JComboBox<>();
+        jtfTimKiem = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jbtCapNhat = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -76,12 +76,17 @@ public class AttendanceViews extends javax.swing.JPanel {
 
         jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 170));
 
-        jbtTimKiem1.setText("Tìm kiếm");
-        jPanel3.add(jbtTimKiem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        jbtTimKiem.setText("Tìm kiếm");
+        jbtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtTimKiemActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        jcbbTimKiem1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EmployeeID", "Month", "DayOff", "DayWork" }));
-        jPanel3.add(jcbbTimKiem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
-        jPanel3.add(jtfTimKiem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 340, -1));
+        jcbbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EmployeeID", "Month", "DayOff", "DayWork" }));
+        jPanel3.add(jcbbTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
+        jPanel3.add(jtfTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 340, -1));
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 540, 200));
 
@@ -269,6 +274,25 @@ public class AttendanceViews extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtChamCongActionPerformed
 
+    private void jbtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtTimKiemActionPerformed
+        String criteria = jcbbTimKiem.getSelectedItem().toString();
+        String searchValue = jtfTimKiem.getText().trim();
+
+        try {
+            if (controller.validateSearchCriteria(criteria, searchValue)) {
+                List<AttendanceModels> results = controller.searchAttendance(criteria, searchValue);
+                updateTableWithResults(results);
+                if (results.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Dữ liệu tìm kiếm không hợp lệ.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtTimKiemActionPerformed
+
     private void displayAttendance() {
         List<AttendanceModels> attendanceList = controller.getAllAttendance();
         updateTableWithResults(attendanceList);
@@ -444,9 +468,9 @@ public class AttendanceViews extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JButton jbtCapNhat;
     private javax.swing.JButton jbtChamCong;
-    private javax.swing.JButton jbtTimKiem1;
-    private javax.swing.JComboBox<String> jcbbTimKiem1;
+    private javax.swing.JButton jbtTimKiem;
+    private javax.swing.JComboBox<String> jcbbTimKiem;
     private javax.swing.JTable jtbBangChamCong;
-    private javax.swing.JTextField jtfTimKiem1;
+    private javax.swing.JTextField jtfTimKiem;
     // End of variables declaration//GEN-END:variables
 }
