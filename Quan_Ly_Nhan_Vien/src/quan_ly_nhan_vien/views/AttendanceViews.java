@@ -76,6 +76,8 @@ public class AttendanceViews extends javax.swing.JPanel {
 
         jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 170));
 
+        jbtTimKiem.setBackground(new java.awt.Color(0, 102, 102));
+        jbtTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         jbtTimKiem.setText("Tìm kiếm");
         jbtTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -84,6 +86,8 @@ public class AttendanceViews extends javax.swing.JPanel {
         });
         jPanel3.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jcbbTimKiem.setBackground(new java.awt.Color(0, 102, 102));
+        jcbbTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         jcbbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EmployeeID", "Month", "DayOff", "DayWork" }));
         jPanel3.add(jcbbTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
         jPanel3.add(jtfTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 340, -1));
@@ -93,6 +97,7 @@ public class AttendanceViews extends javax.swing.JPanel {
         jPanel1.setBackground(new java.awt.Color(0, 102, 102));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jbtCapNhat.setForeground(new java.awt.Color(0, 102, 102));
         jbtCapNhat.setText("Cập nhật dữ liệu");
         jbtCapNhat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -201,6 +206,7 @@ public class AttendanceViews extends javax.swing.JPanel {
 
         jPanel1.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 0, 108, 210));
 
+        jbtChamCong.setForeground(new java.awt.Color(0, 102, 102));
         jbtChamCong.setText("Chấm công");
         jbtChamCong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

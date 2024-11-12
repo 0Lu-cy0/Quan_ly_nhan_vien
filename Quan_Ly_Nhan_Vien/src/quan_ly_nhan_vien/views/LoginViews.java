@@ -109,8 +109,9 @@ public class LoginViews extends javax.swing.JFrame {
         });
         jPanel4.add(jtfTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 45, 218, 40));
 
+        btnDNhap.setBackground(new java.awt.Color(0, 102, 102));
         btnDNhap.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        btnDNhap.setForeground(new java.awt.Color(0, 102, 102));
+        btnDNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnDNhap.setText("Đăng nhập");
         btnDNhap.setBorder(null);
         btnDNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -120,8 +121,9 @@ public class LoginViews extends javax.swing.JFrame {
         });
         jPanel4.add(btnDNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(148, 199, 90, 40));
 
+        jbtDangKy.setBackground(new java.awt.Color(0, 102, 102));
         jbtDangKy.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        jbtDangKy.setForeground(new java.awt.Color(0, 102, 102));
+        jbtDangKy.setForeground(new java.awt.Color(255, 255, 255));
         jbtDangKy.setText("Đăng ký");
         jbtDangKy.setBorder(null);
         jbtDangKy.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +133,7 @@ public class LoginViews extends javax.swing.JFrame {
         });
         jPanel4.add(jbtDangKy, new org.netbeans.lib.awtextra.AbsoluteConstraints(276, 199, 90, 40));
 
+        jcbAnHienMatKhau.setBackground(new java.awt.Color(255, 255, 255));
         jcbAnHienMatKhau.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         jcbAnHienMatKhau.setForeground(new java.awt.Color(0, 102, 102));
         jcbAnHienMatKhau.setText("Hiển thị");

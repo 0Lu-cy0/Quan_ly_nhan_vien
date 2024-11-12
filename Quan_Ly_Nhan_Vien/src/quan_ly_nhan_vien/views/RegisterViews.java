@@ -153,8 +153,9 @@ public class RegisterViews extends javax.swing.JFrame {
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 470, 450));
 
+        btnDangNhap.setBackground(new java.awt.Color(0, 102, 102));
         btnDangNhap.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        btnDangNhap.setForeground(new java.awt.Color(0, 102, 102));
+        btnDangNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnDangNhap.setText("Đăng nhập");
         btnDangNhap.setBorder(null);
         btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
@@ -164,8 +165,9 @@ public class RegisterViews extends javax.swing.JFrame {
         });
         jPanel1.add(btnDangNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 590, 90, 40));
 
+        BtnTaoTK.setBackground(new java.awt.Color(0, 102, 102));
         BtnTaoTK.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        BtnTaoTK.setForeground(new java.awt.Color(0, 102, 102));
+        BtnTaoTK.setForeground(new java.awt.Color(255, 255, 255));
         BtnTaoTK.setText("Tạo tài khoản");
         BtnTaoTK.setBorder(null);
         BtnTaoTK.addActionListener(new java.awt.event.ActionListener() {

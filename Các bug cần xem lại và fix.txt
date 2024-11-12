@@ -18,19 +18,31 @@ Các lưu ý:
 11. Thêm sự kiện ở trang đăng nhập khi nhấp vào nút enter trên bàn phím sẽ bằng với việc nhấp vào nút đăng nhập trên giao diện. Với điều kiện khi 1 trong 2 ô tài khoản mật khẩu phải có dữ liệu, nhấp vào nút enter mới kích hoạt sự kiện, nếu không nhấp vào nút enter sẽ không có sự kiện gì xảy ra (✅)
 12. Ô nhập ngày tháng năm sinh sửa thành một bảng lịch chọn ngày(✅)
 13. Ở phần sửa, ô sửa ngày tháng năm sinh, nếu như ban đầu giá trị là "N/A" sẽ hiểnt hị ra thông báo lỗi: "Vui lòng nhập vào ngày tháng năm sinh đúng định dạng" (✅)
-14. Xử lý sự kiện khi thêm dữ liệu vào bảng nhân viên như mã nhân viên, mã nhân viên cũng sẽ được thêm tương tự vào 2 bảng chấm công và tính lương
+14. Xử lý sự kiện khi thêm dữ liệu vào bảng nhân viên như mã nhân viên, mã nhân viên cũng sẽ được thêm tương tự vào 2 bảng chấm công và tính lương(✅)
 15: Vẽ lại database : Thêm bảng tài khoản, quyền (✅)
-16: Làm chức năng tìm kiếm nhân viên 
-17: Phần chấm công ở trang chủ nhân viên có thể tìm kiếm, sửa và xuất ra báo cáo
-18. Nút để xem lịch sử chấm công (View Timesheets) ở trang nhân viên.
-19. Lỗi khi bấm lịch, các nhân viên có id khác nhau không có bảng lịch riêng mà vẫn bị ảnh hưởng lẫn nhau
-20. Hiển thị các trong attendance_date các ngày chủ nhật tự động hiện trạng thái nghỉ
-21. Thực lĩnh = baseSalary/số ngày trên tháng - số ngày nghỉ + số ngày chủ nhật trong tháng + bonus 
-22. Khi nhấp vào ok ở trang đăng ký, employee_id đều được cập nhật ở tất cả các trang attendance, salary
-23. Sửa lỗi month trong bảng attendance không thể null
-24. Xuất PDF của lương 
-25. Chia nhỏ AdminHomePage
+16: Làm chức năng tìm kiếm nhân viên(✅)
+17: Phần chấm công ở trang chủ nhân viên có thể tìm kiếm, sửa và xuất ra báo cáo(✅)
+//18. Nút để xem lịch sử chấm công (View Timesheets) ở trang nhân viên.(❎)
+19. Lỗi khi bấm lịch, các nhân viên có id khác nhau không có bảng lịch riêng mà vẫn bị ảnh hưởng lẫn nhau (✅)
+//20. Hiển thị các trong attendance_date các ngày chủ nhật tự động hiện trạng thái nghỉ//
+21. Thực lĩnh = baseSalary + bonus - baseSalary/số ngày trong tháng*(số ngày nghỉ)(✅)
+22. Khi nhấp vào ok ở trang đăng ký, employee_id đều được cập nhật ở tất cả các trang attendance, salary(✅)
 
+//23. Sửa lỗi month trong bảng attendance không thể null//
+24. Xuất exel của lương(✅)
+25. Chia nhỏ AdminHomePage(✅)
+26. Kiểm tra các điều kiện ở trang login
+27. Kiểm tra các điều kiện ở trang register
+28. Kiểm tra lại các sự kiện cho nút thêm sửa xoá trang nhân viên
+29. Viết sự kiện tìm kiếm cho trang nhân viên(✅)
+30. Khi ấn nút thêm ở trang nhân viên, employee_id đều được cập nhật ở tất cả các trang attendance, salary(✅)
+31. Viết sự kiện cho nút đăng xuất
+//32. Khi bấm nút tính lương, thông tin về ở cột net_salary trong database đồng thời cũng được cập nhật sang cột salary ở bên bảng employees//
+33. Lỗi khi thêm tài khoản vào trong trang nhân viên, phần phone number dù có thêm vào hay không  thì vẫn lỗi hiển thị ra "Phone Number"(✅)
+33. Lỗi ngày, tháng không tự động cập nhật từ bảng chấm công sang tính lương khi thêm nhân viên mới ở trang nhân viên(✅)
+34. Khi thêm thông tin nhân viên ở trang employeeViews, tự động thêm 1 mk mặc đinh :"88888888"(✅)
+35. Khi đăng nhập, có thể đăng nhập bằng email nữa(✅)
+36. Lỗi chấm công, khi chấm công lại nhân viên cũ, mặc dù trùng ID nhân viên nhưng vẫn thêm vào bảng tính lương. Dẫn đến tính lương có 2 nhân viên trùng nhau
 ######   Bonus   ######
 1. Chức năng quên mật khẩu ở giao diện login
 2. Thống kê, báo cáo

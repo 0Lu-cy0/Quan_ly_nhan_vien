@@ -22,33 +22,23 @@ public class RegisterDAO {
         ResultSet rs = null;
 
         try {
-            System.out.println("Đang tạo kết nối...");
             conn = dbConnection.getJDBCConnection();
-            if (conn == null) {
-                System.out.println("Không thể tạo kết nối database");
-                return false;
-            }
-            System.out.println("Đã tạo kết nối thành công");
 
             String query = "SELECT COUNT(*) FROM employees WHERE phone_number = ?";
             stmt = conn.prepareStatement(query);
             stmt.setString(1, phoneNumber);
-            System.out.println("Đang thực hiện truy vấn với số điện thoại: " + phoneNumber);
             rs = stmt.executeQuery();
 
             if (rs.next()) {
                 int count = rs.getInt(1);
-                System.out.println("Kết quả truy vấn: " + count);
                 return count > 0;
             }
             return false;
 
         } catch (SQLException ex) {
-            System.out.println("Lỗi SQL: " + ex.getMessage());
             ex.printStackTrace();
             return false;
         } finally {
-            System.out.println("Đang đóng kết nối...");
             try {
                 if (rs != null) {
                     rs.close();
@@ -189,11 +179,11 @@ public class RegisterDAO {
             stmt3.setInt(1, employeeId);
             stmt3.executeUpdate();
 
-            // Thêm bản ghi vào bảng salaries với giá trị mặc định
-            String salaryQuery = "INSERT INTO salaries (employee_id, month, base_salary, bonus) VALUES (?, DATE_FORMAT(CURRENT_DATE, '%m/%Y'), 0, 0)";
-            stmt4 = conn.prepareStatement(salaryQuery);
-            stmt4.setInt(1, employeeId);
-            stmt4.executeUpdate();
+//            // Thêm bản ghi vào bảng salaries với giá trị mặc định
+//            String salaryQuery = "INSERT INTO salaries (employee_id, month, base_salary, bonus) VALUES (?, DATE_FORMAT(CURRENT_DATE, '%m/%Y'), 0, 0)";
+//            stmt4 = conn.prepareStatement(salaryQuery);
+//            stmt4.setInt(1, employeeId);
+//            stmt4.executeUpdate();
 
             conn.commit();
             return true;

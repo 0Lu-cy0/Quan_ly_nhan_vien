@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.swing.JOptionPane;
 
 public class AttendanceDate extends javax.swing.JDialog {
 
@@ -75,6 +76,8 @@ public class AttendanceDate extends javax.swing.JDialog {
         jcldAttendenceDate.setDecorationBackgroundColor(new java.awt.Color(255, 255, 255));
         jPanel1.add(jcldAttendenceDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 430));
 
+        jbtThem.setBackground(new java.awt.Color(0, 102, 102));
+        jbtThem.setForeground(new java.awt.Color(255, 255, 255));
         jbtThem.setText("Thêm");
         jbtThem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,6 +86,8 @@ public class AttendanceDate extends javax.swing.JDialog {
         });
         jPanel1.add(jbtThem, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 430, -1, -1));
 
+        jbtHienThiNgayNghi.setBackground(new java.awt.Color(0, 102, 102));
+        jbtHienThiNgayNghi.setForeground(new java.awt.Color(255, 255, 255));
         jbtHienThiNgayNghi.setText("Hiển thị ngày nghỉ");
         jbtHienThiNgayNghi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,59 +136,66 @@ public class AttendanceDate extends javax.swing.JDialog {
         }
 
         // Lưu trạng thái chấm công vào cơ sở dữ liệu
-        for (int day = 1; day <= 31; day++) {
-            if (isDateValid(year, month, day)) {
-                String status = dayStatus.getOrDefault(day, "Đi Làm");
+        try {
+            for (int day = 1; day <= 31; day++) {
+                if (isDateValid(year, month, day)) {
+                    String status = dayStatus.getOrDefault(day, "Đi Làm");
 
-                // Kiểm tra xem ngày đã tồn tại trong bảng attendances chưa
-                String checkQuery = "SELECT COUNT(*) AS count FROM attendances WHERE DAY(day) = ? AND MONTH(day) = ? AND YEAR(day) = ? AND employee_id = ?";
+                    // Kiểm tra xem ngày đã tồn tại trong bảng attendances chưa
+                    String checkQuery = "SELECT COUNT(*) AS count FROM attendances WHERE DAY(day) = ? AND MONTH(day) = ? AND YEAR(day) = ? AND employee_id = ?";
 
-                try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
-                    checkStmt.setInt(1, day);
-                    checkStmt.setInt(2, month);
-                    checkStmt.setInt(3, year);
-                    checkStmt.setInt(4, this.employeeId);
-                    ResultSet rs = checkStmt.executeQuery();
-                    rs.next();
-                    int count = rs.getInt("count");
+                    try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+                        checkStmt.setInt(1, day);
+                        checkStmt.setInt(2, month);
+                        checkStmt.setInt(3, year);
+                        checkStmt.setInt(4, this.employeeId);
+                        ResultSet rs = checkStmt.executeQuery();
+                        rs.next();
+                        int count = rs.getInt("count");
 
-                    if (count == 0) {
-                        // Thêm mới
-                        String query = "INSERT INTO attendances (day, status, employee_id) VALUES (STR_TO_DATE('" + day + "/" + month + "/" + year + "', '%d/%m/%Y'), ?, ?)";
-                        try (PreparedStatement insertStmt = conn.prepareStatement(query)) {
-                            insertStmt.setString(1, status);
-                            insertStmt.setInt(2, this.employeeId);
-                            insertStmt.executeUpdate();
-                        }
-                    } else {
-                        // Cập nhật trạng thái nếu đã tồn tại
-                        String query = "UPDATE attendances SET status = ? WHERE DAY(day) = ? AND MONTH(day) = ? AND YEAR(day) = ? AND employee_id = ?";
-                        try (PreparedStatement updateStmt = conn.prepareStatement(query)) {
-                            updateStmt.setString(1, status);
-                            updateStmt.setInt(2, day);
-                            updateStmt.setInt(3, month);
-                            updateStmt.setInt(4, year);
-                            updateStmt.setInt(5, this.employeeId);
-                            updateStmt.executeUpdate();
+                        if (count == 0) {
+                            // Thêm mới
+                            String query = "INSERT INTO attendances (day, status, employee_id) VALUES (STR_TO_DATE('" + day + "/" + month + "/" + year + "', '%d/%m/%Y'), ?, ?)";
+                            try (PreparedStatement insertStmt = conn.prepareStatement(query)) {
+                                insertStmt.setString(1, status);
+                                insertStmt.setInt(2, this.employeeId);
+                                insertStmt.executeUpdate();
+                            }
+                        } else {
+                            // Cập nhật trạng thái nếu đã tồn tại
+                            String query = "UPDATE attendances SET status = ? WHERE DAY(day) = ? AND MONTH(day) = ? AND YEAR(day) = ? AND employee_id = ?";
+                            try (PreparedStatement updateStmt = conn.prepareStatement(query)) {
+                                updateStmt.setString(1, status);
+                                updateStmt.setInt(2, day);
+                                updateStmt.setInt(3, month);
+                                updateStmt.setInt(4, year);
+                                updateStmt.setInt(5, this.employeeId);
+                                updateStmt.executeUpdate();
+                            }
                         }
                     }
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
                 }
             }
+
+            // Cập nhật bảng salaries sau khi lưu trạng thái chấm công
+            String monthYear = month + "/" + year;
+            insertIntoSalary(this.employeeId, monthYear);
+
+            // Gọi phương thức updateDayOff từ SalaryViews để cập nhật số ngày nghỉ
+            if (salaryViews != null) {
+                salaryViews.updateDayOff(this.employeeId, monthYear);
+            }
+
+            // Thông báo thành công
+            JOptionPane.showMessageDialog(null, "Đã lưu trạng thái chấm công cho nhân viên " + this.employeeId + " thành công.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Lỗi khi lưu trạng thái chấm công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            dbConnection.closeConnection();
         }
 
-        // Cập nhật bảng salaries sau khi lưu trạng thái chấm công
-        String monthYear = month + "/" + year; // Tạo chuỗi monthYear
-        insertIntoSalary(this.employeeId, monthYear); // Thêm mới nếu chưa có trong bảng salaries
-
-        // Gọi phương thức updateDayOff từ SalaryViews để cập nhật số ngày nghỉ
-        if (salaryViews != null) {
-            salaryViews.updateDayOff(this.employeeId, monthYear);
-        }
-
-        dbConnection.closeConnection();
-        System.out.println("Đã lưu trạng thái cho nhân viên " + this.employeeId);
     }//GEN-LAST:event_jbtThemActionPerformed
 
     private void insertIntoSalary(int employeeId, String monthYear) {

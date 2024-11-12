@@ -54,6 +54,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(0, 102, 102));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jbtDoiMatKhau.setForeground(new java.awt.Color(0, 102, 102));
         jbtDoiMatKhau.setText("Đổi mật khẩu");
         jbtDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -62,6 +63,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel3.add(jbtDoiMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 20, 120, 50));
 
+        jbtDangXuat.setForeground(new java.awt.Color(0, 102, 102));
         jbtDangXuat.setText("Đăng xuất");
         jbtDangXuat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -70,6 +72,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel3.add(jbtDangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 50));
 
+        jbtLichSuChamCong.setForeground(new java.awt.Color(0, 102, 102));
         jbtLichSuChamCong.setText("Lịch sử chấm công");
         jPanel3.add(jbtLichSuChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 140, 50));
 

@@ -103,6 +103,8 @@ public class ChangePassword extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jbtNhanMaOTP.setBackground(new java.awt.Color(0, 102, 102));
+        jbtNhanMaOTP.setForeground(new java.awt.Color(255, 255, 255));
         jbtNhanMaOTP.setText("Nhận mã");
         jbtNhanMaOTP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,6 +160,8 @@ public class ChangePassword extends javax.swing.JFrame {
 
         getContentPane().add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 470, 350));
 
+        jbtXacNhanDoiMatKhau.setBackground(new java.awt.Color(0, 102, 102));
+        jbtXacNhanDoiMatKhau.setForeground(new java.awt.Color(255, 255, 255));
         jbtXacNhanDoiMatKhau.setText("Đổi mật khẩu");
         jbtXacNhanDoiMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,6 +170,8 @@ public class ChangePassword extends javax.swing.JFrame {
         });
         getContentPane().add(jbtXacNhanDoiMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 510, -1, -1));
 
+        jbtQuayLai.setBackground(new java.awt.Color(0, 102, 102));
+        jbtQuayLai.setForeground(new java.awt.Color(255, 255, 255));
         jbtQuayLai.setText("Quay lại");
         jbtQuayLai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -187,7 +193,7 @@ public class ChangePassword extends javax.swing.JFrame {
     private void jtfNhapMaXacNhanOTPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNhapMaXacNhanOTPActionPerformed
 
     }//GEN-LAST:event_jtfNhapMaXacNhanOTPActionPerformed
-    
+
     //Mã hoá mật khẩu
     private String hashPasswordSHA256(String password) {
         try {
@@ -250,14 +256,53 @@ public class ChangePassword extends javax.swing.JFrame {
         }
     }
 
+    private boolean validatePasswords(String matKhauMoi, String matKhauXacNhan) {
+        // Kiểm tra mật khẩu mới không để trống
+        if (matKhauMoi.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // Kiểm tra độ dài tối thiểu của mật khẩu mới
+        if (matKhauMoi.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải có ít nhất 8 ký tự!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // Kiểm tra mật khẩu có ít nhất một ký tự viết hoa, một chữ số và một ký tự đặc biệt
+        if (!matKhauMoi.matches(".*[A-Z].*")) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải chứa ít nhất một ký tự viết hoa!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        if (!matKhauMoi.matches(".*\\d.*")) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải chứa ít nhất một chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        if (!matKhauMoi.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới phải chứa ít nhất một ký tự đặc biệt!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        // Kiểm tra mật khẩu xác nhận
+        if (!matKhauMoi.equals(matKhauXacNhan)) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu xác nhận không khớp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+
+        return true;
+    }
+
+
     private void jbtXacNhanDoiMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXacNhanDoiMatKhauActionPerformed
         String matKhauHienTai = new String(jpwMatKhauHienTai.getPassword());
         String matKhauMoi = new String(jpwMatKhauMoi.getPassword());
         String matKhauXacNhan = new String(jpwXacNhanMatKhau.getPassword());
         String otp = jtfNhapMaXacNhanOTP.getText();
 
-        if (!matKhauMoi.equals(matKhauXacNhan)) {
-            JOptionPane.showMessageDialog(this, "Mật khẩu mới và mật khẩu xác nhận không khớp!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Kiểm tra tính hợp lệ của mật khẩu
+        if (!validatePasswords(matKhauMoi, matKhauXacNhan)) {
             return;
         }
 
@@ -272,9 +317,11 @@ public class ChangePassword extends javax.swing.JFrame {
             if (rs.next()) {
                 String matKhauDaLuu = rs.getString("password");
 
+                // Kiểm tra mật khẩu hiện tại và mã OTP
                 if (matKhauDaLuu.equals(matKhauHienTaiHashed) && isValidOtp(otp)) {
                     this.matKhauMoi = matKhauMoi;
 
+                    // Cập nhật mật khẩu mới vào cơ sở dữ liệu
                     String updateQuery = "UPDATE employee SET password = ? WHERE employee_id = ?";
                     PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
                     updateStmt.setString(1, hashPasswordSHA256(matKhauMoi));
@@ -335,13 +382,6 @@ public class ChangePassword extends javax.swing.JFrame {
         new EmployeeHomePage(username, matKhau).setVisible(true);
         dispose();
     }//GEN-LAST:event_jbtQuayLaiActionPerformed
-
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox cbHienThiMatKhau;

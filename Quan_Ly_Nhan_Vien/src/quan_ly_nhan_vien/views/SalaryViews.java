@@ -62,6 +62,7 @@ public class SalaryViews extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setText("EmployeeID");
         jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 300, 70, -1));
 
@@ -81,6 +82,7 @@ public class SalaryViews extends javax.swing.JPanel {
         jPanel8.setBackground(new java.awt.Color(0, 102, 102));
         jPanel8.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jbtLamMoi.setForeground(new java.awt.Color(0, 102, 102));
         jbtLamMoi.setText("Làm Mới");
         jbtLamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,6 +91,7 @@ public class SalaryViews extends javax.swing.JPanel {
         });
         jPanel8.add(jbtLamMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 110, -1));
 
+        jbtTinhLuong.setForeground(new java.awt.Color(0, 102, 102));
         jbtTinhLuong.setText("Tính Lương");
         jbtTinhLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,6 +100,7 @@ public class SalaryViews extends javax.swing.JPanel {
         });
         jPanel8.add(jbtTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 20, 110, -1));
 
+        jbtXuatEXEL.setForeground(new java.awt.Color(0, 102, 102));
         jbtXuatEXEL.setText("Xuất EXEL");
         jbtXuatEXEL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,9 +109,11 @@ public class SalaryViews extends javax.swing.JPanel {
         });
         jPanel8.add(jbtXuatEXEL, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 100, 110, -1));
 
+        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
         jLabel15.setText("BaseSalary");
         jPanel8.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, -1, -1));
 
+        jLabel16.setForeground(new java.awt.Color(255, 255, 255));
         jLabel16.setText("Bonus");
         jPanel8.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
         jPanel8.add(jtfBaseSalary, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 140, -1));
@@ -119,12 +125,14 @@ public class SalaryViews extends javax.swing.JPanel {
         });
         jPanel8.add(jtfBonus, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 140, -1));
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Month");
         jPanel8.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 60, -1, -1));
 
         jtfMonth.setEditable(false);
         jPanel8.add(jtfMonth, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 140, -1));
 
+        jbtXoa.setForeground(new java.awt.Color(0, 102, 102));
         jbtXoa.setText("Xoá");
         jbtXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,6 +163,8 @@ public class SalaryViews extends javax.swing.JPanel {
 
         jPanel9.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 250));
 
+        jbtTimKiem.setBackground(new java.awt.Color(0, 102, 102));
+        jbtTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         jbtTimKiem.setText("Tìm kiếm");
         jbtTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +173,8 @@ public class SalaryViews extends javax.swing.JPanel {
         });
         jPanel9.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jcbbTimKiem.setBackground(new java.awt.Color(0, 102, 102));
+        jcbbTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         jcbbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "EmployeeID", "Month", "DayOff", "BaseSalary", "Bonus", "NetSalary" }));
         jcbbTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -407,8 +419,21 @@ public class SalaryViews extends javax.swing.JPanel {
         String searchText = jtfTimKiem.getText().trim();
         String searchCriteria = jcbbTimKiem.getSelectedItem().toString();
 
+        // Kiểm tra nếu ô tìm kiếm rỗng
         if (searchText.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!");
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập từ khóa tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra nếu không có tiêu chí tìm kiếm hợp lệ được chọn
+        if (searchCriteria == null || searchCriteria.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn tiêu chí tìm kiếm!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Kiểm tra dữ liệu tìm kiếm hợp lệ (ví dụ: kiểm tra định dạng tháng/năm, ID...)
+        if (!validateSearchCriteria(searchCriteria, searchText)) {
+            JOptionPane.showMessageDialog(this, "Dữ liệu tìm kiếm không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -469,7 +494,10 @@ public class SalaryViews extends javax.swing.JPanel {
             int stt = 1;
             DecimalFormat formatter = new DecimalFormat("#,###.##");
 
+            boolean foundResult = false;
+
             while (rs.next()) {
+                foundResult = true;
                 int employeeId = rs.getInt("employee_id");
                 int month = rs.getInt("salary_month");
                 int year = rs.getInt("salary_year");
@@ -491,15 +519,16 @@ public class SalaryViews extends javax.swing.JPanel {
 
             jtbSalary.setModel(model);
 
-            if (model.getRowCount() == 0) {
-                JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào!");
+            // Kiểm tra nếu không có kết quả nào
+            if (!foundResult) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             }
 
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng dữ liệu!");
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         } catch (SQLException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi khi tìm kiếm: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Lỗi khi tìm kiếm: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 if (rs != null) {
@@ -527,6 +556,48 @@ public class SalaryViews extends javax.swing.JPanel {
             jbtTimKiem.doClick();
         }
     }//GEN-LAST:event_jtfTimKiemKeyPressed
+
+    public boolean validateSearchCriteria(String criteria, String searchValue) {
+        if (criteria.equals("EmployeeID") && !isValidEmployeeId(searchValue)) {
+            return false; // Employee ID không hợp lệ
+        }
+        if (criteria.equals("Month") && !isValidMonth(searchValue)) {
+            return false; // Tháng không hợp lệ
+        }
+        if (criteria.equals("BaseSalary") && !isValidSalary(searchValue)) {
+            return false; // Lương cơ bản không hợp lệ
+        }
+        if (criteria.equals("Bonus") && !isValidSalary(searchValue)) {
+            return false; // Tiền thưởng không hợp lệ
+        }
+        if (criteria.equals("NetSalary") && !isValidSalary(searchValue)) {
+            return false; // Lương thực lĩnh không hợp lệ
+        }
+        return true;
+    }
+
+    private boolean isValidEmployeeId(String value) {
+        try {
+            Integer.parseInt(value);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private boolean isValidMonth(String value) {
+        // Kiểm tra định dạng tháng/năm (MM/YYYY)
+        return value.matches("\\d{2}/\\d{4}");
+    }
+
+    private boolean isValidSalary(String value) {
+        try {
+            Double.parseDouble(value.replace(",", ""));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     private void jbtXuatEXELActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXuatEXELActionPerformed
         String filePath = "E:\\Documents\\File Exel\\SalaryTable.xlsx"; // Đường dẫn lưu file Excel
@@ -560,7 +631,7 @@ public class SalaryViews extends javax.swing.JPanel {
                 for (int col = 0; col < model.getColumnCount(); col++) {
                     Cell cell = excelRow.createCell(col);
                     Object cellValue = model.getValueAt(row, col);
-                    
+
                     if (col == 0) { // Cột Employee ID, lấy thông tin từ cơ sở dữ liệu
                         int employeeId = (int) model.getValueAt(row, 0);
                         String fullName = getFullNameByEmployeeId(employeeId, conn); // Lấy tên đầy đủ từ bảng employees

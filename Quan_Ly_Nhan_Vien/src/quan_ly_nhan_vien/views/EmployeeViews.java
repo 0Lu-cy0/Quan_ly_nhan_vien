@@ -108,6 +108,7 @@ public class EmployeeViews extends javax.swing.JPanel {
         jPanel5.add(jlbPhone, new org.netbeans.lib.awtextra.AbsoluteConstraints(296, 93, 86, -1));
 
         jbtThemNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jbtThemNhanVien.setForeground(new java.awt.Color(0, 102, 102));
         jbtThemNhanVien.setText("Thêm");
         jbtThemNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,6 +118,7 @@ public class EmployeeViews extends javax.swing.JPanel {
         jPanel5.add(jbtThemNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
 
         jbtXoaNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jbtXoaNhanVien.setForeground(new java.awt.Color(0, 102, 102));
         jbtXoaNhanVien.setText("Xoá");
         jbtXoaNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -126,6 +128,7 @@ public class EmployeeViews extends javax.swing.JPanel {
         jPanel5.add(jbtXoaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, -1, -1));
 
         jbtSuaNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jbtSuaNhanVien.setForeground(new java.awt.Color(0, 102, 102));
         jbtSuaNhanVien.setText("Sửa");
         jbtSuaNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -135,6 +138,7 @@ public class EmployeeViews extends javax.swing.JPanel {
         jPanel5.add(jbtSuaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, -1, -1));
 
         jbtLamMoi.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jbtLamMoi.setForeground(new java.awt.Color(0, 102, 102));
         jbtLamMoi.setText("Làm mới");
         jbtLamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,6 +151,8 @@ public class EmployeeViews extends javax.swing.JPanel {
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
+        jbtTimKiem.setBackground(new java.awt.Color(0, 102, 102));
+        jbtTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         jbtTimKiem.setText("Tìm kiếm");
         jbtTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,6 +161,8 @@ public class EmployeeViews extends javax.swing.JPanel {
         });
         j1.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
+        jcbbTimKiem.setBackground(new java.awt.Color(0, 102, 102));
+        jcbbTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         jcbbTimKiem.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID", "Full Name", "Email", "Phone Number", "Address", "Date Of Birth", "Role" }));
         jcbbTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -200,14 +208,6 @@ public class EmployeeViews extends javax.swing.JPanel {
             String email = jtfEmail.getText().trim();
             String address = jtfAddress.getText().trim();
             String phonenb = jtfPhone.getText().trim();
-
-            // Debug: In ra thông tin đầu vào
-            System.out.println("Thông tin nhập vào:");
-            System.out.println("ID: " + id);
-            System.out.println("Tên: " + ten);
-            System.out.println("Email: " + email);
-            System.out.println("Địa chỉ: " + address);
-            System.out.println("Số điện thoại: " + phonenb);
 
             // Kiểm tra nếu các trường không được để trống
             if (id.isEmpty()) {
@@ -277,7 +277,6 @@ public class EmployeeViews extends javax.swing.JPanel {
             String checkPhoneSQL = "SELECT COUNT(*) FROM employees WHERE phone_number = ?";
             PreparedStatement psCheckPhone = conn.prepareStatement(checkPhoneSQL);
             psCheckPhone.setString(1, phonenb);
-
             ResultSet rsPhone = psCheckPhone.executeQuery();
             rsPhone.next();
             if (rsPhone.getInt(1) > 0) {
@@ -317,13 +316,12 @@ public class EmployeeViews extends javax.swing.JPanel {
                 // Thêm tài khoản cho nhân viên vào bảng account với mật khẩu đã mã hóa
                 String sqlAccount = "INSERT INTO accounts (employee_id, username, password, email) VALUES (?, ?, ?, ?)";
                 PreparedStatement psAccount = conn.prepareStatement(sqlAccount);
-                psAccount.setString(1, id);  // employee_id
-                psAccount.setString(2, email);  // username
-                psAccount.setString(3, hashedPassword);  // mật khẩu đã mã hóa
-                psAccount.setString(4, email); // email
+                psAccount.setString(1, id);
+                psAccount.setString(2, email);
+                psAccount.setString(3, hashedPassword);
+                psAccount.setString(4, email);
                 psAccount.executeUpdate();
                 psAccount.close();
-
             } else {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
@@ -341,7 +339,6 @@ public class EmployeeViews extends javax.swing.JPanel {
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-
     }//GEN-LAST:event_jbtThemNhanVienActionPerformed
 
     private void jbtXoaNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXoaNhanVienActionPerformed
