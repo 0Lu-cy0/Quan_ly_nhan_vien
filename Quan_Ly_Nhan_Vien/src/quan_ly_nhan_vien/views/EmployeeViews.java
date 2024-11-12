@@ -307,7 +307,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
 
                 // Thêm dữ liệu vào bảng attendances
-                String sqlChamCong = "INSERT INTO attendances (employee_id, day, status) VALUES (?, CURRENT_DATE, 'Chưa chấm')";
+                String sqlChamCong = "INSERT INTO attendances (employee_id, day, status) VALUES (?, CURRENT_DATE, 'N/A')";
                 PreparedStatement psChamCong = conn.prepareStatement(sqlChamCong);
                 psChamCong.setString(1, id);
                 psChamCong.executeUpdate();

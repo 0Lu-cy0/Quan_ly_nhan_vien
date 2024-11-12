@@ -35,6 +35,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jbtDoiMatKhau = new javax.swing.JButton();
         jbtDangXuat = new javax.swing.JButton();
         jbtLichSuChamCong = new javax.swing.JButton();
+        jbtLichSuChamCong1 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jtfPhoneNumber = new javax.swing.JTextField();
         jtfAddress = new javax.swing.JTextField();
@@ -73,8 +74,12 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel3.add(jbtDangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 50));
 
         jbtLichSuChamCong.setForeground(new java.awt.Color(0, 102, 102));
-        jbtLichSuChamCong.setText("Lịch sử chấm công");
-        jPanel3.add(jbtLichSuChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 140, 50));
+        jbtLichSuChamCong.setText("Xuất thông tin");
+        jPanel3.add(jbtLichSuChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 140, 50));
+
+        jbtLichSuChamCong1.setForeground(new java.awt.Color(0, 102, 102));
+        jbtLichSuChamCong1.setText("Lịch sử chấm công");
+        jPanel3.add(jbtLichSuChamCong1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 140, 50));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 470, 180));
 
@@ -313,6 +318,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     private javax.swing.JButton jbtDangXuat;
     private javax.swing.JButton jbtDoiMatKhau;
     private javax.swing.JButton jbtLichSuChamCong;
+    private javax.swing.JButton jbtLichSuChamCong1;
     private javax.swing.JTextField jtfAddress;
     private javax.swing.JTextField jtfEmail;
     private javax.swing.JTextField jtfHoVaTen;
