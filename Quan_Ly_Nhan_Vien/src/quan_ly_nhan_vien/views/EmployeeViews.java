@@ -3,6 +3,10 @@ package quan_ly_nhan_vien.views;
 import com.toedter.calendar.JDateChooser;
 import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -12,11 +16,17 @@ import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Vector;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
 import quan_ly_nhan_vien.utils.HashPassword;
 
@@ -51,6 +61,8 @@ public class EmployeeViews extends javax.swing.JPanel {
         jbtLamMoi = new javax.swing.JButton();
         jdcDateOfBirth = new com.toedter.calendar.JDateChooser();
         jtffullname = new javax.swing.JTextField();
+        jbtXuat = new javax.swing.JButton();
+        jbtNhap = new javax.swing.JButton();
         jbtTimKiem = new javax.swing.JButton();
         jcbbTimKiem = new javax.swing.JComboBox<>();
         jtfTimKiem = new javax.swing.JTextField();
@@ -115,7 +127,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtThemNhanVienActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtThemNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, -1, -1));
+        jPanel5.add(jbtThemNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, -1, -1));
 
         jbtXoaNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtXoaNhanVien.setForeground(new java.awt.Color(0, 102, 102));
@@ -125,7 +137,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtXoaNhanVienActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtXoaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, -1, -1));
+        jPanel5.add(jbtXoaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, -1, -1));
 
         jbtSuaNhanVien.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtSuaNhanVien.setForeground(new java.awt.Color(0, 102, 102));
@@ -135,7 +147,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtSuaNhanVienActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtSuaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 140, -1, -1));
+        jPanel5.add(jbtSuaNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, -1, -1));
 
         jbtLamMoi.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jbtLamMoi.setForeground(new java.awt.Color(0, 102, 102));
@@ -145,9 +157,29 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtLamMoiActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtLamMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 140, -1, -1));
+        jPanel5.add(jbtLamMoi, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 140, -1, -1));
         jPanel5.add(jdcDateOfBirth, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, 120, -1));
         jPanel5.add(jtffullname, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 50, 120, 25));
+
+        jbtXuat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jbtXuat.setForeground(new java.awt.Color(0, 102, 102));
+        jbtXuat.setText("Xuất");
+        jbtXuat.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtXuatActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jbtXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 140, -1, -1));
+
+        jbtNhap.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jbtNhap.setForeground(new java.awt.Color(0, 102, 102));
+        jbtNhap.setText("Nhập");
+        jbtNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtNhapActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jbtNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, -1, -1));
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
@@ -159,7 +191,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtTimKiemActionPerformed(evt);
             }
         });
-        j1.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        j1.add(jbtTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 90, -1));
 
         jcbbTimKiem.setBackground(new java.awt.Color(0, 102, 102));
         jcbbTimKiem.setForeground(new java.awt.Color(255, 255, 255));
@@ -169,14 +201,14 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jcbbTimKiemActionPerformed(evt);
             }
         });
-        j1.add(jcbbTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 0, 100, -1));
+        j1.add(jcbbTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 0, 100, -1));
 
         jtfTimKiem.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jtfTimKiemKeyPressed(evt);
             }
         });
-        j1.add(jtfTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 0, 340, -1));
+        j1.add(jtfTimKiem, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 310, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -342,84 +374,81 @@ public class EmployeeViews extends javax.swing.JPanel {
     }//GEN-LAST:event_jbtThemNhanVienActionPerformed
 
     private void jbtXoaNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXoaNhanVienActionPerformed
-        int selectedRow = jtbEmployee.getSelectedRow();
+// Lấy các hàng được chọn
+        int[] selectedRows = jtbEmployee.getSelectedRows();
 
-        // Kiểm tra xem có dòng nào được chọn không
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một dòng để xóa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        // Lấy mô hình bảng và ID nhân viên
-        DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
-        Object employeeIdObj = model.getValueAt(selectedRow, 0); // Cột 0 chứa employee_id
-
-        // Chuyển employeeId thành String
-        String employeeId = (employeeIdObj instanceof Integer) ? String.valueOf(employeeIdObj) : (String) employeeIdObj;
-
-        // Kiểm tra nếu employeeId là "Admin"
-        if ("Admin".equalsIgnoreCase(employeeId)) {
-            JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Kiểm tra xem có hàng nào được chọn không
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ít nhất một dòng để xóa.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Xác nhận việc xóa
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa bản ghi này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            // Các câu lệnh SQL để xóa các bản ghi liên quan theo employee_id
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Bạn có chắc chắn muốn xóa các bản ghi đã chọn?",
+                "Xác nhận",
+                JOptionPane.YES_NO_OPTION);
+
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
+
+        // Lấy mô hình bảng
+        DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+
+        try (Connection conn = new DatabaseConnection().getJDBCConnection()) {
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            // Câu lệnh SQL xóa dữ liệu từ các bảng liên quan
             String deleteAccountsSql = "DELETE FROM accounts WHERE employee_id = ?";
             String deleteSalariesSql = "DELETE FROM salaries WHERE employee_id = ?";
             String deleteAttendancesSql = "DELETE FROM attendance WHERE employee_id = ?";
             String deleteEmployeeSql = "DELETE FROM employees WHERE employee_id = ?";
 
-            // Kết nối và thực hiện các câu lệnh xóa
-            try (Connection conn = new DatabaseConnection().getJDBCConnection()) {
-                conn.setAutoCommit(false); // Bắt đầu transaction
+            try (PreparedStatement psAccounts = conn.prepareStatement(deleteAccountsSql); PreparedStatement psSalaries = conn.prepareStatement(deleteSalariesSql); PreparedStatement psAttendances = conn.prepareStatement(deleteAttendancesSql); PreparedStatement psEmployee = conn.prepareStatement(deleteEmployeeSql)) {
 
-                // Xóa từ bảng accounts (bỏ qua nếu không tìm thấy)
-                try (PreparedStatement psAccounts = conn.prepareStatement(deleteAccountsSql)) {
+                // Duyệt qua tất cả các hàng đã chọn để xóa từng nhân viên
+                for (int rowIndex : selectedRows) {
+                    Object employeeIdObj = model.getValueAt(rowIndex, 0); // Cột 0 chứa employee_id
+                    String employeeId = (employeeIdObj instanceof Integer) ? String.valueOf(employeeIdObj) : (String) employeeIdObj;
+
+                    // Bỏ qua nếu employeeId là "Admin"
+                    if ("Admin".equalsIgnoreCase(employeeId)) {
+                        JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+
+                    // Xóa từ bảng accounts
                     psAccounts.setString(1, employeeId);
                     psAccounts.executeUpdate();
-                } catch (SQLException e) {
-                    System.out.println("Không tìm thấy employee_id trong bảng accounts, tiếp tục xóa...");
-                }
 
-                // Xóa từ bảng salaries (bỏ qua nếu không tìm thấy)
-                try (PreparedStatement psSalaries = conn.prepareStatement(deleteSalariesSql)) {
+                    // Xóa từ bảng salaries
                     psSalaries.setString(1, employeeId);
                     psSalaries.executeUpdate();
-                } catch (SQLException e) {
-                    System.out.println("Không tìm thấy employee_id trong bảng salaries, tiếp tục xóa...");
-                }
 
-                // Xóa từ bảng attendance (bỏ qua nếu không tìm thấy)
-                try (PreparedStatement psAttendances = conn.prepareStatement(deleteAttendancesSql)) {
+                    // Xóa từ bảng attendance
                     psAttendances.setString(1, employeeId);
                     psAttendances.executeUpdate();
-                } catch (SQLException e) {
-                    System.out.println("Không tìm thấy employee_id trong bảng attendance, tiếp tục xóa...");
-                }
 
-                // Xóa từ bảng employees
-                try (PreparedStatement psEmployee = conn.prepareStatement(deleteEmployeeSql)) {
+                    // Xóa từ bảng employees
                     psEmployee.setString(1, employeeId);
-                    int result = psEmployee.executeUpdate();
-
-                    if (result > 0) {
-                        conn.commit(); // Xác nhận transaction
-                        JOptionPane.showMessageDialog(this, "Xóa thành công!");
-                        model.removeRow(selectedRow); // Xóa dòng khỏi bảng
-                    } else {
-                        conn.rollback(); // Hoàn tác nếu xóa nhân viên không thành công
-                        JOptionPane.showMessageDialog(this, "Xóa nhân viên không thành công!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                    }
-                } catch (SQLException e) {
-                    conn.rollback(); // Hoàn tác nếu có lỗi khi xóa
-                    JOptionPane.showMessageDialog(this, "Lỗi khi xóa từ bảng employees: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    psEmployee.executeUpdate();
                 }
+
+                conn.commit(); // Xác nhận transaction
+                JOptionPane.showMessageDialog(this, "Xóa thành công!");
+
+                // Xóa các dòng khỏi bảng giao diện
+                for (int i = selectedRows.length - 1; i >= 0; i--) {
+                    model.removeRow(selectedRows[i]);
+                }
+
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                conn.rollback(); // Hoàn tác nếu có lỗi xảy ra
+                JOptionPane.showMessageDialog(this, "Lỗi khi xóa: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtXoaNhanVienActionPerformed
 
@@ -709,6 +738,97 @@ public class EmployeeViews extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jtfTimKiemKeyPressed
 
+    private void jbtXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXuatActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            try (Workbook workbook = new XSSFWorkbook()) {
+                Sheet sheet = workbook.createSheet("Employee Data");
+
+                // Lấy model của bảng
+                DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+
+                // Tạo hàng tiêu đề
+                Row headerRow = sheet.createRow(0);
+                for (int i = 0; i < model.getColumnCount(); i++) {
+                    Cell cell = headerRow.createCell(i);
+                    cell.setCellValue(model.getColumnName(i));
+                }
+
+                // Ghi dữ liệu từ bảng vào file Excel
+                for (int i = 0; i < model.getRowCount(); i++) {
+                    Row row = sheet.createRow(i + 1);
+                    for (int j = 0; j < model.getColumnCount(); j++) {
+                        Cell cell = row.createCell(j);
+                        Object value = model.getValueAt(i, j);
+                        if (value != null) {
+                            cell.setCellValue(value.toString());
+                        }
+                    }
+                }
+
+                // Lưu file Excel
+                try (FileOutputStream fos = new FileOutputStream(fileToSave + ".xlsx")) {
+                    workbook.write(fos);
+                }
+
+                JOptionPane.showMessageDialog(this, "Xuất file Excel thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi xuất file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jbtXuatActionPerformed
+
+    private void jbtNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtNhapActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Chọn file Excel để nhập");
+        int userSelection = fileChooser.showOpenDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            try (FileInputStream fis = new FileInputStream(selectedFile); Workbook workbook = new XSSFWorkbook(fis)) {
+
+                Sheet sheet = workbook.getSheetAt(0);
+                DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+                model.setRowCount(0); // Xóa dữ liệu cũ
+
+                // Duyệt qua các hàng trong file Excel (bắt đầu từ hàng thứ 2, bỏ qua hàng tiêu đề)
+                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                    Row row = sheet.getRow(i);
+                    Vector<Object> rowData = new Vector<>();
+
+                    for (int j = 0; j < row.getLastCellNum(); j++) {
+                        Cell cell = row.getCell(j);
+                        if (cell != null) {
+                            switch (cell.getCellType()) {
+                                case STRING:
+                                    rowData.add(cell.getStringCellValue());
+                                    break;
+                                case NUMERIC:
+                                    rowData.add(cell.getNumericCellValue());
+                                    break;
+                                default:
+                                    rowData.add("");
+                            }
+                        } else {
+                            rowData.add("");
+                        }
+                    }
+                    model.addRow(rowData);
+                }
+
+                JOptionPane.showMessageDialog(this, "Nhập dữ liệu từ file Excel thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi khi nhập file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jbtNhapActionPerformed
+
     public boolean validateSearchCriteria(String criteria, String searchValue) {
         if ("ID".equals(criteria)) {
             try {
@@ -819,10 +939,12 @@ public class EmployeeViews extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtLamMoi;
+    private javax.swing.JButton jbtNhap;
     private javax.swing.JButton jbtSuaNhanVien;
     private javax.swing.JButton jbtThemNhanVien;
     private javax.swing.JButton jbtTimKiem;
     private javax.swing.JButton jbtXoaNhanVien;
+    private javax.swing.JButton jbtXuat;
     private javax.swing.JComboBox<String> jcbbTimKiem;
     private com.toedter.calendar.JDateChooser jdcDateOfBirth;
     private javax.swing.JLabel jlbPhone;

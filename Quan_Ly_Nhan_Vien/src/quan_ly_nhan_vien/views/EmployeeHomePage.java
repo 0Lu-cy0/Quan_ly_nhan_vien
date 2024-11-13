@@ -1,11 +1,17 @@
 package quan_ly_nhan_vien.views;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
 import javax.swing.JOptionPane;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import quan_ly_nhan_vien.utils.HashPassword;
 
 public class EmployeeHomePage extends javax.swing.JFrame {
@@ -34,8 +40,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jbtDoiMatKhau = new javax.swing.JButton();
         jbtDangXuat = new javax.swing.JButton();
-        jbtLichSuChamCong = new javax.swing.JButton();
-        jbtLichSuChamCong1 = new javax.swing.JButton();
+        jbtXuatTTNhanVien = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jtfPhoneNumber = new javax.swing.JTextField();
         jtfAddress = new javax.swing.JTextField();
@@ -73,13 +78,14 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         });
         jPanel3.add(jbtDangXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 120, 50));
 
-        jbtLichSuChamCong.setForeground(new java.awt.Color(0, 102, 102));
-        jbtLichSuChamCong.setText("Xuất thông tin");
-        jPanel3.add(jbtLichSuChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 140, 50));
-
-        jbtLichSuChamCong1.setForeground(new java.awt.Color(0, 102, 102));
-        jbtLichSuChamCong1.setText("Lịch sử chấm công");
-        jPanel3.add(jbtLichSuChamCong1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 140, 50));
+        jbtXuatTTNhanVien.setForeground(new java.awt.Color(0, 102, 102));
+        jbtXuatTTNhanVien.setText("Xuất thông tin");
+        jbtXuatTTNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtXuatTTNhanVienActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jbtXuatTTNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 140, 50));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 540, 470, 180));
 
@@ -282,6 +288,76 @@ public class EmployeeHomePage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfEmailActionPerformed
 
+    private void jbtXuatTTNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXuatTTNhanVienActionPerformed
+        // Định nghĩa tên file Excel và đường dẫn
+        String filePath = "E:\\Documents\\Thong_Tin_Nhan_Vien.xlsx";
+
+        // Tạo workbook mới
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet("Employee Data");
+
+        // Tạo header cho file Excel
+        String[] headers = {"Full Name", "Email", "Phone Number", "Address", "Date of Birth", "Net Salary"};
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(headers[i]);
+        }
+
+        // Lấy dữ liệu từ database
+        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, s.net_salary "
+                + "FROM employees e "
+                + "LEFT JOIN accounts a ON e.employee_id = a.employee_id "
+                + "LEFT JOIN salaries s ON e.employee_id = s.employee_id";
+
+        try (Connection connection = dbConnection.getJDBCConnection(); PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+
+            int rowIndex = 1; // Dòng bắt đầu cho dữ liệu (sau header)
+
+            // Duyệt qua ResultSet và ghi dữ liệu vào Excel
+            while (rs.next()) {
+                Row row = sheet.createRow(rowIndex++);
+                row.createCell(0).setCellValue(rs.getString("full_name"));
+                row.createCell(1).setCellValue(rs.getString("email"));
+                row.createCell(2).setCellValue(rs.getString("phone_number"));
+
+                // Xử lý cột địa chỉ
+                String address = rs.getString("address");
+                row.createCell(3).setCellValue((address == null || address.isEmpty()) ? "Chưa có thông tin" : address);
+
+                // Xử lý cột ngày sinh
+                String dob = rs.getString("date_of_birth");
+                row.createCell(4).setCellValue((dob == null || dob.isEmpty()) ? "Chưa có thông tin" : dob);
+
+                // Xử lý cột lương
+                float salary = rs.getFloat("net_salary");
+                if (rs.wasNull()) {
+                    row.createCell(5).setCellValue("Chưa có thông tin");
+                } else {
+                    row.createCell(5).setCellValue(String.format("%,.0f", salary)); // Định dạng lương có dấu phẩy
+                }
+            }
+
+            // Tự động điều chỉnh độ rộng cột
+            for (int i = 0; i < headers.length; i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            // Ghi workbook ra file
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+                JOptionPane.showMessageDialog(this, "Xuất thông tin nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi ghi file Excel!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jbtXuatTTNhanVienActionPerformed
+
     private boolean authenticateUser(String username, String password) {
         String query = "SELECT * FROM Employee WHERE employee_id = ? AND password = ?";
         try {
@@ -317,8 +393,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton jbtDangXuat;
     private javax.swing.JButton jbtDoiMatKhau;
-    private javax.swing.JButton jbtLichSuChamCong;
-    private javax.swing.JButton jbtLichSuChamCong1;
+    private javax.swing.JButton jbtXuatTTNhanVien;
     private javax.swing.JTextField jtfAddress;
     private javax.swing.JTextField jtfEmail;
     private javax.swing.JTextField jtfHoVaTen;
