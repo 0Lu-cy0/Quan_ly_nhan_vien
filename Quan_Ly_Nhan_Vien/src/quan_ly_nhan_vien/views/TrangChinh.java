@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import quan_ly_nhan_vien.controllers.ChuyenManHinh;
 import quan_ly_nhan_vien.models.DanhMuc;
-import quan_ly_nhan_vien.utils.DatabaseConnection;
 
 public class TrangChinh extends javax.swing.JFrame {
 
@@ -13,6 +12,9 @@ public class TrangChinh extends javax.swing.JFrame {
 
     public TrangChinh() {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setTitle("Admin Hoamepage");
         controllerCH = new ChuyenManHinh(jpnViews);
         controllerCH.setView(jpnNhanVien, jlbNhanVien);
         List<DanhMuc> listItem = new ArrayList<>();

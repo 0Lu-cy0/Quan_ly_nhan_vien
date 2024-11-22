@@ -303,15 +303,24 @@ public class ChangePassword extends javax.swing.JFrame {
 
         // Kiểm tra tính hợp lệ của mật khẩu
         if (!validatePasswords(matKhauMoi, matKhauXacNhan)) {
+            JOptionPane.showMessageDialog(this, "Mật khẩu mới và xác nhận mật khẩu không khớp.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         String matKhauHienTaiHashed = hashPasswordSHA256(matKhauHienTai);
 
         try (Connection conn = new DatabaseConnection().getJDBCConnection()) {
-            String query = "SELECT password FROM employee WHERE employee_id = ?";
+            // Lấy employee_id từ email hoặc số điện thoại
+            String employeeId = getEmployeeIdByEmailOrPhone(username);
+            if (employeeId == null) {
+                JOptionPane.showMessageDialog(this, "Không tìm thấy tài khoản!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra mật khẩu hiện tại
+            String query = "SELECT password FROM accounts WHERE employee_id = ?";
             PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, username);
+            pstmt.setString(1, employeeId);
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
@@ -319,13 +328,11 @@ public class ChangePassword extends javax.swing.JFrame {
 
                 // Kiểm tra mật khẩu hiện tại và mã OTP
                 if (matKhauDaLuu.equals(matKhauHienTaiHashed) && isValidOtp(otp)) {
-                    this.matKhauMoi = matKhauMoi;
-
-                    // Cập nhật mật khẩu mới vào cơ sở dữ liệu
-                    String updateQuery = "UPDATE employee SET password = ? WHERE employee_id = ?";
+                    // Cập nhật mật khẩu mới
+                    String updateQuery = "UPDATE accounts SET password = ? WHERE employee_id = ?";
                     PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
                     updateStmt.setString(1, hashPasswordSHA256(matKhauMoi));
-                    updateStmt.setString(2, username);
+                    updateStmt.setString(2, employeeId);
                     updateStmt.executeUpdate();
 
                     int option = JOptionPane.showConfirmDialog(this, "Đổi mật khẩu thành công! Bạn có muốn quay về trang nhân viên không?", "Thành công", JOptionPane.OK_CANCEL_OPTION);
@@ -340,10 +347,27 @@ public class ChangePassword extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Không tìm thấy tài khoản!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi khi thực hiện đổi mật khẩu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtXacNhanDoiMatKhauActionPerformed
+
+    // Phương thức hỗ trợ lấy employee_id
+    private String getEmployeeIdByEmailOrPhone(String input) {
+        String employeeId = null;
+        try (Connection conn = new DatabaseConnection().getJDBCConnection()) {
+            String query = "SELECT employee_id FROM employees WHERE email = ? OR phone_number = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, input); // Tìm bằng email
+            pstmt.setString(2, input); // Tìm bằng số điện thoại
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                employeeId = rs.getString("employee_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return employeeId;
+    }
 
     // Kiểm tra mã OTP hợp lệ
     private boolean isValidOtp(String otp) {

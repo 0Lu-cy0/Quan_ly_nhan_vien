@@ -169,7 +169,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtXuatActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 140, -1, -1));
+        jPanel5.add(jbtXuat, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 140, -1, 24));
 
         jbtNhap.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jbtNhap.setForeground(new java.awt.Color(0, 102, 102));
@@ -179,7 +179,7 @@ public class EmployeeViews extends javax.swing.JPanel {
                 jbtNhapActionPerformed(evt);
             }
         });
-        jPanel5.add(jbtNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, -1, -1));
+        jPanel5.add(jbtNhap, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 140, -1, 24));
 
         j1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 286, 540, 170));
 
@@ -281,6 +281,7 @@ public class EmployeeViews extends javax.swing.JPanel {
             }
 
             LocalDate ngaySinh = ngaySinhDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            //Chuyển kiểu dữ liệu Date sang LocalDate(java.time)
             int namSinh = ngaySinh.getYear();
 
             // Kiểm tra năm sinh trong khoảng từ 1950 đến 2008
@@ -402,7 +403,7 @@ public class EmployeeViews extends javax.swing.JPanel {
             // Câu lệnh SQL xóa dữ liệu từ các bảng liên quan
             String deleteAccountsSql = "DELETE FROM accounts WHERE employee_id = ?";
             String deleteSalariesSql = "DELETE FROM salaries WHERE employee_id = ?";
-            String deleteAttendancesSql = "DELETE FROM attendance WHERE employee_id = ?";
+            String deleteAttendancesSql = "DELETE FROM attendances WHERE employee_id = ?";
             String deleteEmployeeSql = "DELETE FROM employees WHERE employee_id = ?";
 
             try (PreparedStatement psAccounts = conn.prepareStatement(deleteAccountsSql); PreparedStatement psSalaries = conn.prepareStatement(deleteSalariesSql); PreparedStatement psAttendances = conn.prepareStatement(deleteAttendancesSql); PreparedStatement psEmployee = conn.prepareStatement(deleteEmployeeSql)) {
@@ -411,12 +412,6 @@ public class EmployeeViews extends javax.swing.JPanel {
                 for (int rowIndex : selectedRows) {
                     Object employeeIdObj = model.getValueAt(rowIndex, 0); // Cột 0 chứa employee_id
                     String employeeId = (employeeIdObj instanceof Integer) ? String.valueOf(employeeIdObj) : (String) employeeIdObj;
-
-                    // Bỏ qua nếu employeeId là "Admin"
-                    if ("Admin".equalsIgnoreCase(employeeId)) {
-                        JOptionPane.showMessageDialog(this, "Không thể xóa tài khoản Admin!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                        continue;
-                    }
 
                     // Xóa từ bảng accounts
                     psAccounts.setString(1, employeeId);
@@ -530,7 +525,6 @@ public class EmployeeViews extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Vui lòng nhập email!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
                 // Thiết lập các trường rỗng thành "N/A"
                 String newTen = txtTen.getText().trim();
                 String newNgaySinh = null;
@@ -870,15 +864,12 @@ public class EmployeeViews extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Không thể kết nối đến cơ sở dữ liệu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            System.out.println("Kết nối database thành công");
 
             // Câu lệnh SQL để lấy dữ liệu từ bảng employees và accounts
             String sql = "SELECT e.employee_id, e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, a.role_id "
                     + "FROM employees e "
                     + "LEFT JOIN accounts a ON e.employee_id = a.employee_id";
             PreparedStatement ps = conn.prepareStatement(sql);
-
-            System.out.println("Câu lệnh SQL: " + ps.toString());
 
             // Thực thi câu truy vấn
             ResultSet rs = ps.executeQuery();

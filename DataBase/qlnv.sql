@@ -14,8 +14,7 @@ CREATE TABLE Employees (
     email VARCHAR(100) NOT NULL,
     phone_number VARCHAR(15) NOT NULL,
     address VARCHAR(255),
-    date_of_birth DATE,
-    salary DECIMAL(10, 2)
+    date_of_birth DATE
 );
 
 CREATE TABLE Accounts (
@@ -24,6 +23,7 @@ CREATE TABLE Accounts (
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     role_id INT,
+    email VARCHAR(100) NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES Roles(role_id) ON DELETE CASCADE
 );
@@ -39,12 +39,11 @@ CREATE TABLE Attendances (
 CREATE TABLE Salaries (
     salary_id INT PRIMARY KEY AUTO_INCREMENT,
     employee_id INT,
-    basic_salary DECIMAL(10, 2) NOT NULL,
+    basic_salary DECIMAL(10, 2),
     bonuses DECIMAL(10, 2) DEFAULT 0,
-    deductions DECIMAL(10, 2) DEFAULT 0,
     net_salary DECIMAL(10, 2),
-    salary_month INT NOT NULL,
-    salary_year INT NOT NULL,
+    salary_month INT,
+    salary_year INT,
     FOREIGN KEY (employee_id) REFERENCES Employees(employee_id) ON DELETE CASCADE
 );
 

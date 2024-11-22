@@ -196,37 +196,21 @@ public class EmployeeHomePage extends javax.swing.JFrame {
                 + "FROM employees e "
                 + "LEFT JOIN accounts a ON e.employee_id = a.employee_id "
                 + "LEFT JOIN salaries s ON e.employee_id = s.employee_id "
-                + "WHERE a.username = ? OR a.email = ?";
+                + "WHERE a.username = ? OR a.email = ? OR e.phone_number = ?";
 
         try (Connection connection = dbConnection.getJDBCConnection(); PreparedStatement ps = connection.prepareStatement(query)) {
 
-            // Debug: In giá trị input
-            System.out.println("Input search: " + input);
-
             ps.setString(1, input);
             ps.setString(2, input);
+            ps.setString(3, input);
 
             ResultSet rs = ps.executeQuery();
-
-            // Debug: Kiểm tra xem có dữ liệu trả về không
             if (!rs.next()) {
-                System.out.println("Không tìm thấy thông tin nhân viên.");
                 JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhân viên!", "Thông báo", JOptionPane.ERROR_MESSAGE);
-                return;  // Không tiếp tục nếu không tìm thấy dữ liệu
-            } else {
-                System.out.println("Dữ liệu nhân viên đã được tìm thấy.");
+                return;
             }
 
-            // Debug: In ra dữ liệu lấy từ ResultSet
-            System.out.println("Full Name: " + rs.getString("full_name"));
-            System.out.println("Email: " + rs.getString("email"));
-            System.out.println("Phone Number: " + rs.getString("phone_number"));
-            System.out.println("Address: " + rs.getString("address"));
-            System.out.println("Date of Birth: " + rs.getString("date_of_birth"));
-            System.out.println("Salary: " + rs.getFloat("net_salary"));
-
-            // Cập nhật thông tin vào các JTextField
-            jtfPhoneNumber.setText(rs.getString("email"));
+            jtfEmail.setText(rs.getString("email"));
             jtfHoVaTen.setText(rs.getString("full_name"));
             jtfPhoneNumber.setText(rs.getString("phone_number"));
 
@@ -253,7 +237,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
                 jtfLuong.setText("Chưa có thông tin, liên hệ Admin để cập nhật!");
                 jtfLuong.setForeground(java.awt.Color.RED);
             } else {
-                jtfLuong.setText(String.format("%,.0f", salary)); // Định dạng lương có dấu phẩy
+                jtfLuong.setText(String.format("%,.0f", salary));
                 jtfLuong.setForeground(java.awt.Color.BLACK);
             }
 
@@ -357,25 +341,6 @@ public class EmployeeHomePage extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Lỗi khi ghi file Excel!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtXuatTTNhanVienActionPerformed
-
-    private boolean authenticateUser(String username, String password) {
-        String query = "SELECT * FROM Employee WHERE employee_id = ? AND password = ?";
-        try {
-            // Băm mật khẩu người dùng nhập vào
-            String hashedPassword = HashPassword.hashPassword(password); // Sử dụng lại phương thức băm mật khẩu trong LoginViews
-
-            // Chuẩn bị truy vấn và kiểm tra
-            PreparedStatement ps = dbConnection.getJDBCConnection().prepareStatement(query);
-            ps.setString(1, username);
-            ps.setString(2, hashedPassword);
-
-            ResultSet rs = ps.executeQuery();
-            return rs.next();  // Nếu tìm thấy dòng dữ liệu, nghĩa là xác thực thành công
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return false;  // Xác thực không thành công
-        }
-    }
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {

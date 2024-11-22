@@ -39,8 +39,7 @@ public class LoginDAO {
      * Phương thức dùng chung để kiểm tra đăng nhập với query tùy chỉnh
      */
     private int checkLoginWithQuery(LoginModels loginModel, String query) {
-        try (Connection conn = dbConnection.getJDBCConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
+        try (Connection conn = dbConnection.getJDBCConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
 
             // Truyền tham số dựa trên query (có thể là username hoặc email)
             stmt.setString(1, loginModel.getUsername());
@@ -49,16 +48,19 @@ public class LoginDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     String dbPassword = rs.getString("password");
-                    int roleId = rs.getInt("role_id");
+                    String roleId = rs.getString("role_id");  // Lấy giá trị role_id là String để dễ xử lý null
 
                     // Kiểm tra mật khẩu
                     if (loginModel.getHashedPassword().equals(dbPassword)) {
-                        if (roleId == 1) {
+                        // Kiểm tra role_id
+                        if (roleId == null || roleId.isEmpty()) {
+                            return INVALID_ROLE; // Nếu role_id là null hoặc trống
+                        } else if (roleId.equals("1")) {
                             return LOGIN_SUCCESS_ADMIN;
-                        } else if (roleId == 2) {
+                        } else if (roleId.equals("2")) {
                             return LOGIN_SUCCESS_EMPLOYEE;
                         } else {
-                            return INVALID_ROLE;
+                            return INVALID_ROLE; // Trường hợp role_id không phải là 1 hoặc 2
                         }
                     } else {
                         return WRONG_PASSWORD;

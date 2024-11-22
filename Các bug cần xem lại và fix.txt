@@ -42,7 +42,9 @@ Các lưu ý:
 33. Lỗi ngày, tháng không tự động cập nhật từ bảng chấm công sang tính lương khi thêm nhân viên mới ở trang nhân viên(✅)
 34. Khi thêm thông tin nhân viên ở trang employeeViews, tự động thêm 1 mk mặc đinh :"88888888"(✅)
 35. Khi đăng nhập, có thể đăng nhập bằng email nữa(✅)
-36. Lỗi chấm công, khi chấm công lại nhân viên cũ, mặc dù trùng ID nhân viên nhưng vẫn thêm vào bảng tính lương. Dẫn đến tính lương có 2 nhân viên trùng nhau
+36. Lỗi chấm công, khi chấm công lại nhân viên cũ, mặc dù trùng ID nhân viên nhưng vẫn thêm vào bảng tính lương. Dẫn đến tính lương có 2 nhân viên trùng nhau //
+37. Khi đăng nhập tài khoản chưa được cấp quyền sẽ không thể đăng nhập(✅)
+38 Nút quay lại trong trang đổi mật khẩu lỗi(✅)
 ######   Bonus   ######
 1. Chức năng quên mật khẩu ở giao diện login
 2. Thống kê, báo cáo

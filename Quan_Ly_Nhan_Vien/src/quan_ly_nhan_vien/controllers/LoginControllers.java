@@ -86,7 +86,10 @@ public class LoginControllers {
             case LoginDAO.DATABASE_ERROR:
                 loginViews.showMessage("Lỗi kết nối đến cơ sở dữ liệu!");
                 break;
-
+            case LoginDAO.INVALID_ROLE:
+                loginViews.showMessage("Tài khoản chưa được cấp quyền hoặc quyền hạn không phù hợp !");
+                break;
+             
             default:
                 loginViews.showMessage("Đã xảy ra lỗi không xác định! (Mã lỗi: " + loginResult + ")");
                 break;

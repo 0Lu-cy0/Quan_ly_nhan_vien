@@ -1,7 +1,5 @@
 package quan_ly_nhan_vien.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -207,12 +205,14 @@ public class RegisterViews extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    // Thiết lập khung giao diện (không thay đổi kích thước, căn giữa, đặt tiêu đề)
     private void setUpFrame() {
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Đăng ký");
     }
 
+    // Thêm lắng nghe sự thay đổi trên các trường nhập liệu
     private void addDocumentListeners() {
         JTextComponent[] fields = {jtfEmail, jtfSoDienThoai, jtfTaiKhoan, jtfFullName, jtfMatKhau, jtfNhapLaiMatKhau};
         for (JTextComponent field : fields) {
@@ -220,6 +220,7 @@ public class RegisterViews extends javax.swing.JFrame {
         }
     }
 
+    // Phương thức tiện ích để thêm DocumentListener cho các JTextComponent
     private void addDocumentListener(JTextComponent textComponent, Runnable checkMethod) {
         textComponent.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -236,14 +237,7 @@ public class RegisterViews extends javax.swing.JFrame {
         });
     }
 
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder hexString = new StringBuilder();
-        for (byte b : bytes) {
-            hexString.append(String.format("%02x", b));
-        }
-        return hexString.toString();
-    }
-
+    // Kiểm tra hợp lệ các trường dữ liệu trên giao diện
     private void validateFields() {
         String username = jtfTaiKhoan.getText().trim();
         String password = new String(jtfMatKhau.getPassword()).trim();
@@ -270,6 +264,7 @@ public class RegisterViews extends javax.swing.JFrame {
         }
     }
 
+    // Kiểm tra hợp lệ định dạng email
     private void validateEmailStrength(String email) {
         List<String> errors = validateEmail(email);
         if (!errors.isEmpty()) {
@@ -283,12 +278,13 @@ public class RegisterViews extends javax.swing.JFrame {
     private List<String> validateEmail(String email) {
         List<String> errors = new ArrayList<>();
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{3,6}$";
-        if (!email.matches(emailRegex)) {
+        if (!email.matches(emailRegex)) {//Kiểm tra xem chuỗi email có khớp với biểu thức chính quy hay không.
             errors.add("Email không đúng định dạng.");
         }
         return errors;
     }
 
+    // Kiểm tra định dạng số điện thoại
     private void validatePhoneNumberStrength(String phoneNumber) {
         List<String> errors = validatePhoneNumber(phoneNumber);
         if (!errors.isEmpty()) {
@@ -307,6 +303,7 @@ public class RegisterViews extends javax.swing.JFrame {
         return errors;
     }
 
+    // Kiểm tra độ mạnh của mật khẩu
     private void validatePasswordStrength(String password) {
         List<String> errors = validatePassword(password);
         if (!errors.isEmpty()) {
@@ -316,6 +313,7 @@ public class RegisterViews extends javax.swing.JFrame {
         }
     }
 
+    // Xác thực mật khẩu với các tiêu chí mạnh (số, chữ hoa, chữ thường, ký tự đặc biệt, độ dài)
     private List<String> validatePassword(String password) {
         List<String> errors = new ArrayList<>();
         if (!password.matches(".*\\d.*")) {
@@ -336,6 +334,7 @@ public class RegisterViews extends javax.swing.JFrame {
         return errors;
     }
 
+    // Xử lý sự kiện khi người dùng nhấn nút Tạo tài khoản
     private void BtnTaoTKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnTaoTKActionPerformed
         String username = jtfTaiKhoan.getText().trim();
         String password = new String(jtfMatKhau.getPassword()).trim();
@@ -354,6 +353,7 @@ public class RegisterViews extends javax.swing.JFrame {
         registerControllers.registerUser(username, password, fullname, email, phoneNumber);
     }//GEN-LAST:event_BtnTaoTKActionPerformed
 
+    // Hiển thị thông báo cho người dùng
     public void showMessage(String message, String title) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
