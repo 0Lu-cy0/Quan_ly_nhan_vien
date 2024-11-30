@@ -40,7 +40,7 @@ public class AttendanceDAOImpl implements AttendanceDAO {
         String sql = "SELECT employee_id, DATE_FORMAT(day, '%m/%Y') as month, "
                 + "SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) as dayOff, "
                 + "SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) as dayWork "
-                + "FROM  WHERE employee_id = ? "
+                + "FROM attendances WHERE employee_id = ? "
                 + "GROUP BY employee_id, DATE_FORMAT(day, '%m/%Y')";
 
         try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
