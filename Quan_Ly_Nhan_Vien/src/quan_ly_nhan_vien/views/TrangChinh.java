@@ -1,10 +1,15 @@
 package quan_ly_nhan_vien.views;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import quan_ly_nhan_vien.controllers.ChuyenManHinh;
-import quan_ly_nhan_vien.models.DanhMuc;
+import javax.swing.JPanel;
+//import quan_ly_nhan_vien.models.DanhMuc;
 
 public class TrangChinh extends javax.swing.JFrame {
 
@@ -17,12 +22,17 @@ public class TrangChinh extends javax.swing.JFrame {
         this.setTitle("Admin Hoamepage");
         controllerCH = new ChuyenManHinh(jpnViews);
         controllerCH.setView(jpnNhanVien, jlbNhanVien);
-        List<DanhMuc> listItem = new ArrayList<>();
-        listItem.add(new DanhMuc("NhanVien", jpnNhanVien, jlbNhanVien));
-        listItem.add(new DanhMuc("ChamCong", jpnChamCong, jlbChamCong));
-        listItem.add(new DanhMuc("TinhLuong", jpnTinhLuong, jlbTinhLuong));
-        listItem.add(new DanhMuc("About", jpnAbout, jlbAbout));
+
+// Tạo một danh sách chứa các thông tin về từng mục
+        List<Object[]> listItem = new ArrayList<>();
+        listItem.add(new Object[]{"NhanVien", jpnNhanVien, jlbNhanVien});
+        listItem.add(new Object[]{"ChamCong", jpnChamCong, jlbChamCong});
+        listItem.add(new Object[]{"TinhLuong", jpnTinhLuong, jlbTinhLuong});
+        listItem.add(new Object[]{"About", jpnAbout, jlbAbout});
+
+// Gọi phương thức setEvent với danh sách thông tin
         controllerCH.setEvent(listItem);
+
     }
 
     @SuppressWarnings("unchecked")
@@ -63,7 +73,7 @@ public class TrangChinh extends javax.swing.JFrame {
         jlbTinhLuong.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jlbTinhLuong.setForeground(new java.awt.Color(255, 255, 255));
         jlbTinhLuong.setText("Tính lương");
-        jpnTinhLuong.add(jlbTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 100, -1));
+        jpnTinhLuong.add(jlbTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 100, -1));
 
         jPanel1.add(jpnTinhLuong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 170, 60));
 
@@ -74,7 +84,7 @@ public class TrangChinh extends javax.swing.JFrame {
         jlbChamCong.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jlbChamCong.setForeground(new java.awt.Color(255, 255, 255));
         jlbChamCong.setText("Chấm công");
-        jpnChamCong.add(jlbChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 100, -1));
+        jpnChamCong.add(jlbChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 100, -1));
 
         jPanel1.add(jpnChamCong, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 170, 60));
 
@@ -85,7 +95,7 @@ public class TrangChinh extends javax.swing.JFrame {
         jlbAbout.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jlbAbout.setForeground(new java.awt.Color(255, 255, 255));
         jlbAbout.setText("Thông tin");
-        jpnAbout.add(jlbAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 110, -1));
+        jpnAbout.add(jlbAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 110, -1));
 
         jPanel1.add(jpnAbout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 170, 60));
 
@@ -96,7 +106,7 @@ public class TrangChinh extends javax.swing.JFrame {
         jlbNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jlbNhanVien.setForeground(new java.awt.Color(255, 255, 255));
         jlbNhanVien.setText("Nhân viên");
-        jpnNhanVien.add(jlbNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 100, -1));
+        jpnNhanVien.add(jlbNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 100, -1));
 
         jPanel1.add(jpnNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 170, 60));
 
@@ -119,6 +129,108 @@ public class TrangChinh extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public class ChuyenManHinh {
+
+        private JPanel root;
+        private String kindSelected = "";
+        private String kindHovered = "";
+        private List<Object[]> listItem;
+
+        public ChuyenManHinh(JPanel jpnRoot) {
+            this.root = jpnRoot;
+        }
+
+        public void setView(JPanel jpnItem, JLabel jlbItem) {
+            kindSelected = "SanPham";
+            jlbItem.setBackground(new Color(0, 51, 51));
+            jpnItem.setBackground(new Color(0, 51, 51));
+            root.removeAll();
+            root.setLayout(new BorderLayout());
+            root.add(new EmployeeViews(), BorderLayout.CENTER);
+            root.revalidate();
+            root.repaint();
+        }
+
+        public void setEvent(List<Object[]> listItem) {
+            this.listItem = listItem;
+            for (Object[] item : listItem) {
+                JLabel jlb = (JLabel) item[2];
+                JPanel jpn = (JPanel) item[1];
+                String kind = (String) item[0];
+                jlb.addMouseListener(new LaBelEvent(kind, jpn, jlb));
+            }
+        }
+
+        class LaBelEvent implements MouseListener {
+
+            private String kind;
+            private JPanel jpnItem;
+
+            public LaBelEvent(String kind, JPanel jpnItem, JLabel jlbItem) {
+                this.kind = kind;
+                this.jpnItem = jpnItem;
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPanel node = switch (kind) {
+                    case "NhanVien" ->
+                        new EmployeeViews();
+                    case "ChamCong" ->
+                        new AttendanceViews();
+                    case "TinhLuong" ->
+                        new SalaryViews();
+                    case "About" ->
+                        new About();
+                    default ->
+                        new JPanel();
+                };
+                root.removeAll();
+                root.setLayout(new BorderLayout());
+                root.add(node, BorderLayout.CENTER);
+                root.revalidate();
+                root.repaint();
+                setChangeBackground();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                kindHovered = kind;
+                setChangeBackground();
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                kindHovered = "";
+                setChangeBackground();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                kindSelected = kind;
+                setChangeBackground();
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+        }
+
+        private void setChangeBackground() {
+            for (Object[] item : listItem) {
+                JLabel jlb = (JLabel) item[2];
+                JPanel jpn = (JPanel) item[1];
+                if (kindSelected.equals(item[0]) || kindHovered.equals(item[0])) {
+                    jlb.setBackground(new Color(0, 51, 51));
+                    jpn.setBackground(new Color(0, 51, 51));
+                } else {
+                    jlb.setBackground(new Color(0, 102, 102));
+                    jpn.setBackground(new Color(0, 102, 102));
+                }
+            }
+        }
+    }
+
     private void jbtDangXuatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtDangXuatActionPerformed
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn đăng xuất?", "Xác nhận đăng xuất", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
@@ -129,11 +241,7 @@ public class TrangChinh extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtDangXuatActionPerformed
 
     public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new TrangChinh().setVisible(true);
-            }
-        });
+        java.awt.EventQueue.invokeLater(() -> new TrangChinh().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

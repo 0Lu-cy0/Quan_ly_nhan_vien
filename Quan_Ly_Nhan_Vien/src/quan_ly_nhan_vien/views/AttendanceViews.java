@@ -2,24 +2,27 @@ package quan_ly_nhan_vien.views;
 
 import javax.swing.SwingUtilities;
 import java.awt.Frame;
-import quan_ly_nhan_vien.controllers.AttendanceControllers;
-import quan_ly_nhan_vien.models.AttendanceModels;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import quan_ly_nhan_vien.utils.DatabaseConnection;
 
 public class AttendanceViews extends javax.swing.JPanel {
 
-    private AttendanceControllers controller = new AttendanceControllers();
 
     public AttendanceViews() {
         initComponents();
-        controller = new AttendanceControllers();
         setupTableListener();
         displayAttendance();
     }
@@ -285,8 +288,8 @@ public class AttendanceViews extends javax.swing.JPanel {
         String searchValue = jtfTimKiem.getText().trim();
 
         try {
-            if (controller.validateSearchCriteria(criteria, searchValue)) {
-                List<AttendanceModels> results = controller.searchAttendance(criteria, searchValue);
+            if (validateSearchCriteria(criteria, searchValue)) {
+                List<Map<String, Object>> results = searchAttendance(criteria, searchValue);
                 updateTableWithResults(results);
                 if (results.isEmpty()) {
                     JOptionPane.showMessageDialog(this, "Không tìm thấy kết quả nào.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -301,9 +304,157 @@ public class AttendanceViews extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_jbtTimKiemActionPerformed
 
+    public boolean validateSearchCriteria(String criteria, String value) {
+        if (criteria == null || value == null || value.trim().isEmpty()) {
+            return false;
+        }
+
+        switch (criteria) {
+            case "EmployeeID":
+                return validateEmployeeID(value);
+            case "Month":
+                return validateMonth(value);
+            case "Day Off":
+            case "Day Work":
+                return validateDayCount(value);
+            default:
+                return false;
+        }
+    }
+
+    private boolean validateEmployeeID(String employeeID) {
+        try {
+            int id = Integer.parseInt(employeeID);
+            return id > 0 && checkEmployeeExists(id);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public boolean checkEmployeeExists(int employeeId) {
+        String sql = "SELECT COUNT(*) FROM attendances WHERE employee_id = ?";
+
+        try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, employeeId);
+            try (ResultSet rs = ps.executeQuery()) {
+                rs.next();
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean validateMonth(String month) {
+        if (!month.matches("^(0[1-9]|1[0-2])/\\d{4}$")) {
+            return false;
+        }
+
+        String[] parts = month.split("/");
+        int monthVal = Integer.parseInt(parts[0]);
+        int yearVal = Integer.parseInt(parts[1]);
+
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        return yearVal <= currentYear;
+    }
+
+    private boolean validateDayCount(String dayCount) {
+        try {
+            int days = Integer.parseInt(dayCount);
+            return days >= 0 && days <= 31;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public List<Map<String, Object>> searchAttendance(String criteria, String value) {
+        List<Map<String, Object>> attendanceList = new ArrayList<>();
+        String sql = "";
+
+        switch (criteria) {
+            case "EmployeeID":
+                sql = "SELECT employee_id, DATE_FORMAT(day, '%m/%Y') as month, "
+                        + "SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) as dayOff, "
+                        + "SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) as dayWork "
+                        + "FROM attendances WHERE employee_id = ? "
+                        + "GROUP BY employee_id, DATE_FORMAT(day, '%m/%Y')";
+                break;
+            case "Month":
+                sql = "SELECT employee_id, DATE_FORMAT(day, '%m/%Y') as month, "
+                        + "SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) as dayOff, "
+                        + "SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) as dayWork "
+                        + "FROM attendances WHERE DATE_FORMAT(day, '%m/%Y') = ? "
+                        + "GROUP BY employee_id, DATE_FORMAT(day, '%m/%Y')";
+                break;
+            case "Day Off":
+                sql = "SELECT employee_id, DATE_FORMAT(day, '%m/%Y') as month, "
+                        + "SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) as dayOff, "
+                        + "SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) as dayWork "
+                        + "FROM attendances "
+                        + "GROUP BY employee_id, DATE_FORMAT(day, '%m/%Y') "
+                        + "HAVING SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) = ?";
+                break;
+            case "Day Work":
+                sql = "SELECT employee_id, DATE_FORMAT(day, '%m/%Y') as month, "
+                        + "SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) as dayOff, "
+                        + "SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) as dayWork "
+                        + "FROM attendances "
+                        + "GROUP BY employee_id, DATE_FORMAT(day, '%m/%Y') "
+                        + "HAVING SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) = ?";
+                break;
+        }
+
+        try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            if (criteria.equals("EmployeeID")) {
+                ps.setInt(1, Integer.parseInt(value));
+            } else {
+                ps.setString(1, value);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> row = new HashMap<>();
+                    row.put("employee_id", rs.getInt("employee_id"));
+                    row.put("month", rs.getString("month"));
+                    row.put("dayOff", rs.getInt("dayOff"));
+                    row.put("dayWork", rs.getInt("dayWork"));
+                    attendanceList.add(row);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attendanceList;
+    }
+
     private void displayAttendance() {
-        List<AttendanceModels> attendanceList = controller.getAllAttendance();
+        List<Map<String, Object>> attendanceList = AttendanceData();
         updateTableWithResults(attendanceList);
+    }
+
+    private List<Map<String, Object>> AttendanceData() {
+        List<Map<String, Object>> attendanceList = new ArrayList<>();
+        String sql = "SELECT employee_id, DATE_FORMAT(day, '%m/%Y') as month, "
+                + "SUM(CASE WHEN status = 'Nghỉ' THEN 1 ELSE 0 END) as dayOff, "
+                + "SUM(CASE WHEN status = 'Đi Làm' THEN 1 ELSE 0 END) as dayWork "
+                + "FROM attendances "
+                + "GROUP BY employee_id, DATE_FORMAT(day, '%m/%Y')";
+
+        try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                Map<String, Object> row = new HashMap<>();
+                row.put("employee_id", rs.getInt("employee_id"));
+                row.put("month", rs.getString("month"));
+                row.put("dayOff", rs.getInt("dayOff"));
+                row.put("dayWork", rs.getInt("dayWork"));
+                attendanceList.add(row);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return attendanceList;
     }
 
     private void displayDetailedAttendance(int employeeId, String monthYear) {
@@ -314,7 +465,7 @@ public class AttendanceViews extends javax.swing.JPanel {
             int year = Integer.parseInt(parts[1]);
 
             // Lấy dữ liệu chấm công chi tiết
-            List<AttendanceModels> detailedAttendance = controller.getDetailedAttendance(employeeId, month, year);
+            List<Map<String, Object>> detailedAttendance = getDetailedAttendance(employeeId, month, year);
 
             // Xóa dữ liệu cũ trong các bảng
             clearAttendanceTables();
@@ -326,12 +477,12 @@ public class AttendanceViews extends javax.swing.JPanel {
             // Map để lưu trữ trạng thái của mỗi ngày
             Map<Integer, String> attendanceMap = new HashMap<>();
 
-            for (AttendanceModels attendance : detailedAttendance) {
-                // Sử dụng getDayAsString để lấy ngày dưới dạng String
-                String dayStr = attendance.getDayAsString();
-                // Tách lấy ngày từ chuỗi ngày tháng năm
+            // Lưu trữ thông tin chi tiết chấm công vào Map
+            for (Map<String, Object> attendance : detailedAttendance) {
+                // Lấy ngày từ kết quả
+                String dayStr = (String) attendance.get("day");
                 int day = Integer.parseInt(dayStr.split("/")[0]);
-                attendanceMap.put(day, attendance.getStatus());
+                attendanceMap.put(day, (String) attendance.get("status"));
             }
 
             // Phân chia dữ liệu cho 5 bảng
@@ -358,6 +509,36 @@ public class AttendanceViews extends javax.swing.JPanel {
                     "Lỗi",
                     JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    public List<Map<String, Object>> getDetailedAttendance(int employeeId, int month, int year) {
+        String monthYear = String.format("%02d/%04d", month, year);
+        return getDetailedAttendanceByEmployeeAndMonth(employeeId, monthYear);
+    }
+
+    public List<Map<String, Object>> getDetailedAttendanceByEmployeeAndMonth(int employeeId, String monthYear) {
+        List<Map<String, Object>> detailedAttendance = new ArrayList<>();
+        String sql = "SELECT employee_id, DATE_FORMAT(day, '%d/%m/%Y') as day, status "
+                + "FROM attendances WHERE employee_id = ? AND DATE_FORMAT(day, '%m/%Y') = ? ORDER BY day";
+
+        try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, employeeId);
+            ps.setString(2, monthYear);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> attendance = new HashMap<>();
+                    attendance.put("employee_id", rs.getInt("employee_id"));
+                    attendance.put("day", rs.getString("day"));
+                    attendance.put("status", rs.getString("status"));
+                    detailedAttendance.add(attendance);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return detailedAttendance;
     }
 
     private void clearAttendanceTables() {
@@ -405,18 +586,18 @@ public class AttendanceViews extends javax.swing.JPanel {
         });
     }
 
-    private void updateTableWithResults(List<AttendanceModels> results) {
+    private void updateTableWithResults(List<Map<String, Object>> results) {
         DefaultTableModel model = (DefaultTableModel) jtbBangChamCong.getModel();
         model.setRowCount(0);
 
         int stt = 1;
-        for (AttendanceModels attendance : results) {
+        for (Map<String, Object> row : results) {
             model.addRow(new Object[]{
                 stt++,
-                attendance.getEmployeeId(),
-                attendance.getMonth(),
-                attendance.getDayOff(),
-                attendance.getDayWork()
+                row.get("employee_id"),
+                row.get("month"),
+                row.get("dayOff"),
+                row.get("dayWork")
             });
         }
     }

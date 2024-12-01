@@ -325,6 +325,7 @@ public class SalaryViews extends javax.swing.JPanel {
 
             if (result > 0) {
                 javax.swing.JOptionPane.showMessageDialog(this, "Tính lương thành công và đã lưu vào cơ sở dữ liệu!");
+                System.out.println("Da tinh luong");
 
                 // Hiển thị thông tin chi tiết về việc tính lương
                 String message = String.format(

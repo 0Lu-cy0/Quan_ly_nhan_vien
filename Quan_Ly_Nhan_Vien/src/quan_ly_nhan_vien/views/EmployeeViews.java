@@ -77,7 +77,15 @@ public class EmployeeViews extends javax.swing.JPanel {
             new String [] {
                 "ID", "Full Name", "Email", "Phone Number", "Address", "Date Of Birth", "Role"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jtbEmployee);
 
         j1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 540, 250));

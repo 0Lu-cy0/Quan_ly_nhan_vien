@@ -1,20 +1,25 @@
 package quan_ly_nhan_vien.views;
 
 import javax.swing.JOptionPane;
-import quan_ly_nhan_vien.controllers.LoginControllers;
+import java.sql.*;
+import quan_ly_nhan_vien.utils.DatabaseConnection;
+import quan_ly_nhan_vien.utils.HashPassword;
 
 public class LoginViews extends javax.swing.JFrame {
 
-    private final LoginControllers loginController;
     private LoginViews loginViews;
+    public static final int LOGIN_SUCCESS_ADMIN = 1;
+    public static final int LOGIN_SUCCESS_EMPLOYEE = 2;
+    public static final int ACCOUNT_NOT_FOUND = -1;
+    public static final int WRONG_PASSWORD = -2;
+    public static final int DATABASE_ERROR = -3;
+    public static final int INVALID_ROLE = -4;
 
     public LoginViews() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
         this.setTitle("Đăng nhập");
-
-        loginController = new LoginControllers(this);
 
         jtfTaiKhoan.addActionListener(evt -> jtfMatKhau.requestFocus());
         jtfMatKhau.addActionListener(evt -> btnDNhapActionPerformed(null));
@@ -178,11 +183,110 @@ public class LoginViews extends javax.swing.JFrame {
 
         // Gọi phương thức login của controller với thông tin tài khoản
         if (isEmail) {
-            loginController.loginWithEmail(input, password); // Dùng email
+            loginWithEmail(input, password); // Dùng email
         } else {
-            loginController.loginWithUsername(input, password); // Dùng username
+            loginWithUsername(input, password); // Dùng username
         }
     }//GEN-LAST:event_btnDNhapActionPerformed
+
+    public void loginWithUsername(String username, String password) {
+        String hashedPassword = HashPassword.hashPassword(password); // Mã hóa mật khẩu
+        int loginResult = checkLoginByUsername(username, hashedPassword); // Truyền trực tiếp username và mật khẩu đã mã hóa
+        handleLoginResult(loginResult, username, password);
+    }
+
+    public void loginWithEmail(String email, String password) {
+        String hashedPassword = HashPassword.hashPassword(password); // Mã hóa mật khẩu
+        int loginResult = checkLoginByEmail(email, hashedPassword); // Truyền trực tiếp email và mật khẩu đã mã hóa
+        handleLoginResult(loginResult, email, password);
+    }
+
+    private void handleLoginResult(int loginResult, String input, String password) {
+        switch (loginResult) {
+            case LOGIN_SUCCESS_ADMIN:
+                TrangChinh adminPage = new TrangChinh();
+                adminPage.setVisible(true);
+                loginViews.dispose();
+                break;
+
+            case LOGIN_SUCCESS_EMPLOYEE:
+                EmployeeHomePage employeePage = new EmployeeHomePage(input, password);
+                employeePage.setVisible(true);
+                loginViews.dispose();
+                break;
+
+            case ACCOUNT_NOT_FOUND:
+                loginViews.showMessage("Tài khoản không tồn tại trong hệ thống!");
+                break;
+
+            case WRONG_PASSWORD:
+                loginViews.showMessage("Mật khẩu không chính xác!");
+                break;
+
+            case DATABASE_ERROR:
+                loginViews.showMessage("Lỗi kết nối đến cơ sở dữ liệu!");
+                break;
+            case INVALID_ROLE:
+                loginViews.showMessage("Tài khoản chưa được cấp quyền hoặc quyền hạn không phù hợp !");
+                break;
+
+            default:
+                loginViews.showMessage("Đã xảy ra lỗi không xác định! (Mã lỗi: " + loginResult + ")");
+                break;
+        }
+    }
+
+    public int checkLoginByUsername(String username, String hashedPassword) {
+        return checkLoginWithQuery(username, hashedPassword, "SELECT password, role_id FROM accounts WHERE username = ?");
+    }
+
+    /**
+     * Phương thức kiểm tra đăng nhập bằng email
+     */
+    public int checkLoginByEmail(String email, String hashedPassword) {
+        return checkLoginWithQuery(email, hashedPassword, "SELECT password, role_id FROM accounts WHERE email = ?");
+    }
+
+    /**
+     * Phương thức dùng chung để kiểm tra đăng nhập với query tùy chỉnh
+     */
+    private int checkLoginWithQuery(String identifier, String hashedPassword, String query) {
+        try (Connection conn = new DatabaseConnection().getJDBCConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Truyền tham số username/email vào câu truy vấn
+            stmt.setString(1, identifier);
+
+            // Thực thi truy vấn và xử lý kết quả
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String dbPassword = rs.getString("password");
+                    String roleId = rs.getString("role_id");  // Lấy giá trị role_id là String để dễ xử lý null
+
+                    // Kiểm tra mật khẩu
+                    if (hashedPassword.equals(dbPassword)) {
+                        // Kiểm tra role_id
+                        if (roleId == null || roleId.isEmpty()) {
+                            return INVALID_ROLE; // Nếu role_id là null hoặc trống
+                        } else if (roleId.equals("1")) {
+                            return LOGIN_SUCCESS_ADMIN;
+                        } else if (roleId.equals("2")) {
+                            return LOGIN_SUCCESS_EMPLOYEE;
+                        } else {
+                            return INVALID_ROLE; // Trường hợp role_id không phải là 1 hoặc 2
+                        }
+                    } else {
+                        return WRONG_PASSWORD;
+                    }
+                } else {
+                    return ACCOUNT_NOT_FOUND;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Lỗi truy vấn cơ sở dữ liệu: " + e.getMessage());
+            return DATABASE_ERROR;
+        }
+    }
+
 
     private void jtfTaiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTaiKhoanActionPerformed
         // TODO add your handling code here:
