@@ -355,30 +355,29 @@ public class RegisterViews extends javax.swing.JFrame {
 
     public boolean registerUser(String username, String password, String fullname, String email, String phoneNumber) {
 
-    if (isUsernameTaken(username)) {
-        showMessage("Tài khoản đã tồn tại.", "Lỗi");
-        return false;
-    } else if (isPhoneNumberTaken(phoneNumber)) {
-        showMessage("Số điện thoại đã tồn tại.", "Lỗi");
-        return false;
-    } else if (isEmailTaken(email)) {
-        showMessage("Email đã tồn tại.", "Lỗi");
-        return false;
+        if (isUsernameTaken(username)) {
+            showMessage("Tài khoản đã tồn tại.", "Lỗi");
+            return false;
+        } else if (isPhoneNumberTaken(phoneNumber)) {
+            showMessage("Số điện thoại đã tồn tại.", "Lỗi");
+            return false;
+        } else if (isEmailTaken(email)) {
+            showMessage("Email đã tồn tại.", "Lỗi");
+            return false;
+        }
+
+        // Mã hóa mật khẩu
+        String hashedPassword = HashPassword.hashPassword(password);
+
+        // Thay vì sử dụng registerModel, bạn truyền trực tiếp các tham số vào addUserToDatabase
+        if (addUserToDatabase(username, hashedPassword, fullname, email, phoneNumber)) {
+            showMessage("Tạo tài khoản thành công!", "Thành công");
+            return true;
+        } else {
+            showMessage("Không thể tạo tài khoản.", "Lỗi");
+            return false;
+        }
     }
-
-    // Mã hóa mật khẩu
-    String hashedPassword = HashPassword.hashPassword(password);
-
-    // Thay vì sử dụng registerModel, bạn truyền trực tiếp các tham số vào addUserToDatabase
-    if (addUserToDatabase(username, hashedPassword, fullname, email, phoneNumber)) {
-        showMessage("Tạo tài khoản thành công!", "Thành công");
-        return true;
-    } else {
-        showMessage("Không thể tạo tài khoản.", "Lỗi");
-        return false;
-    }
-}
-
 
     public boolean isUsernameTaken(String username) {
         Connection conn = null;

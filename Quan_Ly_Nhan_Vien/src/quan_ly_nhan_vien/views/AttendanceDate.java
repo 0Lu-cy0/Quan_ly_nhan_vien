@@ -219,7 +219,6 @@ public class AttendanceDate extends javax.swing.JDialog {
         }
     }
 
-
     private void jbtHienThiNgayNghiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtHienThiNgayNghiActionPerformed
         updateOffDaysColor(jcldAttendenceDate.getDayChooser().getDayPanel().getComponents());
     }//GEN-LAST:event_jbtHienThiNgayNghiActionPerformed
@@ -309,26 +308,6 @@ public class AttendanceDate extends javax.swing.JDialog {
         }
     }
 
-// Hoặc trong phương thức onMonthChanged - Phương thức cập nhật màu sác của, trạng thái của ngày khi thay đổi tháng
-    private void onMonthChanged() {
-        Calendar calendar = jcldAttendenceDate.getCalendar();
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int year = calendar.get(Calendar.YEAR);
-
-        // Xóa dữ liệu cũ trước khi tải mới
-        offDays.clear();
-        monthDayStatus.clear();
-
-        // Khởi tạo trạng thái mặc định cho tháng mới
-        initializeDayStatuses(month, year);
-
-        // Tải dữ liệu cho tháng mới
-        loadDataFromDatabase(year, year);
-
-        // Cập nhật giao diện
-        updateOffDaysColor(jcldAttendenceDate.getDayChooser().getDayPanel().getComponents());
-    }
-
     //Phương thức chuyển đổi trạng thái ngày khi nhấp vào
     private void addCalendarMouseListener() {
         JDayChooser dayChooser = jcldAttendenceDate.getDayChooser();
@@ -405,21 +384,6 @@ public class AttendanceDate extends javax.swing.JDialog {
                 }
             }
         }
-    }
-
-    //Định dạng danh sách ngày nghỉ
-    private String formatOffDays(List<Integer> offDays, int month) {
-        StringBuilder formattedDays = new StringBuilder();
-        for (int day : offDays) {
-            // Đảm bảo rằng tháng được định dạng với 2 chữ số
-            String monthStr = String.format("%02d", month);
-            formattedDays.append(String.format("%02d/%s, ", day, monthStr));
-        }
-        // Xóa dấu phẩy và khoảng trắng cuối cùng
-        if (formattedDays.length() > 0) {
-            formattedDays.setLength(formattedDays.length() - 2); // Xóa 2 ký tự cuối
-        }
-        return formattedDays.toString();
     }
 
     // Phương thức kiểm tra chuỗi có phải là số không

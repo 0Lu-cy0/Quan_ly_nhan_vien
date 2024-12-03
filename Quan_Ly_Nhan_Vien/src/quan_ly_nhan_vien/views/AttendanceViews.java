@@ -431,7 +431,7 @@ public class AttendanceViews extends javax.swing.JPanel {
     private void displayAttendance() {
         List<Map<String, Object>> attendanceList = AttendanceData();
         updateTableWithResults(attendanceList);
-    }
+    }//có
 
     private List<Map<String, Object>> AttendanceData() {
         List<Map<String, Object>> attendanceList = new ArrayList<>();
@@ -455,7 +455,7 @@ public class AttendanceViews extends javax.swing.JPanel {
             e.printStackTrace();
         }
         return attendanceList;
-    }
+    }//có
 
     private void displayDetailedAttendance(int employeeId, String monthYear) {
         try {
@@ -509,12 +509,12 @@ public class AttendanceViews extends javax.swing.JPanel {
                     "Lỗi",
                     JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }//Có
 
     public List<Map<String, Object>> getDetailedAttendance(int employeeId, int month, int year) {
         String monthYear = String.format("%02d/%04d", month, year);
         return getDetailedAttendanceByEmployeeAndMonth(employeeId, monthYear);
-    }
+    }//có
 
     public List<Map<String, Object>> getDetailedAttendanceByEmployeeAndMonth(int employeeId, String monthYear) {
         List<Map<String, Object>> detailedAttendance = new ArrayList<>();
@@ -539,7 +539,7 @@ public class AttendanceViews extends javax.swing.JPanel {
             e.printStackTrace();
         }
         return detailedAttendance;
-    }
+    }//có
 
     private void clearAttendanceTables() {
         DefaultTableModel model1 = (DefaultTableModel) NgayChamCong1.getModel();
@@ -553,7 +553,7 @@ public class AttendanceViews extends javax.swing.JPanel {
         model3.setRowCount(0);
         model4.setRowCount(0);
         model5.setRowCount(0);
-    }
+    }//có
 
     private JTable getAttendanceTableByIndex(int index) {
         switch (index) {
@@ -570,7 +570,7 @@ public class AttendanceViews extends javax.swing.JPanel {
             default:
                 throw new IllegalArgumentException("Invalid table index");
         }
-    }
+    }//có
 
     private void setupTableListener() {
         jtbBangChamCong.addMouseListener(new MouseAdapter() {
@@ -584,7 +584,7 @@ public class AttendanceViews extends javax.swing.JPanel {
                 }
             }
         });
-    }
+    }//Có
 
     private void updateTableWithResults(List<Map<String, Object>> results) {
         DefaultTableModel model = (DefaultTableModel) jtbBangChamCong.getModel();
@@ -600,7 +600,7 @@ public class AttendanceViews extends javax.swing.JPanel {
                 row.get("dayWork")
             });
         }
-    }
+    }//có
 
     public int getDayOffForEmployee(int employeeId, String monthYear) {
         // Tách monthYear thành tháng và năm

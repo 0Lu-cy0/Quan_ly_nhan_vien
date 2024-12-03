@@ -176,7 +176,7 @@ public class LoginViews extends javax.swing.JFrame {
         if (input.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu.", "Thông tin không hợp lệ", JOptionPane.WARNING_MESSAGE);
             return;
-        }
+        }   
 
         // Kiểm tra nếu đầu vào là email bằng cách sử dụng regex đơn giản
         boolean isEmail = input.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
