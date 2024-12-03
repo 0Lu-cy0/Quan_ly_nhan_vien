@@ -206,13 +206,13 @@ public class LoginViews extends javax.swing.JFrame {
             case LOGIN_SUCCESS_ADMIN:
                 TrangChinh adminPage = new TrangChinh();
                 adminPage.setVisible(true);
-                loginViews.dispose();
+                this.dispose();
                 break;
 
             case LOGIN_SUCCESS_EMPLOYEE:
                 EmployeeHomePage employeePage = new EmployeeHomePage(input, password);
                 employeePage.setVisible(true);
-                loginViews.dispose();
+                this.dispose();
                 break;
 
             case ACCOUNT_NOT_FOUND:

@@ -273,7 +273,7 @@ public class EmployeeHomePage extends javax.swing.JFrame {
 
     private void jbtXuatTTNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtXuatTTNhanVienActionPerformed
         // Định nghĩa tên file Excel và đường dẫn
-        String filePath = "E:\\Documents\\Thong_Tin_Nhan_Vien.xlsx";
+        String filePath = "E:\\Documents\\Thong_Tin_Nhan_Vien_Hien_Tai.xlsx";
 
         // Tạo workbook mới
         XSSFWorkbook workbook = new XSSFWorkbook();
@@ -287,66 +287,39 @@ public class EmployeeHomePage extends javax.swing.JFrame {
             cell.setCellValue(headers[i]);
         }
 
-        // Lấy dữ liệu từ database
-        String query = "SELECT e.full_name, e.email, e.phone_number, e.address, e.date_of_birth, s.net_salary "
-                + "FROM employees e "
-                + "LEFT JOIN accounts a ON e.employee_id = a.employee_id "
-                + "LEFT JOIN salaries s ON e.employee_id = s.employee_id";
+        // Tạo một dòng dữ liệu (chỉ lấy từ giao diện hiện tại)
+        Row row = sheet.createRow(1);
 
-        try (Connection connection = dbConnection.getJDBCConnection(); PreparedStatement ps = connection.prepareStatement(query); ResultSet rs = ps.executeQuery()) {
+        // Lấy dữ liệu từ giao diện (ví dụ từ các JTextField)
+        String fullName = jtfHoVaTen.getText(); // Thay txtFullName bằng JTextField thực tế
+        String email = jtfEmail.getText();
+        String phoneNumber = jtfPhoneNumber.getText();
+        String address = jtfAddress.getText();
+        String dob = jtfNgayThangNamSinh.getText();
+        String salary = jtfLuong.getText();
 
-            int rowIndex = 1; // Dòng bắt đầu cho dữ liệu (sau header)
+        // Ghi dữ liệu vào dòng
+        row.createCell(0).setCellValue(fullName);
+        row.createCell(1).setCellValue(email);
+        row.createCell(2).setCellValue(phoneNumber);
+        row.createCell(3).setCellValue(address);
+        row.createCell(4).setCellValue(dob);
+        row.createCell(5).setCellValue(salary);
 
-            // Duyệt qua ResultSet và ghi dữ liệu vào Excel
-            while (rs.next()) {
-                Row row = sheet.createRow(rowIndex++);
-                row.createCell(0).setCellValue(rs.getString("full_name"));
-                row.createCell(1).setCellValue(rs.getString("email"));
-                row.createCell(2).setCellValue(rs.getString("phone_number"));
+        // Tự động điều chỉnh độ rộng cột
+        for (int i = 0; i < headers.length; i++) {
+            sheet.autoSizeColumn(i);
+        }
 
-                // Xử lý cột địa chỉ
-                String address = rs.getString("address");
-                row.createCell(3).setCellValue((address == null || address.isEmpty()) ? "Chưa có thông tin" : address);
-
-                // Xử lý cột ngày sinh
-                String dob = rs.getString("date_of_birth");
-                row.createCell(4).setCellValue((dob == null || dob.isEmpty()) ? "Chưa có thông tin" : dob);
-
-                // Xử lý cột lương
-                float salary = rs.getFloat("net_salary");
-                if (rs.wasNull()) {
-                    row.createCell(5).setCellValue("Chưa có thông tin");
-                } else {
-                    row.createCell(5).setCellValue(String.format("%,.0f", salary)); // Định dạng lương có dấu phẩy
-                }
-            }
-
-            // Tự động điều chỉnh độ rộng cột
-            for (int i = 0; i < headers.length; i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            // Ghi workbook ra file
-            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
-                workbook.write(fileOut);
-                JOptionPane.showMessageDialog(this, "Xuất thông tin nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        // Ghi dữ liệu vào file Excel
+        try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+            workbook.write(fileOut);
+            JOptionPane.showMessageDialog(this, "Xuất thông tin nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Lỗi khi ghi file Excel!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jbtXuatTTNhanVienActionPerformed
-
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel5;

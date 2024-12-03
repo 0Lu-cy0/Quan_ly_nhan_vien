@@ -6,8 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import javax.swing.JOptionPane;
 import quan_ly_nhan_vien.utils.DatabaseConnection;
+import quan_ly_nhan_vien.utils.HashPassword;
 
 public class ChangePassword extends javax.swing.JFrame {
 
@@ -194,27 +193,6 @@ public class ChangePassword extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jtfNhapMaXacNhanOTPActionPerformed
 
-    //Mã hoá mật khẩu
-    private String hashPasswordSHA256(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-
-            for (byte b : hash) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     // Nhận mã OTP và lưu vào file
     private void jbtNhanMaOTPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtNhanMaOTPActionPerformed
         String otp = generateOtp();
@@ -307,7 +285,7 @@ public class ChangePassword extends javax.swing.JFrame {
             return;
         }
 
-        String matKhauHienTaiHashed = hashPasswordSHA256(matKhauHienTai);
+        String matKhauHienTaiHashed = HashPassword.hashPassword(matKhauHienTai);
 
         try (Connection conn = new DatabaseConnection().getJDBCConnection()) {
             // Lấy employee_id từ email hoặc số điện thoại
@@ -331,7 +309,7 @@ public class ChangePassword extends javax.swing.JFrame {
                     // Cập nhật mật khẩu mới
                     String updateQuery = "UPDATE accounts SET password = ? WHERE employee_id = ?";
                     PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                    updateStmt.setString(1, hashPasswordSHA256(matKhauMoi));
+                    updateStmt.setString(1, HashPassword.hashPassword(matKhauMoi));
                     updateStmt.setString(2, employeeId);
                     updateStmt.executeUpdate();
 
