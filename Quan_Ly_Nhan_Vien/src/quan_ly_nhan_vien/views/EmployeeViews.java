@@ -23,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -795,38 +796,130 @@ public class EmployeeViews extends javax.swing.JPanel {
             try (FileInputStream fis = new FileInputStream(selectedFile); Workbook workbook = new XSSFWorkbook(fis)) {
 
                 Sheet sheet = workbook.getSheetAt(0);
-                DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
-                model.setRowCount(0); // Xóa dữ liệu cũ
-
-                // Duyệt qua các hàng trong file Excel (bắt đầu từ hàng thứ 2, bỏ qua hàng tiêu đề)
-                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                    Row row = sheet.getRow(i);
-                    Vector<Object> rowData = new Vector<>();
-
-                    for (int j = 0; j < row.getLastCellNum(); j++) {
-                        Cell cell = row.getCell(j);
-                        if (cell != null) {
-                            switch (cell.getCellType()) {
-                                case STRING:
-                                    rowData.add(cell.getStringCellValue());
-                                    break;
-                                case NUMERIC:
-                                    rowData.add(cell.getNumericCellValue());
-                                    break;
-                                default:
-                                    rowData.add("");
-                            }
-                        } else {
-                            rowData.add("");
-                        }
-                    }
-                    model.addRow(rowData);
+                Connection conn = new DatabaseConnection().getJDBCConnection();
+                if (conn == null) {
+                    JOptionPane.showMessageDialog(this, "Không thể kết nối đến cơ sở dữ liệu.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
 
+                // Câu lệnh SQL
+                String selectSQL = "SELECT * FROM employees WHERE employee_id = ?";
+                String updateSQL = "UPDATE employees SET full_name = ?, email = ?, phone_number = ?, address = ?, date_of_birth = ? WHERE employee_id = ?";
+                String insertSQL = "INSERT INTO employees (employee_id, full_name, email, phone_number, address, date_of_birth) VALUES (?, ?, ?, ?, ?, ?)";
+
+                PreparedStatement selectStmt = conn.prepareStatement(selectSQL);
+                PreparedStatement updateStmt = conn.prepareStatement(updateSQL);
+                PreparedStatement insertStmt = conn.prepareStatement(insertSQL);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                DefaultTableModel model = (DefaultTableModel) jtbEmployee.getModel();
+                model.setRowCount(0); // Xóa dữ liệu cũ trên bảng giao diện
+
+                // Duyệt qua các hàng trong file Excel (bỏ qua hàng tiêu đề)
+                for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                    Row row = sheet.getRow(i);
+                    if (row == null) {
+                        continue;
+                    }
+
+                    // Lấy dữ liệu từ file Excel
+                    Cell idCell = row.getCell(0);
+                    Cell nameCell = row.getCell(1);
+                    Cell emailCell = row.getCell(2);
+                    Cell phoneCell = row.getCell(3);
+
+                    if (idCell == null || idCell.getCellType() != CellType.NUMERIC
+                            || nameCell == null || nameCell.getCellType() != CellType.STRING
+                            || emailCell == null || emailCell.getCellType() != CellType.STRING
+                            || phoneCell == null || phoneCell.getCellType() != CellType.STRING) {
+
+                        JOptionPane.showMessageDialog(this, "Dòng " + (i + 1) + " bị thiếu thông tin quan trọng (ID, Tên, Email, hoặc Số điện thoại). Bỏ qua dòng này.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                        continue;
+                    }
+
+                    int employeeId = (int) idCell.getNumericCellValue();
+                    String fullName = nameCell.getStringCellValue().trim();
+                    String email = emailCell.getStringCellValue().trim();
+                    String phoneNumber = phoneCell.getStringCellValue().trim();
+
+                    // Các cột không bắt buộc
+                    String address = (row.getCell(4) != null && row.getCell(4).getCellType() == CellType.STRING)
+                            ? row.getCell(4).getStringCellValue().trim()
+                            : "N/A";
+
+                    Date dateOfBirth = (row.getCell(5) != null && row.getCell(5).getCellType() == CellType.NUMERIC)
+                            ? row.getCell(5).getDateCellValue()
+                            : null;
+
+                    // Kiểm tra nhân viên trong database
+                    selectStmt.setInt(1, employeeId);
+                    ResultSet rs = selectStmt.executeQuery();
+
+                    if (rs.next()) {
+                        // Nhân viên đã tồn tại, kiểm tra và cập nhật nếu cần
+                        boolean isUpdated = false;
+
+                        if (!fullName.equals(rs.getString("full_name"))) {
+                            isUpdated = true;
+                        }
+                        if (!email.equals(rs.getString("email"))) {
+                            isUpdated = true;
+                        }
+                        if (!phoneNumber.equals(rs.getString("phone_number"))) {
+                            isUpdated = true;
+                        }
+                        if (!address.equals(rs.getString("address"))) {
+                            isUpdated = true;
+                        }
+                        if (dateOfBirth != null && !sdf.format(dateOfBirth).equals(rs.getString("date_of_birth"))) {
+                            isUpdated = true;
+                        }
+
+                        if (isUpdated) {
+                            updateStmt.setString(1, fullName);
+                            updateStmt.setString(2, email);
+                            updateStmt.setString(3, phoneNumber);
+                            updateStmt.setString(4, address);
+                            updateStmt.setDate(5, dateOfBirth != null ? new java.sql.Date(dateOfBirth.getTime()) : null);
+                            updateStmt.setInt(6, employeeId);
+                            updateStmt.executeUpdate();
+                        }
+                    } else {
+                        // Nhân viên chưa tồn tại, thêm mới
+                        insertStmt.setInt(1, employeeId);
+                        insertStmt.setString(2, fullName);
+                        insertStmt.setString(3, email);
+                        insertStmt.setString(4, phoneNumber);
+                        insertStmt.setString(5, address);
+                        insertStmt.setDate(6, dateOfBirth != null ? new java.sql.Date(dateOfBirth.getTime()) : null);
+                        insertStmt.executeUpdate();
+                    }
+
+                    // Thêm vào bảng giao diện
+                    Vector<Object> rowData = new Vector<>();
+                    rowData.add(employeeId);
+                    rowData.add(fullName);
+                    rowData.add(email);
+                    rowData.add(phoneNumber);
+                    rowData.add(address != null && !address.isEmpty() ? address : "N/A");
+                    rowData.add(dateOfBirth != null ? sdf.format(dateOfBirth) : "N/A");
+                    model.addRow(rowData);
+
+                    rs.close();
+                }
+
+                // Đóng kết nối
+                selectStmt.close();
+                updateStmt.close();
+                insertStmt.close();
+                conn.close();
+                workbook.close();
+
                 JOptionPane.showMessageDialog(this, "Nhập dữ liệu từ file Excel thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            } catch (IOException e) {
+
+            } catch (IOException | SQLException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Lỗi khi nhập file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Lỗi khi nhập dữ liệu: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }//GEN-LAST:event_jbtNhapActionPerformed
